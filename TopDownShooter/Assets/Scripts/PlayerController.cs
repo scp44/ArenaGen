@@ -1,37 +1,47 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof (CharacterController))]
+//[RequireComponent (typeof (CharacterController))]
 public class PlayerController : MonoBehaviour {
 	//system
 	private Quaternion targetRotation;
 	//components
-	private CharacterController controller;
+	//private CharacterController controller;
 	//Handling
 	public float rotationSpeed = 450;
 	public float walkSpeed = 5;
-	public float runSpeed = 8;
+	public float runSpeed = 3;
+
+
+
 
 	// Use this for initialization
 	void Start () {
-		controller = GetComponent<CharacterController> ();
+
+
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		Vector3 input = new Vector3 (Input.GetAxisRaw ("Horizontal"), 0, Input.GetAxisRaw ("Vertical"));
-		if (input != Vector3.zero){
-			targetRotation = Quaternion.LookRotation (input);
-			transform.eulerAngles = Vector3.up * Mathf.MoveTowardsAngle(transform.eulerAngles.y ,targetRotation.eulerAngles.y, rotationSpeed * Time.deltaTime);
+		Vector3 movement = new Vector3 (0, 0, 0);
+
+		var mouse = Input.mousePosition;
+		var screenPoint = Camera.main.WorldToScreenPoint(transform.localPosition);
+		var offset = new Vector2(mouse.x - screenPoint.x, mouse.y - screenPoint.y);
+		var angle = Mathf.Atan2(offset.x, offset.y) * Mathf.Rad2Deg;
+		transform.rotation = Quaternion.Euler(0, angle, 0);
+
+		//Vector3 input = new Vector3 (Input.GetAxisRaw ("Horizontal"), 0, Input.GetAxisRaw ("Vertical"));
+		float moveHorizontal = Input.GetAxis ("Horizontal");
+		float moveVertical = Input.GetAxis ("Vertical");
+		
+		movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
+		rigidbody.velocity = movement * walkSpeed;
+
+		//controller.Move (movement * Time.deltaTime);
+
+
 	
-		}
-
-		Vector3 motion = input;
-		motion *= (Mathf.Abs (input.x) == 1 && Mathf.Abs (input.z) == 1) ? .7f : 1;
-		motion *= (Input.GetButton ("Run")) ? runSpeed : walkSpeed;
-		motion += Vector3.up * -8;
-
-		controller.Move (motion * Time.deltaTime);
 	}
 
 }
