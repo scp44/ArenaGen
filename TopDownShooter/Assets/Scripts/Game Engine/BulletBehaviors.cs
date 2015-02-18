@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+
 public class BulletBehaviors : MonoBehaviour {
+
 
 	void OnTriggerEnter(Collider other){
 		if(other.gameObject.tag == "Wall"){
@@ -9,7 +12,11 @@ public class BulletBehaviors : MonoBehaviour {
 		}
 		else if (other.gameObject.tag == "Enemy") {
 			//run enemy health minus
-			Destroy(other.gameObject);
+
+			EnemyBasic enemyScript = other.GetComponent<EnemyBasic>();
+			enemyScript.enemyHP -= 1;
+
+
 			Destroy(this.gameObject);
 		}
 	}
