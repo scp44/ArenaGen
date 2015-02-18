@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour {
 	//components
 	//private CharacterController controller;
 	//Handling
+	public float playerHP = 10;
+
+
 	public float rotationSpeed = 450;
 	public float walkSpeed = 5;
 	public float runSpeed = 3;
