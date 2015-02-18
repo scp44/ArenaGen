@@ -9,6 +9,7 @@ public class BulletBehaviors : MonoBehaviour {
 		}
 		else if (other.gameObject.tag == "Enemy") {
 			//run enemy health minus
+			Destroy(other.gameObject);
 		}
 	}
 

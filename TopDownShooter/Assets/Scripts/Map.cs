@@ -9,6 +9,9 @@ public class Map: MonoBehaviour {
 	//Define possible obstacles
 	public Transform[] obstacleTypes;
 
+	//EnemyTypes!
+	public Transform[] enemyTypes;
+
 	//Define map size
 	public int mapLength;
 	public int mapWidth;

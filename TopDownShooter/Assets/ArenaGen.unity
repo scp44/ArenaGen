@@ -107,7 +107,7 @@ Transform:
   m_Children:
   - {fileID: 715550011}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
 --- !u!23 &25744903
 Renderer:
   m_ObjectHideFlags: 0
@@ -322,6 +322,8 @@ MonoBehaviour:
   - {fileID: 462712, guid: af698682f5d2843efb0ea49642dd6bfe, type: 2}
   obstacleTypes:
   - {fileID: 483166, guid: 2ad7989afc5994f4b9e33ea115f08d73, type: 2}
+  enemyTypes:
+  - {fileID: 466936, guid: d80d693871606cc4697835abbeb37560, type: 2}
   mapLength: 30
   mapWidth: 30
   obstacleProbability: .159999996
@@ -336,7 +338,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
 --- !u!1 &802342374
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,11 +419,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 802342374}
   m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106829}
-  m_LocalPosition: {x: 0, y: 25.6000004, z: -0}
+  m_LocalPosition: {x: -5.5, y: 11, z: 6.30000019}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
 --- !u!114 &802342380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -461,7 +463,7 @@ Transform:
   - {fileID: 2008210395}
   - {fileID: 1461757559}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
 --- !u!1 &1327509968
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,7 +594,7 @@ Transform:
   m_Children:
   - {fileID: 1327509969}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
 --- !u!1 &2008210394
 GameObject:
   m_ObjectHideFlags: 0
