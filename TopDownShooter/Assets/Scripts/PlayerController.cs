@@ -12,7 +12,19 @@ public class PlayerController : MonoBehaviour {
 	public float walkSpeed = 5;
 	public float runSpeed = 3;
 
+	public Rigidbody Bullet;
+	public float speed = 100;
+	
+	void FireBullet () {
+		var inFront = new Vector3 (0, 1, 0);
 
+		Rigidbody bulletClone = (Rigidbody) Instantiate(Bullet, transform.position, transform.rotation);
+		bulletClone.velocity = transform.forward * speed;
+
+		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
+	}
+	
+	// Calls the fire method when holding down ctrl or mouse
 
 
 	// Use this for initialization
@@ -38,6 +50,10 @@ public class PlayerController : MonoBehaviour {
 		movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
 		rigidbody.velocity = movement * walkSpeed;
 
+		if (Input.GetMouseButtonDown(0)) {
+
+			FireBullet();
+		}
 		//controller.Move (movement * Time.deltaTime);
 
 
