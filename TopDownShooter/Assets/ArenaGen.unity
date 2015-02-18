@@ -329,7 +329,7 @@ MonoBehaviour:
   groundCellPrefabs:
   - {fileID: 11460476, guid: 8dbc36c31bb714b1cbecc7e0d8308e2a, type: 2}
   roadPrefab: {fileID: 11470894, guid: af698682f5d2843efb0ea49642dd6bfe, type: 2}
-  waterPrefab: {fileID: 0}
+  waterPrefab: {fileID: 11418974, guid: 9c13dabc417d14b509cacfb628debc28, type: 2}
   mountainPrefab: {fileID: 0}
   wallPrefab: {fileID: 0}
   miscObstacleCellPrefabs:
