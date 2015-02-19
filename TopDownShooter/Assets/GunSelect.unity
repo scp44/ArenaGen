@@ -86,7 +86,7 @@ GameObject:
   - 114: {fileID: 55486049}
   - 114: {fileID: 55486048}
   m_Layer: 5
-  m_Name: Button
+  m_Name: MainMenuReturn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107,7 +107,7 @@ RectTransform:
   m_RootOrder: 8
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: 214, y: -105}
+  m_AnchoredPosition: {x: 181, y: -85}
   m_SizeDelta: {x: 131, y: 30}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &55486048
@@ -190,7 +190,7 @@ GameObject:
   - 114: {fileID: 147446664}
   - 114: {fileID: 147446663}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Standard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -234,7 +234,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 147446664}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1366112481}
+        m_MethodName: GunSelect
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+          m_IntArgument: 0
+          m_FloatArgument: 1
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &147446664
@@ -553,7 +565,7 @@ GameObject:
   - 114: {fileID: 380281420}
   - 114: {fileID: 380281419}
   m_Layer: 5
-  m_Name: Button
+  m_Name: StartGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -574,7 +586,7 @@ RectTransform:
   m_RootOrder: 7
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: 214, y: -141}
+  m_AnchoredPosition: {x: 181, y: -121}
   m_SizeDelta: {x: 131, y: 30}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &380281419
@@ -789,7 +801,7 @@ GameObject:
   - 114: {fileID: 825925599}
   - 114: {fileID: 825925598}
   m_Layer: 5
-  m_Name: Button
+  m_Name: AreaOfEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1050,7 +1062,7 @@ RectTransform:
   m_RootOrder: 10
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: -120, y: -120}
+  m_AnchoredPosition: {x: -119, y: -105}
   m_SizeDelta: {x: 228, y: 27}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &960931137
@@ -1179,7 +1191,7 @@ GameObject:
   - 114: {fileID: 1032488645}
   - 114: {fileID: 1032488644}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Sprayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1337,6 +1349,45 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1354465755}
+--- !u!1 &1366112480
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1366112482}
+  - 114: {fileID: 1366112481}
+  m_Layer: 0
+  m_Name: _Main
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1366112481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1366112480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01bc22382d15dbc44ae92802e15dd8e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1366112482
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1366112480}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 294.552338, y: 139.826416, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
 --- !u!1 &1438629540
 GameObject:
   m_ObjectHideFlags: 0
@@ -1410,7 +1461,7 @@ GameObject:
   - 114: {fileID: 1539785975}
   - 114: {fileID: 1539785974}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Speed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1692,7 +1743,7 @@ GameObject:
   - 114: {fileID: 1767907846}
   - 114: {fileID: 1767907845}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Long
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1909,7 +1960,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Difficulty Select
+  m_Text: Main Menu
 --- !u!222 &1780187468
 CanvasRenderer:
   m_ObjectHideFlags: 0
