@@ -42,7 +42,7 @@ public class Map: MonoBehaviour {
 
 		//Generate water around the map
 		if (willGenerateIsland)
-			generateIsland (5);
+			generateIsland (20);
 		else
 			generateWaterBoundaries (20);
 
@@ -80,6 +80,70 @@ public class Map: MonoBehaviour {
 		Vector3 startPosition3D = coordinatesFrom2D(startPosition, 0.6f);
 		player.transform.position = startPosition3D;
 	}
+
+	/*
+	//Generates water inside the map to make it look like an island
+	//Alternative method (starting from center)
+	//Needs to be improved
+	private void generateIsland_2(int padding) {
+		//Create water boundaries
+		generateWaterBoundaries (padding);
+		
+		//Initialize the list of the water cells with all the cells
+		List<IntVector2> waterCellList = new List<IntVector2> ();
+		//Add the inner layer of coordinates to the queue
+		for (int i=0; i<mapLength; i++) {
+			for (int j=0; j<mapWidth; j++) {
+				IntVector2 coordinates = new IntVector2(i,j);
+				waterCellList.Add(coordinates);
+			}
+		}
+
+		//Cells that are definitely water cells
+		List<IntVector2> notGroundCellList = new List<IntVector2> ();
+		//length of the half diagonal of the map
+		IntVector2 mapCenter = new IntVector2 ((int)(mapLength / 2), (int)(mapWidth / 2));
+		float maxDistanceToCenter = mapCenter.distance (new IntVector2(mapLength, mapWidth));
+
+		//Start with map center being the only ground cell
+		Queue<IntVector2> groundCells = new Queue<IntVector2> ();
+		groundCells.Enqueue (mapCenter);
+
+		//Iterate over queue elements until it is not empty
+		while (groundCells.Count>0) {
+			//Remove a cell from the queue and remove it from the water cell list
+			IntVector2 currentCell = groundCells.Dequeue();
+			waterCellList.Remove(currentCell);
+			
+			//Iterate over all water neighbors
+			foreach(IntVector2 currentNeighbor in getNeighbors(currentCell)) {
+				//We only care about the cells that have not been visited yet
+				if (waterCellList.Contains(currentNeighbor) 
+				    && !notGroundCellList.Contains(currentNeighbor)
+				    && !groundCells.Contains(currentNeighbor)) {
+					//Compute probability that it will be a water cell
+					float distanceToCenter = currentNeighbor.distance(mapCenter);
+					float relativeDistance = distanceToCenter/maxDistanceToCenter;
+					//The probability function should map [0,1] (rel.distance) to [0,1] (probability)
+					float waterCellProbability = Mathf.Pow((-1/(relativeDistance-2)), 3);
+					if (relativeDistance < 0.3)
+						waterCellProbability = 0f;
+					
+					//Add the cell to the appropriate list
+					if (Random.value < waterCellProbability)
+						notGroundCellList.Add(currentNeighbor);
+					else
+						groundCells.Enqueue (currentNeighbor);
+				}
+			}
+		}
+
+		//Put water cells in proper locations
+		foreach (IntVector2 waterCell in waterCellList) {
+			createCell(MapCellType.waterCell, waterCell);
+		}
+	}
+	*/
 
 	//Generates water inside the map to make it look like an island
 	private void generateIsland(int padding) {
