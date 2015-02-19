@@ -141,6 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 289201e932ed7ca4eb29ecacdad5c35d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerHP: 10
   rotationSpeed: 450
   walkSpeed: 5
   runSpeed: 3
@@ -325,6 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 652c7534ba3c84fe1a2b2985d9b02a50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  willGenerateIsland: 0
   player: {fileID: 25744902}
   groundCellPrefabs:
   - {fileID: 11460476, guid: 8dbc36c31bb714b1cbecc7e0d8308e2a, type: 2}
@@ -333,7 +335,7 @@ MonoBehaviour:
   mountainPrefab: {fileID: 0}
   wallPrefab: {fileID: 0}
   miscObstacleCellPrefabs:
-  - {fileID: 11459632, guid: 2ad7989afc5994f4b9e33ea115f08d73, type: 2}
+  - {fileID: 11441530, guid: 2ad7989afc5994f4b9e33ea115f08d73, type: 2}
   enemyTypes:
   - {fileID: 466936, guid: d80d693871606cc4697835abbeb37560, type: 2}
   mapLength: 100

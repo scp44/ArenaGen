@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class Map: MonoBehaviour {
-	
+
+	//Testing variables
+	public bool willGenerateIsland;
+
 	//Player
 	public Transform player;
 	
@@ -59,13 +63,84 @@ public class Map: MonoBehaviour {
 		}
 		
 		//Generate water around the map
-		generateWaterBoundaries (20);
+		if (willGenerateIsland)
+			generateIsland (5);
+		else
+			generateWaterBoundaries (20);
 		
 		//Put the player at the starting position
 		Vector3 startPosition3D = coordinatesFrom2D(startPosition, 0.6f);
 		player.transform.position = startPosition3D;
 	}
-	
+
+	//Generates water inside the map to make it look like an island
+	private void generateIsland(int padding) {
+		//Create water boundaries
+		generateWaterBoundaries (padding);
+
+		//Initialize the list of the water cells
+		Queue<IntVector2> tempWaterCellQueue = new Queue<IntVector2> ();
+		//Add the inner layer of coordinates to the queue
+		for (int i=-1; i<mapLength+1; i++) {
+			for (int j=-1; j<mapWidth+1; j++) {
+				IntVector2 coordinates = new IntVector2(i,j);
+				//Skip cells inside the map
+				if (!withinMap(coordinates)) {
+					tempWaterCellQueue.Enqueue(coordinates);
+				}
+			}
+		}
+
+		//List of water cells
+		List<IntVector2> waterCellList = new List<IntVector2> ();
+		//List of non-water cells that are neighbors of water cells
+		List<IntVector2> notWaterCellList = new List<IntVector2> ();
+		//length of the half diagonal of the map
+		IntVector2 mapCenter = new IntVector2 ((int)(mapLength / 2), (int)(mapWidth / 2));
+		float maxDistanceToCenter = mapCenter.distance (new IntVector2(mapLength, mapWidth));
+		//Iterate over queue elements until it is not empty
+		while (tempWaterCellQueue.Count>0) {
+			//Remove a cell from the queue and add to the water cell list
+			IntVector2 currentCell = tempWaterCellQueue.Dequeue();
+			if (withinMap(currentCell))
+				waterCellList.Add(currentCell);
+
+			//Iterate over all neighbors that have not been visited
+			for (int i=currentCell.x-1; i<=currentCell.x+1; i++) {
+				for (int j=currentCell.z-1; j<=currentCell.z+1; j++) {
+					IntVector2 currentNeighbor = new IntVector2(i,j);
+					//We only care about the cells that have not been visited yet
+					if (withinMap(currentNeighbor) 
+					    && !waterCellList.Contains(currentNeighbor) 
+					    && !notWaterCellList.Contains(currentNeighbor)
+					    && (currentCell.x == currentNeighbor.x || currentCell.z == currentNeighbor.z)) {
+						//Compute probability that it will be a water cell
+						float distanceToCenter = currentNeighbor.distance(mapCenter);
+						float relativeDistance = distanceToCenter/maxDistanceToCenter;
+						//The probability function should map [0,1] (rel.distance) to [0,1] (probability)
+						float waterCellProbability = Mathf.Pow((-1/(relativeDistance-2)), 2);
+
+						//print("Looking at cell " + currentNeighbor.x.ToString() + ", " + currentNeighbor.z.ToString() + ".");
+						//print("The distance to the center is " + distanceToCenter.ToString());
+						//print("The max distance to the center is " + maxDistanceToCenter.ToString());
+						//print("The water probability is " + waterCellProbability.ToString());
+
+						//Add the cell to the appropriate list
+						if (Random.value < waterCellProbability)
+							tempWaterCellQueue.Enqueue(currentNeighbor);
+						else
+							notWaterCellList.Add (currentNeighbor);
+					}
+				}
+			}
+		}
+
+		//Put water cells in proper locations
+		foreach (IntVector2 waterCell in waterCellList) {
+			createCell(MapCellType.waterCell, waterCell);
+		}
+	}
+
 	//Generates water around the map
 	private void generateWaterBoundaries(int padding) {
 		//Iterate over extended map
@@ -73,7 +148,7 @@ public class Map: MonoBehaviour {
 			for (int j=-padding; j<mapWidth+padding; j++) {
 				//print ("Looking at cell " + i.ToString() + ", " + j.ToString());
 				//Skip map cells
-				if (0<=i && i<mapLength && 0<=j && j<mapWidth) {
+				if (withinMap(new IntVector2(i,j))) {
 					//print ("Skipping this cell");
 					j += mapWidth;
 				}
@@ -107,12 +182,15 @@ public class Map: MonoBehaviour {
 		case MapCellType.waterCell:
 			prefab = waterPrefab;
 			isPassable = false;
-			elevation = 0.5f;
 			break;
 		default:
 			prefab = null;
 			isPassable = false;
 			break;
+		}
+		if (!isPassable) {
+			//Control passability with elevation
+			elevation = 0.5f;
 		}
 		MapCell cell = Instantiate (prefab) as MapCell;
 		
@@ -139,6 +217,10 @@ public class Map: MonoBehaviour {
 		int x = Random.Range (0, maxX);
 		int z = Random.Range (0, maxZ);
 		return new IntVector2 (x,z);
+	}
+
+	private bool withinMap(IntVector2 coordinates) {
+		return 0 <= coordinates.x && coordinates.x < mapLength && 0 <= coordinates.z && coordinates.z < mapWidth;
 	}
 	
 	//Convert coordinates in the map to the coordinates in the space
