@@ -79,6 +79,7 @@ public class Map: MonoBehaviour {
 		//Put the player at the starting position
 		Vector3 startPosition3D = coordinatesFrom2D(startPosition, 0.6f);
 		player.transform.position = startPosition3D;
+		AstarPath.active.Scan();
 	}
 
 	/*
