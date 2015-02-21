@@ -5,6 +5,8 @@ using System.Collections;
 
 public class BulletBehaviors : MonoBehaviour {
 
+	public float lifeSpan = 10;
+	private float count = 0;
 
 	void OnTriggerEnter(Collider other){
 		if(other.gameObject.tag == "Wall"){
@@ -20,5 +22,17 @@ public class BulletBehaviors : MonoBehaviour {
 			Destroy(this.gameObject);
 		}
 	}
+
+	void Update(){
+		count++;
+		if (count >= lifeSpan) {
+			Destroy (this.gameObject);
+		}
+		if (Input.GetMouseButtonDown(1)) {
+			
+			Destroy(this.gameObject);
+		}
+	}
+
 
 }
