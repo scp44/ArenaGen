@@ -6,6 +6,7 @@ using System.Collections;
 public class BulletBehaviors : MonoBehaviour {
 
 	public float lifeSpan = 10;
+	public float damage = 1;
 	private float count = 0;
 
 	void OnTriggerEnter(Collider other){
@@ -16,7 +17,7 @@ public class BulletBehaviors : MonoBehaviour {
 			//run enemy health minus
 
 			EnemyBasic enemyScript = other.GetComponent<EnemyBasic>();
-			enemyScript.enemyHP -= 1;
+			enemyScript.enemyHP -= damage;
 
 
 			Destroy(this.gameObject);

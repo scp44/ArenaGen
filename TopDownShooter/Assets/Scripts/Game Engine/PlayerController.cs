@@ -26,15 +26,13 @@ public class PlayerController : MonoBehaviour {
 	private float cdEq = 0;
 
 	void FireBullet () {
-
-
-
 		var inFront = new Vector3 (0, 1, 0);
 
 		Rigidbody bulletClone = (Rigidbody) Instantiate(Bullet, transform.position, transform.rotation);
 		bulletClone.velocity = transform.forward * speed;
 		BulletBehaviors bulletScript = bulletClone.GetComponent<BulletBehaviors>();
 		bulletScript.lifeSpan = BulletLength ();
+		bulletScript.damage = BulletDamage ();
 
 		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
 	}
@@ -48,22 +46,50 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	float BulletLength(){
-		if (equipped == gun1) {
+		if (equipped == 0) {
 			return 50f;
-		} else if (equipped == gun2) {
+		} else if (equipped == 1) {
 			return 15f;
+		}else if (equipped == 2) {
+			return 100f;
+		}else if (equipped == 3) {
+			return 30f;
+		}else if (equipped == 4) {
+			return 200f;
 		}
 		else{
 			return 10f;
 		}
 	}
-	float GunCooldown(){
-		if (equipped == gun1) {
+	float BulletCooldown(){
+		if (equipped == 0) {
 			return 20f;
-		} else if (equipped == gun2) {
+		} else if (equipped == 1) {
+			return 1f;
+		}else if (equipped == 2) {
+			return 50f;
+		}else if (equipped == 3) {
+			return 5f;
+		}else if (equipped == 4) {
 			return 1f;
 		}
 		else{
+			return 10f;
+		}
+	}
+
+	float BulletDamage(){
+		if (equipped == 0) {
+			return 3f;
+		} else if (equipped == 1) {
+			return 1f;
+		} else if (equipped == 2) {
+			return 10f;
+		} else if (equipped == 3) {
+			return 2f;
+		} else if (equipped == 4) {
+			return 1f;
+		} else {
 			return 10f;
 		}
 	}
@@ -92,7 +118,7 @@ public class PlayerController : MonoBehaviour {
 		movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
 		rigidbody.velocity = movement * walkSpeed;
 
-		if (Input.GetMouseButtonDown(0) && cdEq > GunCooldown ()) {
+		if (Input.GetMouseButtonDown(0) && cdEq > BulletCooldown ()) {
 			cdEq = 0;
 			FireBullet();
 		}
