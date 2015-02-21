@@ -3,21 +3,22 @@ using System.Collections;
 
 //[RequireComponent (typeof (CharacterController))]
 public class PlayerController : MonoBehaviour {
-	//system
-	private Quaternion targetRotation;
-	//components
-	//private CharacterController controller;
-	//Handling
+
+	//player HP
 	public float playerHP = 10;
 
+	private Quaternion targetRotation;
 
+	//Player mechanics
 	public float rotationSpeed = 450;
 	public float walkSpeed = 5;
 	public float runSpeed = 3;
 
 	public Rigidbody Bullet;
+	//bullet speed scale
 	public float speed = 100;
 
+	//gun and cooldown tracker
 	public float gun1;
 	public float gun2;
 	private float equipped;
@@ -25,26 +26,8 @@ public class PlayerController : MonoBehaviour {
 	private float cd2;
 	private float cdEq = 0;
 
-	void FireBullet () {
-		var inFront = new Vector3 (0, 1, 0);
-
-		Rigidbody bulletClone = (Rigidbody) Instantiate(Bullet, transform.position, transform.rotation);
-		bulletClone.velocity = transform.forward * speed;
-		BulletBehaviors bulletScript = bulletClone.GetComponent<BulletBehaviors>();
-		bulletScript.lifeSpan = BulletLength ();
-		bulletScript.damage = BulletDamage ();
-
-		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
-	}
-	
-	void SwitchGun(){
-		if (equipped == gun1) {
-			equipped = gun2;
-		} else {
-			equipped = gun1;
-		}
-	}
-
+	//Gun Types and bullet mechanics
+	//#of updates til bullet selfdestructs
 	float BulletLength(){
 		if (equipped == 0) {
 			return 50f;
@@ -61,6 +44,7 @@ public class PlayerController : MonoBehaviour {
 			return 10f;
 		}
 	}
+	//number of frames between shots
 	float BulletCooldown(){
 		if (equipped == 0) {
 			return 20f;
@@ -77,7 +61,7 @@ public class PlayerController : MonoBehaviour {
 			return 10f;
 		}
 	}
-
+	//amount of damage per bullet
 	float BulletDamage(){
 		if (equipped == 0) {
 			return 3f;
@@ -93,6 +77,45 @@ public class PlayerController : MonoBehaviour {
 			return 10f;
 		}
 	}
+	//individual bullet velocity scale
+	float BulletSpeed(){
+		if (equipped == 0) {
+			return 1f;
+		} else if (equipped == 1) {
+			return 3f;
+		} else if (equipped == 2) {
+			return 10f;
+		} else if (equipped == 3) {
+			return 1f;
+		} else if (equipped == 4) {
+			return 2f;
+		} else {
+			return 10f;
+		}
+	}
+
+	//Transfers bullet stats to bullets
+	void FireBullet () {
+		var inFront = new Vector3 (0, 1, 0);
+
+		Rigidbody bulletClone = (Rigidbody) Instantiate(Bullet, transform.position, transform.rotation);
+		bulletClone.velocity = transform.forward * speed * BulletSpeed();
+		BulletBehaviors bulletScript = bulletClone.GetComponent<BulletBehaviors>();
+		bulletScript.lifeSpan = BulletLength ();
+		bulletScript.damage = BulletDamage ();
+
+		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
+	}
+	//Gun Swap
+	void SwitchGun(){
+		if (equipped == gun1) {
+			equipped = gun2;
+		} else {
+			equipped = gun1;
+		}
+	}
+
+
 	// Use this for initialization
 	void Start () {
 		equipped = gun1;
@@ -118,14 +141,16 @@ public class PlayerController : MonoBehaviour {
 		movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
 		rigidbody.velocity = movement * walkSpeed;
 
+		//fire on click. should handle special firing such as spreads.
 		if (Input.GetMouseButtonDown(0) && cdEq > BulletCooldown ()) {
 			cdEq = 0;
 			FireBullet();
 		}
 		cdEq++;
-		//controller.Move (movement * Time.deltaTime);
+
+
+		//gun switcher
 		if (Input.GetMouseButtonDown(1)) {
-			
 			SwitchGun();
 		}
 

@@ -148,7 +148,7 @@ MonoBehaviour:
   Bullet: {fileID: 5456608, guid: edfaf2011a2a3714794c0677bf8cd0f8, type: 2}
   speed: 10
   gun1: 0
-  gun2: 1
+  gun2: 2
 --- !u!33 &25744905
 MeshFilter:
   m_ObjectHideFlags: 0
