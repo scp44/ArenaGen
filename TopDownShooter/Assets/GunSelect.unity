@@ -148,7 +148,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 55486049}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1366112481}
+        m_MethodName: MainMenuReturn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &55486049
@@ -235,7 +247,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1366112481}
+      - m_Target: {fileID: 0}
         m_MethodName: GunSelect
         m_Mode: 4
         m_Arguments:
@@ -627,7 +639,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 380281420}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1366112481}
+        m_MethodName: StartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &380281420
@@ -1373,7 +1397,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1366112480}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01bc22382d15dbc44ae92802e15dd8e5, type: 3}
+  m_Script: {fileID: 11500000, guid: 6e9bfc887db898f4b9841166193c1352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1366112482
