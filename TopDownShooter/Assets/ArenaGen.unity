@@ -739,6 +739,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyHP: 5
+  equipped: 0
+  speed: 100
+  Bullet: {fileID: 5437702, guid: b6ad801921a065c49967cb295720b9a4, type: 2}
 --- !u!23 &1855415521
 Renderer:
   m_ObjectHideFlags: 0
