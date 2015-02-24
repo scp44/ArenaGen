@@ -1,19 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class gunSelectCSharp : MonoBehaviour {
 	int [] selected;
+	Button StartButton;
 	// Use this for initialization
 	void Start () {
 		selected = new int[3];
 		selected [0] = 0;
 		selected [1] = 0;
 		selected [2] = 1;
+
+		StartButton.interactable = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (selected [0] > 0 && selected [1] > 0)
+			StartButton.interactable = true;
+		else
+			StartButton.interactable = false;
 	}
 
 	public void StartGame () {
@@ -49,6 +56,11 @@ public class gunSelectCSharp : MonoBehaviour {
 				selected[1] = gun;
 			}
 		}
+	}
+
+	public void updateDifficulty (float difficulty) {
+		AudioListener.volume = difficulty;
+		selected [2] = (int)AudioListener.volume;
 	}
 	
 	void StandardDisplay () {
