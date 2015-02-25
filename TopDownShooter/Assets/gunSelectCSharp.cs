@@ -4,7 +4,9 @@ using UnityEngine.UI;
 
 public class gunSelectCSharp : MonoBehaviour {
 	int [] selected;
-	Button StartButton;
+	public Button StartButton;
+	public Text GunDisplay1;
+	public Text GunDisplay2;
 	// Use this for initialization
 	void Start () {
 		selected = new int[3];
@@ -17,10 +19,7 @@ public class gunSelectCSharp : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (selected [0] > 0 && selected [1] > 0)
-			StartButton.interactable = true;
-		else
-			StartButton.interactable = false;
+
 	}
 
 	public void StartGame () {
@@ -31,17 +30,19 @@ public class gunSelectCSharp : MonoBehaviour {
 		Application.LoadLevel("StartMenu");
 	}
 	
-	void GunSelect(int gun) {
+	public void GunSelect(int gun) {
 		if(gun == selected[0])
 		{
 			selected[0] = 0;
 			//unhighlight button?
+			GunDisplay1.text = changeDisplay(0);
 		}
 		
 		else if(gun == selected[1])
 		{
 			selected[1] = 0;
 			//unhighlight button?
+			GunDisplay2.text = changeDisplay(0);
 		}
 		
 		else
@@ -49,12 +50,33 @@ public class gunSelectCSharp : MonoBehaviour {
 			if(selected[0] == 0)
 			{
 				selected[0] = gun;
+				GunDisplay1.text = changeDisplay(gun);
 			}
 			
 			else if(selected[1] == 0)
 			{
 				selected[1] = gun;
+				GunDisplay2.text = changeDisplay(gun);
 			}
+		}
+
+		//check if we can now play game
+		if (selected [0] > 0 && selected [1] > 0)
+			StartButton.interactable = true;
+		else
+			StartButton.interactable = false;
+	}
+
+	//gun's number if PointerEnter, 0 if PointerExit
+	public void DisplayGunInfo (int gun){
+		if(selected[0] == 0)
+		{
+			GunDisplay1.text = changeDisplay(gun);
+		}
+		
+		else if(selected[1] == 0 && gun != selected[0])
+		{
+			GunDisplay2.text = changeDisplay(gun);
 		}
 	}
 
@@ -62,24 +84,21 @@ public class gunSelectCSharp : MonoBehaviour {
 		AudioListener.volume = difficulty;
 		selected [2] = (int)AudioListener.volume;
 	}
-	
-	void StandardDisplay () {
-		
-	}
-	
-	void SpeedDisplay () {
-		
-	}
-	
-	void AoEDisplay () {
-		
-	}
-	
-	void SprayerDisplay () {
-		
-	}
-	
-	void LongDisplay () {
-		
+
+	string changeDisplay (int gun) {
+		if (gun == 1) {
+			return "Damage: Fair\nSpeed: Fair\nCooldown: Fair\nRange: Medium";
+		} else if (gun == 2) {
+			return "Damage: Low\nSpeed: Fast\nCooldown: Fast\nRange: Short";
+		} else if (gun == 3) {
+			return "Damage: Fair\nSpeed: Slow\nCooldown: Slow\nRange: Medium\n"
+				+ "Effect: Affects an area of the map";
+		} else if (gun == 4) {
+			return "Damage: Low\nSpeed: Fair\nCooldown: Fast\nRange: Short\n"
+				+ "Effect: Fires in a spray pattern, affecting a wedge of the map in front of you";
+		} else if (gun == 5) {
+			return "Damage: High\nSpeed: Slow\nCooldown: Slow\nRange: Long";
+		} else
+			return "";
 	}
 }
