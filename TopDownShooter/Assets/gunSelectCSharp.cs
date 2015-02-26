@@ -5,6 +5,11 @@ using UnityEngine.UI;
 public class gunSelectCSharp : MonoBehaviour {
 	int [] selected;
 	public Button StartButton;
+	public Button Standard;
+	public Button Speed;
+	public Button AoE;
+	public Button Sprayer;
+	public Button Long;
 	public Text GunDisplay1;
 	public Text GunDisplay2;
 	// Use this for initialization
@@ -34,7 +39,6 @@ public class gunSelectCSharp : MonoBehaviour {
 		if(gun == selected[0])
 		{
 			selected[0] = 0;
-			//unhighlight button?
 			GunDisplay1.text = changeDisplay(0);
 		}
 		
@@ -61,10 +65,26 @@ public class gunSelectCSharp : MonoBehaviour {
 		}
 
 		//check if we can now play game
-		if (selected [0] > 0 && selected [1] > 0)
+		if (selected [0] > 0 && selected [1] > 0) {
 			StartButton.interactable = true;
-		else
+			if (selected [0] != 1 && selected [1] != 1)
+				Standard.interactable = false;
+			if (selected [0] != 2 && selected [1] != 2)
+				Speed.interactable = false;
+			if (selected [0] != 3 && selected [1] != 3)
+				AoE.interactable = false;
+			if (selected [0] != 4 && selected [1] != 4)
+				Sprayer.interactable = false;
+			if (selected [0] != 5 && selected [1] != 5)
+				Long.interactable = false;
+		} else {
 			StartButton.interactable = false;
+			Standard.interactable = true;
+			Speed.interactable = true;
+			AoE.interactable = true;
+			Sprayer.interactable = true;
+			Long.interactable = true;
+		}
 	}
 
 	//gun's number if PointerEnter, 0 if PointerExit

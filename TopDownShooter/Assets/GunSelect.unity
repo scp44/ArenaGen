@@ -1677,6 +1677,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartButton: {fileID: 380281419}
+  Standard: {fileID: 147446663}
+  Speed: {fileID: 1539785974}
+  AoE: {fileID: 825925598}
+  Sprayer: {fileID: 1032488644}
+  Long: {fileID: 1767907845}
   GunDisplay1: {fileID: 160434295}
   GunDisplay2: {fileID: 906648627}
 --- !u!4 &1366112482
