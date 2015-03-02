@@ -28,6 +28,7 @@ public class gunSelectCSharp : MonoBehaviour {
 	}
 
 	public void StartGame () {
+		DontDestroyOnLoad (this);
 		Application.LoadLevel("ArenaGen");
 	}
 	
