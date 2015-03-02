@@ -123,5 +123,10 @@ public class EnemyBasic : MonoBehaviour {
 		if (enemyHP <= 0) {
 			Destroy (this.gameObject);
 		}
+
+		Transform player = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
+		if ((player.position - transform.position).magnitude < (0.3 * speed)) {
+			//FireBullet();
+		}
 	}
 }
