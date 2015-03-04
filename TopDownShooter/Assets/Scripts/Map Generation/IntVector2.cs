@@ -28,4 +28,8 @@ public struct IntVector2 {
 	public float distance(IntVector2 v) {
 		return Mathf.Sqrt(Mathf.Pow(x - v.x, 2) + Mathf.Pow(z - v.z, 2));
 	}
+
+	public string toString() {
+		return "(" + this.x.ToString () + ", " + this.z.ToString () + ")";
+	}
 }

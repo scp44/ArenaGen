@@ -5,6 +5,7 @@ public class Map: MonoBehaviour {
 
 	//Testing variables
 	public bool willGenerateIsland;
+	public bool useAI;
 
 	//Player
 	public Transform player;
@@ -30,7 +31,16 @@ public class Map: MonoBehaviour {
 	[Range(0f, 0.1f)]
 	public float obstacleProbability;
 	[Range(0f, 0.1f)]
-	public float enemyProbability;
+	public float enemyProbInsideCamp;
+	[Range(0f, 0.05f)]
+	public float enemyProbOutsideCamp;
+
+	//Enemy camps and start location
+	public int numberOfEnemyCamps;
+	public int enemyCampSize;
+	public int startPositionSize;
+	private IntVector2[] enemyCamps;
+	private IntVector2 startLocation;
 	
 	private MapCell [,] cells;
 	
@@ -47,104 +57,73 @@ public class Map: MonoBehaviour {
 			generateWaterBoundaries (20);
 
 		//Pick a location for the player to start
-		IntVector2 startPosition;
 		do {
-			startPosition = getRandomCoordinates (mapLength, mapWidth); 
-		} while (cells[startPosition.x, startPosition.z] != null);
-		
-		//Iterate over locations
+			startLocation = getRandomCoordinates (mapLength, mapWidth); 
+		} while (!testCell(startLocation, startPositionSize));
+		print ("The start location is " + startLocation.toString());
+		//Pick enemy camps
+		enemyCamps = new IntVector2[numberOfEnemyCamps];
+		for (int i=0; i<enemyCamps.Length; i++) {
+			do {
+				enemyCamps[i] = getRandomCoordinates (mapLength, mapWidth); 
+			} while (!testCell(enemyCamps[i], enemyCampSize, checkCamps:true, checkStart:true));
+			print("An enemy camp is chosen to be at " + enemyCamps[i].toString());
+		}
+
+		//Generate Obstacles
 		for (int i=0; i<mapLength; i++) {
 			for (int j=0; j<mapWidth; j++) {
 				//Skip the cell if it is already water
-				if (cells[i, j] != null)
+				if (cells[i, j] != null && cells[i,j].cellType == MapCellType.waterCell)
 					continue;
 				IntVector2 coordinates = new IntVector2(i,j);
 				
 				//Determine the cell type
 				MapCellType cellType = MapCellType.groundCell;
-				if (Random.value < obstacleProbability && coordinates.distance(startPosition) > 3f) {
+				if (Random.value < obstacleProbability && coordinates.distance(startLocation) > 3f) {
 					cellType = MapCellType.miscObstacleCell;
 				}
 				
 				//Create the cell
-				MapCell cell = createCell(cellType, coordinates);
-
-				//Possibly, spawn an enemy at the cell
-				if (Random.value < enemyProbability && cell.isPassable && coordinates.distance(startPosition) > 3f) {
-					placeEnemyAtCell(coordinates);
-				}
+				createCell(cellType, coordinates);
 			}
 		}
+
+		spawnEnemies ();
 		
 		//Put the player at the starting position
-		Vector3 startPosition3D = coordinatesFrom2D(startPosition, 0.6f);
+		Vector3 startPosition3D = coordinatesFrom2D(startLocation, 0.6f);
 		player.transform.position = startPosition3D;
-		AstarPath.active.Scan();
+		if (useAI) {
+			AstarPath.active.Scan();
+		}
 	}
 
-	/*
-	//Generates water inside the map to make it look like an island
-	//Alternative method (starting from center)
-	//Needs to be improved
-	private void generateIsland_2(int padding) {
-		//Create water boundaries
-		generateWaterBoundaries (padding);
-		
-		//Initialize the list of the water cells with all the cells
-		List<IntVector2> waterCellList = new List<IntVector2> ();
-		//Add the inner layer of coordinates to the queue
+	//Spawn enemies
+	private void spawnEnemies() {
+		bool spawnEnemy = false;
 		for (int i=0; i<mapLength; i++) {
 			for (int j=0; j<mapWidth; j++) {
 				IntVector2 coordinates = new IntVector2(i,j);
-				waterCellList.Add(coordinates);
-			}
-		}
+				//Check if we can place an enemy here
+				if (testCell(coordinates, 2) && cells[i,j].isPassable && coordinates.distance(startLocation)>startPositionSize) {
+					//Check if it is inside an enemy camp
+					if (distanceToClosestEnemyCamp(coordinates)<=enemyCampSize) {
+						spawnEnemy = Random.value < enemyProbInsideCamp;
+					}
+					else {
+						spawnEnemy = Random.value < enemyProbOutsideCamp;
+					}
 
-		//Cells that are definitely water cells
-		List<IntVector2> notGroundCellList = new List<IntVector2> ();
-		//length of the half diagonal of the map
-		IntVector2 mapCenter = new IntVector2 ((int)(mapLength / 2), (int)(mapWidth / 2));
-		float maxDistanceToCenter = mapCenter.distance (new IntVector2(mapLength, mapWidth));
-
-		//Start with map center being the only ground cell
-		Queue<IntVector2> groundCells = new Queue<IntVector2> ();
-		groundCells.Enqueue (mapCenter);
-
-		//Iterate over queue elements until it is not empty
-		while (groundCells.Count>0) {
-			//Remove a cell from the queue and remove it from the water cell list
-			IntVector2 currentCell = groundCells.Dequeue();
-			waterCellList.Remove(currentCell);
-			
-			//Iterate over all water neighbors
-			foreach(IntVector2 currentNeighbor in getNeighbors(currentCell)) {
-				//We only care about the cells that have not been visited yet
-				if (waterCellList.Contains(currentNeighbor) 
-				    && !notGroundCellList.Contains(currentNeighbor)
-				    && !groundCells.Contains(currentNeighbor)) {
-					//Compute probability that it will be a water cell
-					float distanceToCenter = currentNeighbor.distance(mapCenter);
-					float relativeDistance = distanceToCenter/maxDistanceToCenter;
-					//The probability function should map [0,1] (rel.distance) to [0,1] (probability)
-					float waterCellProbability = Mathf.Pow((-1/(relativeDistance-2)), 3);
-					if (relativeDistance < 0.3)
-						waterCellProbability = 0f;
-					
-					//Add the cell to the appropriate list
-					if (Random.value < waterCellProbability)
-						notGroundCellList.Add(currentNeighbor);
-					else
-						groundCells.Enqueue (currentNeighbor);
+					//Place an enemy
+					if (spawnEnemy) {
+						placeEnemyAtCell(coordinates);
+						cells[i,j].isPassable = false;
+					}
 				}
 			}
 		}
-
-		//Put water cells in proper locations
-		foreach (IntVector2 waterCell in waterCellList) {
-			createCell(MapCellType.waterCell, waterCell);
-		}
 	}
-	*/
 
 	//Generates water inside the map to make it look like an island
 	private void generateIsland(int padding) {
@@ -337,5 +316,39 @@ public class Map: MonoBehaviour {
 	//Convert coordinates in the map to the coordinates in the space
 	private Vector3 coordinatesFrom2D (IntVector2 coordinates, float y) {
 		return new Vector3(coordinates.x*tileLength, y, coordinates.z*tileLength);
+	}
+
+	//Get the distance to the closest enemy camp
+	private float distanceToClosestEnemyCamp (IntVector2 coordinates){
+		float max = 99999f;
+		float tempDistance;
+		for (int i=0; i<enemyCamps.Length; i++) {
+			if (withinMap(enemyCamps[i])) {
+				tempDistance = enemyCamps[i].distance(coordinates);
+				if (tempDistance != 0)
+					max = max < tempDistance ? max : tempDistance;			
+			}
+		}
+		return max;
+	}
+
+	//Make sure there is no object in the given radius
+	private bool testCell(IntVector2 coordinates, int radius, bool checkCamps = false, bool checkStart = false) {
+		if (checkCamps && distanceToClosestEnemyCamp(coordinates)<enemyCampSize) {
+			return false;
+		}
+		if (checkStart && coordinates.distance(startLocation)<startPositionSize+enemyCampSize) {
+			return false;
+		}
+		
+		for (int i=coordinates.x-radius; i<coordinates.x+radius; i++) {
+			for (int j=coordinates.z-radius; j<coordinates.z+radius; j++) {
+				IntVector2 currentCell = new IntVector2(i,j);
+				if (!currentCell.isEqual(coordinates) && (!withinMap(currentCell) || (cells[i,j]!=null && !cells[i,j].isPassable))) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }
