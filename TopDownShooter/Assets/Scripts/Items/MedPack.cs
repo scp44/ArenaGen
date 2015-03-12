@@ -14,6 +14,6 @@ public class MedPack : MonoBehaviour {
 	}
 
 	void useMedPack (/*object ID*/){
-		//ID.HP += 5;
+		//ID.increaseHP(5);
 	}
 }

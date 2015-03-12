@@ -6,6 +6,11 @@ public class EnemyBasic : MonoBehaviour {
 	public float equipped = 0;
 	public float speed = 100;
 
+	//power up stuff
+	int armorTimer;
+	bool armorOn = false;
+	int medPack = 0;
+
 	public Rigidbody Bullet;
 	// Use this for initialization
 
@@ -114,12 +119,29 @@ public class EnemyBasic : MonoBehaviour {
 		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
 	}
 
+	void increaseHP(int HP){
+		enemyHP += 5;
+	}
+
+	void activateArmor(){
+		armorOn = true;
+		armorTimer = 50;
+	}
+
+	void activateArmor(){
+
+	}
+
 	void Start () {
 	
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if (armorOn) {
+			armorTimer--;
+		}
+
 		if (enemyHP <= 0) {
 			Destroy (this.gameObject);
 		}

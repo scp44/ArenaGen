@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour {
 
 	//player HP
 	public float playerHP = 10;
+	int armorTimer;
+	bool armorOn = false;
 
 	private Quaternion targetRotation;
 
@@ -115,6 +117,15 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	void increaseHP(int HP){
+		playerHP += 5;
+	}
+
+	void activateArmor(){
+		armorOn = true;
+		armorTimer = 50;
+	}
+
 
 	// Use this for initialization
 	void Start () {
@@ -154,6 +165,9 @@ public class PlayerController : MonoBehaviour {
 			SwitchGun();
 		}
 
+		if (armorOn) {
+			armorTimer--;
+		}
 	
 	}
 
