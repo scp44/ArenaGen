@@ -119,16 +119,16 @@ public class EnemyBasic : MonoBehaviour {
 		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
 	}
 
-	void increaseHP(int HP){
+	public void increaseHP(int HP){
 		enemyHP += 5;
 	}
 
-	void activateArmor(){
+	public void activateArmor(){
 		armorOn = true;
 		armorTimer = 50;
 	}
 
-	void activateArmor(){
+	public void pickUp(){
 
 	}
 

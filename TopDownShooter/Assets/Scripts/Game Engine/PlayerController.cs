@@ -117,11 +117,11 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	void increaseHP(int HP){
+	public void increaseHP(int HP){
 		playerHP += 5;
 	}
 
-	void activateArmor(){
+	public void activateArmor(){
 		armorOn = true;
 		armorTimer = 50;
 	}

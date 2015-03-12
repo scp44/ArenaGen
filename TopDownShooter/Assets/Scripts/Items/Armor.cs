@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class Armor : MonoBehaviour {
-	int timer;
 	// Use this for initialization
 	void Start () {
 	
@@ -10,11 +9,16 @@ public class Armor : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (timer > 0)
-			timer--;
+
 	}
 
-	void useArmor (/*object ID*/){
-
+	void OnTriggerEnter (Collider obj){
+		if (obj.gameObject.tag == "Enemy") {
+			EnemyBasic enemyScript = obj.GetComponent<EnemyBasic> ();
+			enemyScript.activateArmor ();
+		} else if (obj.gameObject.tag == "Player") {
+			EnemyBasic playerScript = obj.GetComponent<EnemyBasic> ();
+			playerScript.activateArmor ();
+		}
 	}
 }

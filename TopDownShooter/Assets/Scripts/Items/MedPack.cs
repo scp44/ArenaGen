@@ -13,7 +13,21 @@ public class MedPack : MonoBehaviour {
 	
 	}
 
-	void useMedPack (/*object ID*/){
-		//ID.increaseHP(5);
+	void OnTriggerEnter(Collider obj){
+		if (obj.gameObject.tag == "Enemy") {
+			EnemyBasic enemyScript = obj.GetComponent<EnemyBasic> ();
+			enemyScript.pickUp ();
+		} else if (obj.gameObject.tag == "Player") {
+			useMedPack(obj.gameObject);
+		}
+	}
+
+	void useMedPack (GameObject obj){
+		EnemyBasic objScript = obj.GetComponent<EnemyBasic> ();
+		objScript.increaseHP(5);
+	}
+
+	void pickUp (/*object ID*/){
+		//ID.medPack++;
 	}
 }
