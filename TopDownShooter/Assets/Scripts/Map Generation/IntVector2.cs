@@ -32,4 +32,24 @@ public struct IntVector2 {
 	public string toString() {
 		return "(" + this.x.ToString () + ", " + this.z.ToString () + ")";
 	}
+
+	public static IntVector2[] randomizeCoordinates (int maxX, int maxZ) {
+		//Produce an initial array
+		IntVector2[] result = new IntVector2[maxX*maxZ];
+		int currIndex = 0;
+		for (int i=0; i<maxX; i++)
+			for (int j=0; j<maxZ; j++) {
+				result[currIndex]=new IntVector2(i,j);
+				currIndex++;
+			}
+		
+		//swap elements randomly (currIndex = max index)
+		for (int i=0; i<currIndex; i++) {
+			int j = Random.Range(i, currIndex);
+			IntVector2 temp = result[j];
+			result[j]=result[i];
+			result[i]=temp;
+		}
+		return result;
+	}
 }
