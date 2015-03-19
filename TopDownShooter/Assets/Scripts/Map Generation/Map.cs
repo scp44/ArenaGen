@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 
 public class Map: MonoBehaviour {
@@ -17,7 +17,8 @@ public class Map: MonoBehaviour {
 	//Impassable terrain
 	public MapCell waterPrefab;
 	public MapCell mountainPrefab;
-	public MapCell wallPrefab;
+	public Transform wallPrefab;
+	public Transform wallNodePrefab;
 	public MapCell[] miscObstacleCellPrefabs;
 	
 	//Enemy types
@@ -34,6 +35,8 @@ public class Map: MonoBehaviour {
 	public float enemyProbInsideCamp;
 	[Range(0f, 0.05f)]
 	public float enemyProbOutsideCamp;
+	[Range(0f, 1f)]
+	public float wallNodeProbability;
 
 	//Enemy camps and start location
 	public int numberOfEnemyCamps;
@@ -41,14 +44,21 @@ public class Map: MonoBehaviour {
 	public int startPositionSize;
 	private IntVector2[] enemyCamps;
 	private IntVector2 startLocation;
+
+	//Walls
+	public int shortestWallLength;
+	public int minWallWaterDistance;
+	public float maxWallLength;
 	
 	private MapCell [,] cells;
+	private WallGraph walls;
 	
 	private const float tileLength = 0.5f;
 
 	//Generate map
 	public void generate() {
 		cells = new MapCell[mapLength, mapWidth];
+		walls = new WallGraph ();
 
 		//Generate water around the map
 		if (willGenerateIsland)
@@ -56,39 +66,10 @@ public class Map: MonoBehaviour {
 		else
 			generateWaterBoundaries (20);
 
-		//Pick a location for the player to start
-		do {
-			startLocation = getRandomCoordinates (mapLength, mapWidth); 
-		} while (!testCell(startLocation, startPositionSize));
-		print ("The start location is " + startLocation.toString());
-		//Pick enemy camps
-		enemyCamps = new IntVector2[numberOfEnemyCamps];
-		for (int i=0; i<enemyCamps.Length; i++) {
-			do {
-				enemyCamps[i] = getRandomCoordinates (mapLength, mapWidth); 
-			} while (!testCell(enemyCamps[i], enemyCampSize, checkCamps:true, checkStart:true));
-			print("An enemy camp is chosen to be at " + enemyCamps[i].toString());
-		}
-
-		//Generate Obstacles
-		for (int i=0; i<mapLength; i++) {
-			for (int j=0; j<mapWidth; j++) {
-				//Skip the cell if it is already water
-				if (cells[i, j] != null && cells[i,j].cellType == MapCellType.waterCell)
-					continue;
-				IntVector2 coordinates = new IntVector2(i,j);
-				
-				//Determine the cell type
-				MapCellType cellType = MapCellType.groundCell;
-				if (Random.value < obstacleProbability && coordinates.distance(startLocation) > 3f) {
-					cellType = MapCellType.miscObstacleCell;
-				}
-				
-				//Create the cell
-				createCell(cellType, coordinates);
-			}
-		}
-
+		generatePlayerStartLocation ();
+		generateEnemyCamps ();
+		generateGround ();
+		generateWalls ();
 		spawnEnemies ();
 		
 		//Put the player at the starting position
@@ -96,6 +77,25 @@ public class Map: MonoBehaviour {
 		player.transform.position = startPosition3D;
 		if (useAI) {
 			AstarPath.active.Scan();
+		}
+	}
+
+	//Pick a location for the player to start
+	private void generatePlayerStartLocation() {
+		do {
+			startLocation = getRandomCoordinates (mapLength, mapWidth); 
+		} while (!testCell(startLocation, startPositionSize));
+		//print ("The start location is " + startLocation.toString());
+	}
+
+	//Pick enemy camps
+	private void generateEnemyCamps() {
+		enemyCamps = new IntVector2[numberOfEnemyCamps];
+		for (int i=0; i<enemyCamps.Length; i++) {
+			do {
+				enemyCamps[i] = getRandomCoordinates (mapLength, mapWidth); 
+			} while (!testCell(enemyCamps[i], enemyCampSize, checkCamps:true, checkStart:true));
+			//print("An enemy camp is chosen to be at " + enemyCamps[i].toString());
 		}
 	}
 
@@ -233,6 +233,74 @@ public class Map: MonoBehaviour {
 			}
 		}
 	}
+
+	//Create ground cells
+	private void generateGround() {
+		//iterate over the map
+		for (int i=0; i<mapLength; i++) {
+			for (int j=0; j<mapWidth; j++) {
+				if (cells[i,j]==null) 
+					createCell(MapCellType.groundCell, new IntVector2(i,j));
+			}
+		}
+	}
+
+	//Create walls
+	private void generateWalls() {
+		//generate the graph nodes
+		//iterate over the map
+		//for (int i=0; i<mapLength; i++) {
+		//	for (int j=0; j<mapWidth; j++) {
+		IntVector2[] coordinatesArray = IntVector2.randomizeCoordinates (mapLength, mapWidth);
+		for (int p=0; p<coordinatesArray.Length; p++) {
+			IntVector2 coordinates = coordinatesArray[p];
+			int i=coordinates.x;
+			int j=coordinates.z;
+			if (Random.value >= wallNodeProbability)
+				continue;
+			//Skip the cell if it is not passable
+			if (cells[i, j] != null && !cells[i,j].isPassable)
+				continue;
+			if (!testCell (coordinates, minWallWaterDistance))
+				continue;
+			//Skip the cell if it is within an enemy camp
+			float distanceToEnemyCamp = distanceToClosestEnemyCamp(coordinates);
+			int usedShortestWallLength = shortestWallLength + (int)Random.value*(5);
+			if (distanceToEnemyCamp < enemyCampSize)
+				continue;
+			else if (distanceToEnemyCamp < enemyCampSize + 3) {
+				usedShortestWallLength = shortestWallLength/2;
+			}
+			//Skip the cell if it is within the player start position
+			if (coordinates.distance(startLocation) < startPositionSize)
+				continue;
+			//Skip the cell if it is too close to another wall
+			if (walls.distanceToClosestNode(coordinates) < usedShortestWallLength)
+				continue;
+			//Otherwise put it down
+			if (cells[i,j] != null) {
+				cells[i,j].isPassable = false;
+				//placeWallNodeCell(coordinates);
+				walls.addNode(coordinates);
+			}
+		}
+
+		//connect graph nodes
+		for (int i=0; i<walls.getSize(); i++) {
+			List<int> neighbors = walls.getNeighbors(i, maxWallLength, notConnected:true);
+			foreach (int j in neighbors) {
+				if (wallAllowed(i,j)) {
+					placeWall(i, j);
+				}
+			}
+		}
+
+		//place the node cells (only the connected ones)
+		for (int i=0; i<walls.getSize(); i++) {
+			if (walls.getNode(i).neighbors.Count > 0)
+				placeWallNodeCell(walls.getNode(i).coordinates);
+		}
+	}
 	
 	//Create a cell with given type and coordinates
 	private MapCell createCell (MapCellType cellType, IntVector2 coordinates) {
@@ -244,10 +312,6 @@ public class Map: MonoBehaviour {
 		case MapCellType.groundCell:
 			prefab = groundCellPrefabs [Random.Range (0, groundCellPrefabs.Length)];
 			isPassable = true;
-			break;
-		case MapCellType.wallCell:
-			prefab = wallPrefab;
-			isPassable = false;
 			break;
 		case MapCellType.miscObstacleCell:
 			prefab = miscObstacleCellPrefabs[Random.Range(0,miscObstacleCellPrefabs.Length)];
@@ -289,6 +353,13 @@ public class Map: MonoBehaviour {
 		Transform enemy = Instantiate (prefab) as Transform;
 		enemy.position = enemyCoordinates;
 	}
+
+	//Place a temp flag at the cell
+	private void placeWallNodeCell(IntVector2 coordinates) {
+		Vector3 nodeCoordinates = coordinatesFrom2D(coordinates, 0.5f);
+		Transform node = Instantiate (wallNodePrefab) as Transform;
+		node.position = nodeCoordinates;
+	}
 	
 	//Get random coordinates within range
 	private IntVector2 getRandomCoordinates(int maxX, int maxZ) {
@@ -312,10 +383,22 @@ public class Map: MonoBehaviour {
 	private bool withinMap(IntVector2 coordinates) {
 		return 0 <= coordinates.x && coordinates.x < mapLength && 0 <= coordinates.z && coordinates.z < mapWidth;
 	}
+
+	private bool withinRect(IntVector2 coordinates, IntVector2 pointA, IntVector2 pointB) {
+		return (Mathf.Min (pointA.x, pointB.x) <= coordinates.x
+						&& coordinates.x <= Mathf.Max (pointA.x, pointB.x)
+						&& Mathf.Min (pointA.z, pointB.z) <= coordinates.z
+						&& coordinates.z <= Mathf.Max (pointA.z, pointB.z));
+	}
 	
 	//Convert coordinates in the map to the coordinates in the space
 	private Vector3 coordinatesFrom2D (IntVector2 coordinates, float y) {
 		return new Vector3(coordinates.x*tileLength, y, coordinates.z*tileLength);
+	}
+
+	//Convert coordinates in the map to the coordinates in the space
+	private Vector3 coordinatesFrom2D (float x, float z, float y) {
+		return new Vector3(x*tileLength, y, z*tileLength);
 	}
 
 	//Get the distance to the closest enemy camp
@@ -350,5 +433,108 @@ public class Map: MonoBehaviour {
 			}
 		}
 		return true;
+	}
+
+	//Check if we can place a wall
+	private bool wallAllowed(int wallNode1, int wallNode2) {
+		List<IntVector2> nodesInBetween = cellsCoveredByWall (walls.getNode (wallNode1).coordinates, walls.getNode (wallNode2).coordinates);
+		foreach (IntVector2 cellCoordinates in nodesInBetween) {
+			if (cells[cellCoordinates.x, cellCoordinates.z] != null && !cells[cellCoordinates.x, cellCoordinates.z].isPassable)
+				return false;
+			if (distanceToClosestEnemyCamp(cellCoordinates) < enemyCampSize) 
+				return false;
+			if (cellCoordinates.distance(startLocation) < startPositionSize)
+				return false;
+			if (walls.isReachable(wallNode1, wallNode2)) {
+				print ("cycle is eliminated.");
+				return false;
+			}
+		}
+		return true;
+	}
+
+	//Return a list of cells that will be covered by wall from pointA to pointB
+	private List<IntVector2> cellsCoveredByWall (IntVector2 pointA, IntVector2 pointB, bool addWallNodeCells = false) {
+		List<IntVector2> result = new List<IntVector2>();
+		result.Add (pointA);
+		result.Add (pointB);
+
+		//Intersections with points on X axis
+		for (float x=Mathf.Min (pointA.x, pointB.x)+0.5f; x <= Mathf.Max(pointA.x, pointB.x)-0.5f; x++) {
+			//Figure out the line function value at each point
+			float z = pointA.z + (x - pointA.x)*(pointB.z - pointA.z)/(pointB.x - pointA.x);
+			//add left and right cells if they are not already in the list
+			//0.5s are present because the coordinates are located in the middle of the cells rather than in the corners
+			IntVector2 leftCell = new IntVector2((int)(x-0.5), Mathf.FloorToInt(z+0.5f));
+			IntVector2 rightCell = new IntVector2((int)(x+0.5), Mathf.FloorToInt(z+0.5f));
+			if (!result.Contains(leftCell) && withinRect(leftCell, pointA, pointB))
+				result.Add (leftCell);
+			if (!result.Contains(rightCell) && withinRect(rightCell, pointA, pointB))
+				result.Add (rightCell);
+
+			//If y is a corner value, then also add bottom two cells
+			if (Mathf.FloorToInt(z+0.5f) == Mathf.CeilToInt(z+0.5f)) {
+				leftCell = new IntVector2((int)(x-0.5), Mathf.FloorToInt(z));
+				rightCell = new IntVector2((int)(x+0.5), Mathf.FloorToInt(z));
+				if (!result.Contains(leftCell) && withinRect(leftCell, pointA, pointB))
+					result.Add (leftCell);
+				if (!result.Contains(rightCell) && withinRect(rightCell, pointA, pointB))
+					result.Add (rightCell);
+			}
+		}
+
+		//Intersections with points on Z axis
+		for (float z=Mathf.Min (pointA.z, pointB.z)+0.5f; z <= Mathf.Max(pointA.z, pointB.z)-0.5f; z++) {
+			//Figure out the x value at each point
+			float x = pointA.x + (z - pointA.z)*(pointB.x - pointA.x)/(pointB.z - pointA.z);
+			//add top and bottom cells if they are not already in the list
+			//0.5s are present because the coordinates are located in the middle of the cells rather than in the corners
+			IntVector2 topCell = new IntVector2(Mathf.FloorToInt(x+0.5f), (int)(z+0.5));
+			IntVector2 bottomCell = new IntVector2(Mathf.FloorToInt(x+0.5f), (int)(z-0.5));
+			if (!result.Contains(topCell) && withinRect(topCell, pointA, pointB))
+				result.Add (topCell);
+			if (!result.Contains(bottomCell) && withinRect(bottomCell, pointA, pointB))
+				result.Add (bottomCell);
+			
+			//If y is a corner value, all 4 cells were already added in the previous loop
+			//There is no need to repeat
+		}
+
+		//Remove wall node cells from the list if they are not needed
+		if (!addWallNodeCells) {
+			result.Remove(pointA);
+			result.Remove(pointB);
+		}
+
+		return result;
+	}
+
+	private void placeWall(int indexA, int indexB) {
+		IntVector2 coordinates1 = walls.getNode (indexA).coordinates;
+		IntVector2 coordinates2 = walls.getNode (indexB).coordinates;
+		//Determine the center
+		float centerX, centerZ;
+		centerX = (coordinates1.x + coordinates2.x) / 2.0f;
+		centerZ = (coordinates1.z + coordinates2.z) / 2.0f;
+
+		//Determine the length
+		float length;
+		length = coordinates1.distance (coordinates2);
+
+		//Place the wall
+		Transform wall = Instantiate (wallPrefab) as Transform;
+		wall.position = coordinatesFrom2D (centerX, centerZ, 0.5f);
+		wall.localScale = new Vector3(wall.localScale.x,wall.localScale.y*length,wall.localScale.z);
+		wall.LookAt (coordinatesFrom2D(coordinates2, 0.5f));
+		wall.Rotate (90, 0, 0);
+
+		//Mark covered cells as impassable
+		List<IntVector2> nodesInBetween = cellsCoveredByWall (coordinates1, coordinates2);
+		foreach (IntVector2 cellCoordinates in nodesInBetween) {
+			cells[cellCoordinates.x, cellCoordinates.z].isPassable = false;
+		}
+
+		//Add a new edge to the graph
+		walls.addEdge(indexA,indexB);
 	}
 }
