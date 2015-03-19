@@ -9,7 +9,7 @@ public class EnemyBasic : MonoBehaviour {
 	//power up stuff
 	int armorTimer;
 	bool armorOn = false;
-	int medPack = 0;
+	public int medPack = 0;
 
 	public Rigidbody Bullet;
 	// Use this for initialization
@@ -129,7 +129,17 @@ public class EnemyBasic : MonoBehaviour {
 	}
 
 	public void pickUp(){
+		medPack++;
+	}
 
+	public void dropItem(){
+		//drop item here somehow...?
+	}
+
+	public void useMedPack(GameObject enemy){
+		EnemyBasic enemyScript = enemy.GetComponent<EnemyBasic>();
+		enemyScript.increaseHP (5);
+		medPack--;
 	}
 
 	void Start () {
@@ -142,7 +152,24 @@ public class EnemyBasic : MonoBehaviour {
 			armorTimer--;
 		}
 
+		//if(armor in line of sight){
+			//interrupt module
+			//move to armor
+		//}
+
+		//if(medPack in line of sight){
+			//interrupt module
+			//move to medPack
+		//}
+
+		if(medPack > 0 /*&& (some enemy has < some HP || enemy is Boss)*/){
+			//interrupt module
+			//useMedPack(enemy);
+		}
+
 		if (enemyHP <= 0) {
+			if(medPack > 0)
+				dropItem();
 			Destroy (this.gameObject);
 		}
 
