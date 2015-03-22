@@ -142,6 +142,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHP: 10
+  armorCount: 0
+  armorOn: 0
   rotationSpeed: 450
   walkSpeed: 5
   runSpeed: 3
@@ -864,6 +866,10 @@ MonoBehaviour:
   enemyHP: 5
   equipped: 0
   speed: 100
+  armorCount: 0
+  armorOn: 0
+  medPack: 0
+  MedPack: {fileID: 5451638, guid: 3fbfe2312732abe4b9c35bfa8be579f8, type: 2}
   Bullet: {fileID: 5437702, guid: b6ad801921a065c49967cb295720b9a4, type: 2}
 --- !u!23 &1855415521
 Renderer:

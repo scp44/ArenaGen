@@ -7,9 +7,10 @@ public class EnemyBasic : MonoBehaviour {
 	public float speed = 100;
 
 	//power up stuff
-	int armorTimer;
-	bool armorOn = false;
+	public int armorCount;
+	public bool armorOn = false;
 	public int medPack = 0;
+	public Rigidbody MedPack;
 
 	public Rigidbody Bullet;
 	// Use this for initialization
@@ -82,7 +83,7 @@ public class EnemyBasic : MonoBehaviour {
 	
 	//Transfers bullet stats to bullets
 	void FireBullet () {
-		var inFront = new Vector3 (0, 1, 0);
+		//var inFront = new Vector3 (0, 1, 0);
 		
 		Rigidbody bulletClone = (Rigidbody) Instantiate(Bullet, transform.position, transform.rotation);
 		bulletClone.velocity = transform.forward * speed * BulletSpeed();
@@ -125,7 +126,7 @@ public class EnemyBasic : MonoBehaviour {
 
 	public void activateArmor(){
 		armorOn = true;
-		armorTimer = 50;
+		armorCount = 5;
 	}
 
 	public void pickUp(){
@@ -133,7 +134,7 @@ public class EnemyBasic : MonoBehaviour {
 	}
 
 	public void dropItem(){
-		//drop item here somehow...?
+		Rigidbody medPackClone = (Rigidbody) Instantiate(MedPack, transform.position, transform.rotation);
 	}
 
 	public void useMedPack(GameObject enemy){
@@ -148,8 +149,10 @@ public class EnemyBasic : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (armorOn) {
-			armorTimer--;
+		//if armor broken, cancel effect.
+		if (armorOn && armorCount <= 0) {
+			armorOn = false;
+			armorCount = 0;
 		}
 
 		//if(armor in line of sight){
@@ -162,7 +165,7 @@ public class EnemyBasic : MonoBehaviour {
 			//move to medPack
 		//}
 
-		if(medPack > 0 /*&& (some enemy has < some HP || enemy is Boss)*/){
+		if(medPack > 0 /*&& (some enemy in site has < some HP || enemy is Boss)*/){
 			//interrupt module
 			//useMedPack(enemy);
 		}

@@ -19,7 +19,7 @@ public class MedPack : MonoBehaviour {
 			if(enemyScript.medPack < 1 /*&& enemyScript.isMedic*/)
 				enemyScript.pickUp ();
 			else
-				enemyScript.increaseHP();
+				enemyScript.increaseHP(5);
 			Destroy (this.gameObject);
 		} else if (obj.gameObject.tag == "Player") {
 			useMedPackPlayer(obj.gameObject);

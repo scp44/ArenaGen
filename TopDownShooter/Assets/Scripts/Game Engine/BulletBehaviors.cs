@@ -15,13 +15,21 @@ public class BulletBehaviors : MonoBehaviour {
 		}
 		else if (other.gameObject.tag == "Enemy") {
 			//run enemy health minus
-
-			EnemyBasic enemyScript = other.GetComponent<EnemyBasic>();
-			enemyScript.enemyHP -= damage;
-
+			takeDamage (damage, other.gameObject);
 
 			Destroy(this.gameObject);
 		}
+	}
+
+	void takeDamage(float damage, GameObject other) {
+		EnemyBasic enemyScript = other.GetComponent<EnemyBasic>();
+
+		if (enemyScript.armorOn) {
+			damage--;
+			enemyScript.armorCount--;
+		}
+
+		enemyScript.enemyHP -= damage;
 	}
 
 	void Update(){
