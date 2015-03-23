@@ -6,6 +6,8 @@ public class EnemyBasic : MonoBehaviour {
 	public float equipped = 0;
 	public float speed = 100;
 
+	public float distanceScale = 0.3;
+
 	//power up stuff
 	int armorTimer;
 	bool armorOn = false;
@@ -119,6 +121,21 @@ public class EnemyBasic : MonoBehaviour {
 		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
 	}
 
+	public void interruptCheck(){
+		Transform powerUp = GameObject.FindGameObjectsWithTag ("PowerUp") [0].transform;
+		if ((powerUp.position - transform.position).magnitude < (distanceScale * speed)) {
+			//FireBullet();
+		}
+
+		Transform player = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
+		if ((player.position - transform.position).magnitude < (distanceScale * speed)) {
+			//FireBullet();
+		}
+
+
+
+	}
+
 	public void increaseHP(int HP){
 		enemyHP += 5;
 	}
@@ -148,7 +165,6 @@ public class EnemyBasic : MonoBehaviour {
 
 		Transform player = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 		if ((player.position - transform.position).magnitude < (0.3 * speed)) {
-			//FireBullet();
 		}
 	}
 }
