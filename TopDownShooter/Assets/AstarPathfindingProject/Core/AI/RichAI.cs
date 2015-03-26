@@ -128,6 +128,7 @@ namespace Pathfinding {
 		 * \see SearchPaths
 		 */
 		protected virtual void Start () {
+			//target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 			startHasRun = true;
 			OnEnable ();
 		}
