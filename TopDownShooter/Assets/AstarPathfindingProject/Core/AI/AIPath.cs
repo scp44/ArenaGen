@@ -42,26 +42,13 @@ public class AIPath : MonoBehaviour {
 	 * The value is in seconds between path requests.
 	 */
 	public float repathRate = 0.5F;
-	
-	/** Target to move towards.
-	 * The AI will try to follow/move towards this target.
-	 * It can be a point on the ground where the player has clicked in an RTS for example, or it can be the player object in a zombie game.
-	 */
+
 	private Transform target;
-	
-	/** Enables or disables searching for paths.
-	 * Setting this to false does not stop any active path requests from being calculated or stop it from continuing to follow the current path.
-	 * \see #canMove
-	 */
+
 	public bool canSearch = true;
-	
-	/** Enables or disables movement.
-	  * \see #canSearch */
+
 	public bool canMove = true;
-	
-	/** Maximum velocity.
-	 * This is the maximum speed in world units per second.
-	 */
+
 	public float speed = 3;
 	
 	/** Rotation speed.

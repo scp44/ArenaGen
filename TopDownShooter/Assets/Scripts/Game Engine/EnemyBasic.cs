@@ -6,7 +6,7 @@ public class EnemyBasic : MonoBehaviour {
 	public float equipped = 0;
 	public float speed = 100;
 
-	public float distanceScale = 0.3;
+	public double distanceScale = 0.3;
 
 	//power up stuff
 	int armorTimer;
