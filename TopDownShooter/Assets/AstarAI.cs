@@ -25,12 +25,12 @@ public class AstarAI : MonoBehaviour {
 	private int count = 0;
 
 	public void Start () {
-
+		player = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 
 	}
 
 	public void Update() {
-		player = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
+		//player = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 		  
 
 			if (((player.position - transform.position).magnitude < (0.5 * speed))&&findNew) {

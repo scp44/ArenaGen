@@ -38,7 +38,7 @@ namespace Pathfinding {
 		public GameObject endOfPathEffect;
 		
 		public new void Start () {
-			
+//			target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 			//Prioritize the walking animation
 			anim["forward"].layer = 10;
 			

@@ -214,6 +214,9 @@ GameObject:
   - 114: {fileID: 11414588}
   - 143: {fileID: 14364196}
   - 114: {fileID: 11414590}
+  - 114: {fileID: 11437092}
+  - 54: {fileID: 5414058}
+  - 114: {fileID: 11428088}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
@@ -382,7 +385,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 166936}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: .600000024, z: 0}
+  m_LocalPosition: {x: 2.04999995, y: .600000024, z: 2.36999989}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 414568}
@@ -659,6 +662,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 114590}
   m_Mesh: {fileID: 4300004, guid: caeffedc34d9f4161b7694ad0d84bbd3, type: 3}
+--- !u!54 &5414058
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166936}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: .0500000007
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!111 &11114590
 Animation:
   m_ObjectHideFlags: 1
@@ -716,6 +734,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 1
+--- !u!114 &11428088
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166936}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3d90d17f28b2514db1eb0e30b1298e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 40
+  nextWaypointDistance: 3
+--- !u!114 &11437092
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 663f7357f4d649b478623f4c53116f76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyHP: 5
+  equipped: 0
+  speed: 100
+  Bullet: {fileID: 0}
 --- !u!114 &11464194
 MonoBehaviour:
   m_ObjectHideFlags: 1
