@@ -1,26 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using Pathfinding.RVO;
 
-namespace Pathfinding {
-	/** AI controller specifically made for the spider robot.
-	 * The spider robot (or mine-bot) which is got from the Unity Example Project
-	 * can have this script attached to be able to pathfind around with animations working properly.\n
-	 * This script should be attached to a parent GameObject however since the original bot has Z+ as up.
-	 * This component requires Z+ to be forward and Y+ to be up.\n
-	 * 
-	 * It overrides the AIPath class, see that class's documentation for more information on most variables.\n
-	 * Animation is handled by this component. The Animation component refered to in #anim should have animations named "awake" and "forward".
-	 * The forward animation will have it's speed modified by the velocity and scaled by #animationSpeed to adjust it to look good.
-	 * The awake animation will only be sampled at the end frame and will not play.\n
-	 * When the end of path is reached, if the #endOfPathEffect is not null, it will be instantiated at the current position. However a check will be
-	 * done so that it won't spawn effects too close to the previous spawn-point.
-	 * \shadowimage{mine-bot.png}
-	 * 
-	 * \note This script assumes Y is up and that character movement is mostly on the XZ plane.
-	 */
-	[RequireComponent(typeof(Seeker))]
-	public class MineBotAI : AIPath {
+	public class EnemyMed : AIPath {
 		
 		/** Animation component.
 		 * Should hold animations "awake" and "forward"
@@ -38,20 +20,6 @@ namespace Pathfinding {
 		public GameObject endOfPathEffect;
 		
 		public new void Start () {
-			
-			//Prioritize the walking animation
-			anim["forward"].layer = 10;
-			
-			//Play all animations
-			anim.Play ("awake");
-			anim.Play ("forward");
-			
-			//Setup awake animations properties
-			anim["awake"].wrapMode = WrapMode.Clamp;
-			anim["awake"].speed = 0;
-			anim["awake"].normalizedTime = 1F;
-			
-			//Call Start in base script (AIPath)
 			base.Start ();
 		}
 		
@@ -82,12 +50,16 @@ namespace Pathfinding {
 			//Get velocity in world-space
 			Vector3 velocity;
 			if (canMove) {
-			
+				
 				//Calculate desired velocity
 				Vector3 dir = CalculateVelocity (GetFeetPosition());
 				
 				//Rotate towards targetDirection (filled in by CalculateVelocity)
 				RotateTowards (targetDirection);
+
+				//Vector3 lookDirection = targetDirection;
+				//lookDirection.Set (lookDirection.x, 0f, lookDirection.z);
+				//transform.rotation = Quaternion.LookRotation (lookDirection);
 				
 				dir.y = 0;
 				if (dir.sqrMagnitude > sleepVelocity*sleepVelocity) {
@@ -96,15 +68,15 @@ namespace Pathfinding {
 					//Otherwise, just stand still (this ensures gravity is applied)
 					dir = Vector3.zero;
 				}
-
+				
 				if ( this.rvoController != null ) {
 					rvoController.Move ( dir );
 					velocity = rvoController.velocity;
 				} else 
 				if (navController != null) {
-	#if FALSE
+					#if FALSE
 					navController.SimpleMove (GetFeetPosition(), dir);
-	#endif
+					#endif
 					velocity = Vector3.zero;
 				} else if (controller != null) {
 					controller.SimpleMove (dir);
@@ -123,20 +95,8 @@ namespace Pathfinding {
 			//Calculate the velocity relative to this transform's orientation
 			Vector3 relVelocity = tr.InverseTransformDirection (velocity);
 			relVelocity.y = 0;
-			
-			if (velocity.sqrMagnitude <= sleepVelocity*sleepVelocity) {
-				//Fade out walking animation
-				anim.Blend ("forward",0,0.2F);
-			} else {
-				//Fade in walking animation
-				anim.Blend ("forward",1,0.2F);
-				
-				//Modify animation speed to match velocity
-				AnimationState state = anim["forward"];
-				
+
 				float speed = relVelocity.z;
-				state.speed = speed*animationSpeed;
+
 			}
 		}
-	}
-}

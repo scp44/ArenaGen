@@ -12,7 +12,7 @@ GameObject:
   - 64: {fileID: 6470894}
   - 23: {fileID: 2370894}
   - 114: {fileID: 11470894}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,7 +25,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 170894}
-  m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106709}
+  m_LocalRotation: {x: .707106888, y: 0, z: 0, w: .707106769}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: .5, y: .5, z: 1}
   m_Children: []

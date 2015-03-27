@@ -6,7 +6,7 @@ public class EnemyBasic : MonoBehaviour {
 	public float equipped = 0;
 	public float speed = 100;
 
-	public float distanceScale = 0.3;
+	public double distanceScale = 0.3;
 
 	//power up stuff
 	public int armorCount;
@@ -193,8 +193,6 @@ public class EnemyBasic : MonoBehaviour {
 			Destroy (this.gameObject);
 		}
 
-		Transform player = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
-		if ((player.position - transform.position).magnitude < (0.3 * speed)) {
-		}
+
 	}
 }
