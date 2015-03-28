@@ -9,9 +9,10 @@ public class EnemyBasic : MonoBehaviour {
 	public double distanceScale = 0.3;
 
 	//power up stuff
-	int armorTimer;
-	bool armorOn = false;
-	int medPack = 0;
+	public int armorCount;
+	public bool armorOn = false;
+	public int medPack = 0;
+	public Rigidbody MedPack;
 
 	public Rigidbody Bullet;
 	// Use this for initialization
@@ -142,11 +143,21 @@ public class EnemyBasic : MonoBehaviour {
 
 	public void activateArmor(){
 		armorOn = true;
-		armorTimer = 50;
+		armorCount = 5;
 	}
 
 	public void pickUp(){
+		medPack++;
+	}
 
+	public void dropItem(){
+		Rigidbody medPackClone = (Rigidbody) Instantiate(MedPack, transform.position, transform.rotation);
+	}
+
+	public void useMedPack(GameObject enemy){
+		EnemyBasic enemyScript = enemy.GetComponent<EnemyBasic>();
+		enemyScript.increaseHP (5);
+		medPack--;
 	}
 
 	void Start () {
@@ -155,11 +166,30 @@ public class EnemyBasic : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (armorOn) {
-			armorTimer--;
+		//if armor broken, cancel effect.
+		if (armorOn && armorCount <= 0) {
+			armorOn = false;
+			armorCount = 0;
+		}
+		
+		//if(armor in line of sight){
+		//interrupt module
+		//move to armor
+		//}
+		
+		//if(medPack in line of sight){
+		//interrupt module
+		//move to medPack
+		//}
+		
+		if(medPack > 0 /*&& (some enemy in site has < some HP || enemy is Boss)*/){
+			//interrupt module
+			//useMedPack(enemy);
 		}
 
 		if (enemyHP <= 0) {
+			if(medPack > 0)
+				dropItem();
 			Destroy (this.gameObject);
 		}
 
