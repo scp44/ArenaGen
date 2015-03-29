@@ -16,9 +16,11 @@ public class Armor : MonoBehaviour {
 		if (obj.gameObject.tag == "Enemy") {
 			EnemyBasic enemyScript = obj.GetComponent<EnemyBasic> ();
 			enemyScript.activateArmor ();
+			Destroy (this.gameObject);
 		} else if (obj.gameObject.tag == "Player") {
 			EnemyBasic playerScript = obj.GetComponent<EnemyBasic> ();
 			playerScript.activateArmor ();
+			Destroy (this.gameObject);
 		}
 	}
 }

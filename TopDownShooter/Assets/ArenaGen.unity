@@ -142,6 +142,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHP: 10
+  armorCount: 0
+  armorOn: 0
   rotationSpeed: 450
   walkSpeed: 5
   runSpeed: 3
@@ -740,6 +742,10 @@ MonoBehaviour:
   equipped: 0
   speed: 100
   distanceScale: .29999999999999999
+  armorCount: 0
+  armorOn: 0
+  medPack: 0
+  MedPack: {fileID: 0}
   Bullet: {fileID: 0}
 --- !u!54 &281480654
 Rigidbody:
@@ -1468,6 +1474,10 @@ MonoBehaviour:
   equipped: 0
   speed: 100
   distanceScale: .29999999999999999
+  armorCount: 0
+  armorOn: 0
+  medPack: 0
+  MedPack: {fileID: 0}
   Bullet: {fileID: 0}
 --- !u!54 &800215153
 Rigidbody:
@@ -2205,8 +2215,8 @@ Transform:
   m_PrefabParentObject: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
   m_PrefabInternal: {fileID: 1432406688}
   m_GameObject: {fileID: 1359735637}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: -4.37113883e-08}
-  m_LocalPosition: {x: 1.57599998, y: .600000024, z: 1.37600005}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.58000004, y: .600000024, z: -.170000002}
   m_LocalScale: {x: 15, y: 15, z: 15}
   m_Children:
   - {fileID: 1290258094}
@@ -2385,7 +2395,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 1.57599998
+      value: 1.58000004
       objectReference: {fileID: 0}
     - target: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_LocalPosition.y
@@ -2393,7 +2403,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1.37600005
+      value: -.170000002
       objectReference: {fileID: 0}
     - target: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2401,7 +2411,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_LocalRotation.z
@@ -2409,7 +2419,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_LocalRotation.w
-      value: -4.37113883e-08
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_RootOrder

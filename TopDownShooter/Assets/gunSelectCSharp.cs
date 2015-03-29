@@ -108,17 +108,17 @@ public class gunSelectCSharp : MonoBehaviour {
 
 	string changeDisplay (int gun) {
 		if (gun == 1) {
-			return "Damage: Fair\nSpeed: Fair\nCooldown: Fair\nRange: Medium";
+			return "Damage: Fair\nSpeed: Fair\nRange: Medium";
 		} else if (gun == 2) {
-			return "Damage: Low\nSpeed: Fast\nCooldown: Fast\nRange: Short";
+			return "Damage: Low\nSpeed: Fast\nRange: Short";
 		} else if (gun == 3) {
-			return "Damage: Fair\nSpeed: Slow\nCooldown: Slow\nRange: Medium\n"
+			return "Damage: Fair\nSpeed: Slow\nnRange: Medium\n"
 				+ "Effect: Affects an area of the map";
 		} else if (gun == 4) {
-			return "Damage: Low\nSpeed: Fair\nCooldown: Fast\nRange: Short\n"
+			return "Damage: Low\nSpeed: Fair\nRange: Short\n"
 				+ "Effect: Fires in a spray pattern, affecting a wedge of the map in front of you";
 		} else if (gun == 5) {
-			return "Damage: High\nSpeed: Slow\nCooldown: Slow\nRange: Long";
+			return "Damage: High\nSpeed: Slow\nRange: Long";
 		} else
 			return "";
 	}

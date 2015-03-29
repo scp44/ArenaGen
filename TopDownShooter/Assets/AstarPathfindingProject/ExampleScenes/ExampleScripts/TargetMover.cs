@@ -11,7 +11,7 @@ namespace Pathfinding {
 		public Transform target;
 		//public RichAI ai;
 		RichAI[] ais;
-		AIPath[] ais2;
+		AI[] ais2;
 
 		/** Determines if the target position should be updated every frame or only on double-click */
 		public bool onlyOnDoubleClick;
@@ -22,7 +22,7 @@ namespace Pathfinding {
 			//Cache the Main Camera
 			cam = Camera.main;
 			ais = FindObjectsOfType(typeof(RichAI)) as RichAI[];
-			ais2 = FindObjectsOfType(typeof(AIPath)) as AIPath[];
+			ais2 = FindObjectsOfType(typeof(AI)) as AI[];
 		}
 		
 		public void OnGUI () {

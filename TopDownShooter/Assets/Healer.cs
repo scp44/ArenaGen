@@ -4,7 +4,7 @@ using Pathfinding.RVO;
 
 namespace Pathfinding {
 	[RequireComponent(typeof(Seeker))]
-	public class MineBotAI : AIPath {
+	public class Healer : AI {
 		
 		public Animation anim;
 		

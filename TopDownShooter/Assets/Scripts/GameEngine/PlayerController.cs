@@ -6,8 +6,8 @@ public class PlayerController : MonoBehaviour {
 
 	//player HP
 	public float playerHP = 10;
-	int armorTimer;
-	bool armorOn = false;
+	public int armorCount;
+	public bool armorOn = false;
 
 	private Quaternion targetRotation;
 
@@ -123,7 +123,7 @@ public class PlayerController : MonoBehaviour {
 
 	public void activateArmor(){
 		armorOn = true;
-		armorTimer = 50;
+		armorCount = 5;
 	}
 
 
@@ -135,7 +135,11 @@ public class PlayerController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
+		//if armor broken, cancel effect.
+		if (armorOn && armorCount <= 0) {
+			armorOn = false;
+			armorCount = 0;
+		}
 
 		Vector3 movement = new Vector3 (0, 0, 0);
 
@@ -163,10 +167,6 @@ public class PlayerController : MonoBehaviour {
 		//gun switcher
 		if (Input.GetMouseButtonDown(1)) {
 			SwitchGun();
-		}
-
-		if (armorOn) {
-			armorTimer--;
 		}
 	
 	}

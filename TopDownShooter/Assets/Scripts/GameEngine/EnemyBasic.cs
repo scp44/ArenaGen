@@ -6,12 +6,28 @@ public class EnemyBasic : MonoBehaviour {
 	public float equipped = 0;
 	public float speed = 100;
 
-	public double distanceScale = 0.3;
+	public float commScale = 4;
+	public float visionScale = 10;
+	public float alertScale = 15; 
+	public float fov = 100;
+
+	//0 = HEALER, 1 = SOLDIER, 2 = DEFENDER, 3 = BOSS
+	public float enemyType = 0;
+
+
+	public Vector3 bossPos;
+	public bool bossFound = false;
+	public Transform playerPos;
+	public double lastTimeSeen;
+
+
+
 
 	//power up stuff
-	int armorTimer;
-	bool armorOn = false;
-	int medPack = 0;
+	public int armorCount;
+	public bool armorOn = false;
+	public int medPack = 0;
+	public Rigidbody MedPack;
 
 	public Rigidbody Bullet;
 	// Use this for initialization
@@ -121,19 +137,63 @@ public class EnemyBasic : MonoBehaviour {
 		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
 	}
 
-	public void interruptCheck(){
-		Transform powerUp = GameObject.FindGameObjectsWithTag ("PowerUp") [0].transform;
-		if ((powerUp.position - transform.position).magnitude < (distanceScale * speed)) {
-			//FireBullet();
+	public GameObject visionCheck(){
+		GameObject[] pUs = GameObject.FindGameObjectsWithTag ("MedPackPU");
+		GameObject player = GameObject.FindGameObjectsWithTag ("Player") [0];
+		GameObject closestPack = pUs[0];
+				
+		Vector3 forward = transform.forward;
+		float angle;
+		Vector3 targetDir;
+
+
+		Transform playerLocPos = player.transform;
+		targetDir = playerLocPos.position - transform.position;
+		angle = Vector3.Angle (targetDir, forward);
+
+		if ((playerLocPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
+				this.playerPos = playerLocPos;
+				//this.lastTimeSeen = this.LocationInfo.timestamp;
+				return player;
 		}
 
-		Transform player = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
-		if ((player.position - transform.position).magnitude < (distanceScale * speed)) {
-			//FireBullet();
+		int i;
+		for (i = 0; i < pUs.Length; i++) {
+				Transform powerUpPos = pUs [i].transform;
+				GameObject powerUp = pUs [i];
+				targetDir = powerUpPos.position - transform.position;
+				angle = Vector3.Angle (targetDir,forward); 
+
+			if ((powerUpPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
+				if((powerUpPos.position - transform.position).magnitude < (closestPack.transform.position - transform.position).magnitude){
+					closestPack = powerUp;		}
+			}
 		}
+		if ((closestPack.transform.position - transform.position).magnitude < (visionScale) && angle <= fov) {
+			return closestPack;
+		}
+		return null;
+	}
 
+	public void commCheck(){
+		GameObject[] eUs = GameObject.FindGameObjectsWithTag ("Enemy");
 
-
+		int i;
+		for(i = 0; i < eUs.Length; i++){
+			Transform npcPos = eUs[i].transform;
+			GameObject npc = eUs[i];
+			EnemyBasic npcScript = npc.GetComponent<EnemyBasic>();
+			if ((npcPos.position - transform.position).magnitude < (commScale)) {
+				if(bossFound){
+					//pass information
+					npcScript.bossPos = this.bossPos;
+				}
+				if(npcScript.lastTimeSeen < this.lastTimeSeen){
+					npcScript.lastTimeSeen = this.lastTimeSeen;
+					npcScript.playerPos = this.playerPos;
+				}
+			}}
+		
 	}
 
 	public void increaseHP(int HP){
@@ -142,11 +202,21 @@ public class EnemyBasic : MonoBehaviour {
 
 	public void activateArmor(){
 		armorOn = true;
-		armorTimer = 50;
+		armorCount = 5;
 	}
 
 	public void pickUp(){
+		medPack++;
+	}
 
+	public void dropItem(){
+		Rigidbody medPackClone = (Rigidbody) Instantiate(MedPack, transform.position, transform.rotation);
+	}
+
+	public void useMedPack(GameObject enemy){
+		EnemyBasic enemyScript = enemy.GetComponent<EnemyBasic>();
+		enemyScript.increaseHP (5);
+		medPack--;
 	}
 
 	void Start () {
@@ -155,11 +225,30 @@ public class EnemyBasic : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (armorOn) {
-			armorTimer--;
+		//if armor broken, cancel effect.
+		if (armorOn && armorCount <= 0) {
+			armorOn = false;
+			armorCount = 0;
+		}
+		
+		if(false/*armor in line of sight*/){
+			//interrupt module
+			//move to armor
+		}
+		
+		if(false/*medpack in line of sight*/){
+			//interrupt module
+			//move to medpack
+		}
+		
+		if(medPack > 0 /*&& (some enemy in site has < some HP || enemy is Boss)*/){
+			//interrupt module
+			//useMedPack(enemy);
 		}
 
 		if (enemyHP <= 0) {
+			if(medPack > 0)
+				dropItem();
 			Destroy (this.gameObject);
 		}
 
