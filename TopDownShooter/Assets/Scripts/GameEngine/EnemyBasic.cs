@@ -9,6 +9,7 @@ public class EnemyBasic : MonoBehaviour {
 	public float commScale = 4;
 	public float visionScale = 10;
 	public float alertScale = 15; 
+	public float fov = 100;
 
 	//0 = HEALER, 1 = SOLDIER, 2 = DEFENDER, 3 = BOSS
 	public float enemyType = 0;
@@ -137,30 +138,50 @@ public class EnemyBasic : MonoBehaviour {
 	}
 
 	public GameObject visionCheck(){
-		int i;
-		for(i = 0; i < GameObject.FindGameObjectsWithTag("MedPackPU").Length; i++){
-		Transform powerUpPos = GameObject.FindGameObjectsWithTag ("MedPackPU") [i].transform;
-		GameObject powerUp = GameObject.FindGameObjectsWithTag ("MedPackPU") [i];
-		if ((powerUpPos.position - transform.position).magnitude < (visionScale)) {
-				return powerUp;
-			}}
-
-		Transform playerLocPos = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
+		GameObject[] pUs = GameObject.FindGameObjectsWithTag ("MedPackPU");
 		GameObject player = GameObject.FindGameObjectsWithTag ("Player") [0];
-		if ((playerLocPos.position - transform.position).magnitude < (visionScale)) {
-						return player;
-		} else {
-			return null;
+		GameObject closestPack = pUs[0];
+				
+		Transform forward = transform.forward;
+		float angle;
+		Transform targetDir;
+
+
+		Transform playerLocPos = player.transform;
+		targetDir = playerLocPos.position - transform.position;
+		angle = Vector3.Angle (targetDir, forward);
+
+		if ((playerLocPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
+				this.playerPos = playerLocPos;
+				this.lastTimeSeen = LocationInfo.timestamp;
+				return player;
 		}
 
+		int i;
+		for (i = 0; i < pUs.Length; i++) {
+				Transform powerUpPos = pUs [i].transform;
+				GameObject powerUp = pUs [i];
+				targetDir = powerUpPos.position - transform.position;
+				angle = Vector3.Angle (targetDir,forward); 
 
+			if ((powerUpPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
+				if((powerUpPos.position - transform.position).magnitude < (closestPack.transform.position - transform.position).magnitude){
+					closestPack = powerUp;		}
+			}
+		}
+		if ((closestPack.transform.position - transform.position).magnitude < (visionScale) && angle <= fov) {
+			return closestPack;
+		}
+		return null;
 	}
 
 	public void commCheck(){
+		GameObject[] eUs = GameObject.FindGameObjectsWithTag ("Enemy");
+
 		int i;
-		for(i = 0; i < GameObject.FindGameObjectsWithTag("Enemy").Length; i++){
-			Transform npcPos = GameObject.FindGameObjectsWithTag ("Enemy") [i].transform;
-			GameObject npc = GameObject.FindGameObjectsWithTag ("Enemy") [i];
+		for(i = 0; i < eUs.Length; i++){
+			Transform npcPos = eUs[i].transform;
+			GameObject npc = eUs[i];
 			EnemyBasic npcScript = npc.GetComponent<EnemyBasic>();
 			if ((npcPos.position - transform.position).magnitude < (commScale)) {
 				if(bossFound){
