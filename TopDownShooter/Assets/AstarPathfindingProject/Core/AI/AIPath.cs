@@ -241,6 +241,23 @@ public class AIPath : MonoBehaviour {
 		//We should search from the current position
 		seeker.StartPath (GetFeetPosition(), targetPosition);
 	}
+
+	public virtual void goTo (GameObject target) {
+		if (target == null) throw new System.InvalidOperationException ("Target is null");
+		
+		lastRepath = Time.time;
+		//This is where we should search to
+		Vector3 targetPosition = target.position;
+		
+		canSearchAgain = false;
+		
+		//Alternative way of requesting the path
+		//ABPath p = ABPath.Construct (GetFeetPosition(),targetPoint,null);
+		//seeker.StartPath (p);
+		
+		//We should search from the current position
+		seeker.StartPath (GetFeetPosition(), targetPosition);
+	}
 	
 	public virtual void OnTargetReached () {
 		//End of path has been reached
