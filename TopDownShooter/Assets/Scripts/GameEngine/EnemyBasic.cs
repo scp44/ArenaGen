@@ -17,7 +17,7 @@ public class EnemyBasic : MonoBehaviour {
 
 	public Vector3 bossPos;
 	public bool bossFound = false;
-	public Vector3 playerPos;
+	public Transform playerPos;
 	public double lastTimeSeen;
 
 
@@ -142,9 +142,9 @@ public class EnemyBasic : MonoBehaviour {
 		GameObject player = GameObject.FindGameObjectsWithTag ("Player") [0];
 		GameObject closestPack = pUs[0];
 				
-		Transform forward = transform.forward;
+		Vector3 forward = transform.forward;
 		float angle;
-		Transform targetDir;
+		Vector3 targetDir;
 
 
 		Transform playerLocPos = player.transform;
@@ -153,7 +153,7 @@ public class EnemyBasic : MonoBehaviour {
 
 		if ((playerLocPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
 				this.playerPos = playerLocPos;
-				this.lastTimeSeen = LocationInfo.timestamp;
+				//this.lastTimeSeen = this.LocationInfo.timestamp;
 				return player;
 		}
 
