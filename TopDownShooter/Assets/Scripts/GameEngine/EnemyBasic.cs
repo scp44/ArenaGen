@@ -138,33 +138,38 @@ public class EnemyBasic : MonoBehaviour {
 
 	public GameObject visionCheck(){
 		int i;
-		for(i = 0; i < GameObject.FindGameObjectsWithTag("MedPackPU").Count; i++){
-		Transform powerUp = GameObject.FindGameObjectsWithTag ("MedPackPU") [i].transform;
-		if ((powerUp.position - transform.position).magnitude < (visionScale)) {
+		for(i = 0; i < GameObject.FindGameObjectsWithTag("MedPackPU").Length; i++){
+		Transform powerUpPos = GameObject.FindGameObjectsWithTag ("MedPackPU") [i].transform;
+		GameObject powerUp = GameObject.FindGameObjectsWithTag ("MedPackPU") [i];
+		if ((powerUpPos.position - transform.position).magnitude < (visionScale)) {
 				return powerUp;
 			}}
 
-		Transform player = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
-		if ((player.position - transform.position).magnitude < (visionScale)) {
-			return player;
+		Transform playerLocPos = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
+		GameObject player = GameObject.FindGameObjectsWithTag ("Player") [0];
+		if ((playerLocPos.position - transform.position).magnitude < (visionScale)) {
+						return player;
+		} else {
+			return null;
 		}
-
 
 
 	}
 
 	public void commCheck(){
 		int i;
-		for(i = 0; i < GameObject.FindGameObjectsWithTag("Enemy").Count; i++){
-			Transform npc = GameObject.FindGameObjectsWithTag ("Enemy") [i].transform;
-			if ((npc.position - transform.position).magnitude < (commScale)) {
+		for(i = 0; i < GameObject.FindGameObjectsWithTag("Enemy").Length; i++){
+			Transform npcPos = GameObject.FindGameObjectsWithTag ("Enemy") [i].transform;
+			GameObject npc = GameObject.FindGameObjectsWithTag ("Enemy") [i];
+			EnemyBasic npcScript = npc.GetComponent<EnemyBasic>();
+			if ((npcPos.position - transform.position).magnitude < (commScale)) {
 				if(bossFound){
 					//pass information
-					npc.bossPos = this.bossPos;
+					npcScript.bossPos = this.bossPos;
 				}
-				if(npc.lastTimeSeen < this.lastTimeSeen){
-					npc.lastTimeSeen = this.lastTimeSeen;
-					npc.playerPos = this.playerPos;
+				if(npcScript.lastTimeSeen < this.lastTimeSeen){
+					npcScript.lastTimeSeen = this.lastTimeSeen;
+					npcScript.playerPos = this.playerPos;
 				}
 			}}
 		
