@@ -6,7 +6,21 @@ public class EnemyBasic : MonoBehaviour {
 	public float equipped = 0;
 	public float speed = 100;
 
-	public double distanceScale = 0.3;
+	public float commScale = 4;
+	public float visionScale = 10;
+	public float alertScale = 15; 
+
+	//0 = HEALER, 1 = SOLDIER, 2 = DEFENDER, 3 = BOSS
+	public float enemyType = 0;
+
+
+	public Vector3 bossPos;
+	public bool bossFound = false;
+	public Vector3 playerPos;
+	public double lastTimeSeen;
+
+
+
 
 	//power up stuff
 	public int armorCount;
@@ -122,19 +136,38 @@ public class EnemyBasic : MonoBehaviour {
 		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
 	}
 
-	public void interruptCheck(){
-		Transform powerUp = GameObject.FindGameObjectsWithTag ("PowerUp") [0].transform;
-		if ((powerUp.position - transform.position).magnitude < (distanceScale * speed)) {
-			//FireBullet();
-		}
+	public GameObject visionCheck(){
+		int i;
+		for(i = 0; i < GameObject.FindGameObjectsWithTag("MedPackPU").Count; i++){
+		Transform powerUp = GameObject.FindGameObjectsWithTag ("MedPackPU") [i].transform;
+		if ((powerUp.position - transform.position).magnitude < (visionScale)) {
+				return powerUp;
+			}}
 
 		Transform player = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
-		if ((player.position - transform.position).magnitude < (distanceScale * speed)) {
-			//FireBullet();
+		if ((player.position - transform.position).magnitude < (visionScale)) {
+			return player;
 		}
 
 
 
+	}
+
+	public void commCheck(){
+		int i;
+		for(i = 0; i < GameObject.FindGameObjectsWithTag("Enemy").Count; i++){
+			Transform npc = GameObject.FindGameObjectsWithTag ("Enemy") [i].transform;
+			if ((npc.position - transform.position).magnitude < (commScale)) {
+				if(bossFound){
+					//pass information
+					npc.bossPos = this.bossPos;
+				}
+				if(npc.lastTimeSeen < this.lastTimeSeen){
+					npc.lastTimeSeen = this.lastTimeSeen;
+					npc.playerPos = this.playerPos;
+				}
+			}}
+		
 	}
 
 	public void increaseHP(int HP){
