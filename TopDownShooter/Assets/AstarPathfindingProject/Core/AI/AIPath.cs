@@ -242,7 +242,10 @@ public class AIPath : MonoBehaviour {
 		seeker.StartPath (GetFeetPosition(), targetPosition);
 	}
 
-	public virtual void goTo (GameObject target) {
+	//go toward a specified object
+	public virtual void goTo (GameObject obj) {
+		target = obj.transform;
+
 		if (target == null) throw new System.InvalidOperationException ("Target is null");
 		
 		lastRepath = Time.time;

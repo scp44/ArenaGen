@@ -3,6 +3,7 @@ using System.Collections;
 
 public class EnemyBasic : MonoBehaviour {
 	public float enemyHP = 5;
+	public float maxHP = 5;
 	public float equipped = 0;
 	public float speed = 100;
 
@@ -16,6 +17,8 @@ public class EnemyBasic : MonoBehaviour {
 
 	public Rigidbody Bullet;
 	// Use this for initialization
+
+	public AIPath searchScript;
 
 	float BulletLength(){
 		if (equipped == 0) {
@@ -171,17 +174,22 @@ public class EnemyBasic : MonoBehaviour {
 			armorOn = false;
 			armorCount = 0;
 		}
-		
+
+		GameObject target = null;
 		if(false/*armor in line of sight*/){
 			//interrupt module
-			//move to armor
+			//target = armor;
 		}
 		
-		if(false/*medpack in line of sight*/){
+		if(enemyHP < 5 /*&& medpack in line of sight*/){
 			//interrupt module
-			//move to medpack
+			//if(medPack is closer than armor)
+				//target = medPack;
 		}
-		
+
+		if (target != null)
+			searchScript.goTo (target);
+
 		if(medPack > 0 /*&& (some enemy in site has < some HP || enemy is Boss)*/){
 			//interrupt module
 			//useMedPack(enemy);
