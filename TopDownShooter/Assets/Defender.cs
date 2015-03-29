@@ -2,7 +2,7 @@
 using System.Collections;
 using Pathfinding.RVO;
 
-	public class EnemyMed : AIPath {
+	public class Defender : AI {
 		
 		/** Animation component.
 		 * Should hold animations "awake" and "forward"
