@@ -172,15 +172,15 @@ public class EnemyBasic : MonoBehaviour {
 			armorCount = 0;
 		}
 		
-		//if(armor in line of sight){
-		//interrupt module
-		//move to armor
-		//}
+		if(false/*armor in line of sight*/){
+			//interrupt module
+			//move to armor
+		}
 		
-		//if(medPack in line of sight){
-		//interrupt module
-		//move to medPack
-		//}
+		if(false/*medpack in line of sight*/){
+			//interrupt module
+			//move to medpack
+		}
 		
 		if(medPack > 0 /*&& (some enemy in site has < some HP || enemy is Boss)*/){
 			//interrupt module
