@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class MedPack : MonoBehaviour {
 
@@ -16,15 +17,25 @@ public class MedPack : MonoBehaviour {
 	void OnTriggerEnter(Collider obj){
 		if (obj.gameObject.tag == "Enemy") {
 			EnemyBasic enemyScript = obj.GetComponent<EnemyBasic> ();
-			if(enemyScript.medPack < 1 /*&& enemyScript.isMedic*/)
+			if(enemyScript.medPack < 1 /*&& enemyScript.isMedic*/){
 				enemyScript.pickUp ();
-			else
+				Destroy (this.gameObject);
+			}
+			else if(enemyScript.enemyHP < enemyScript.maxHP){
 				enemyScript.increaseHP(5);
-			Destroy (this.gameObject);
+				Destroy (this.gameObject);
+			}
 		} else if (obj.gameObject.tag == "Player") {
-			PlayerController objScript = obj.GetComponent<PlayerController> ();
-			objScript.increaseHP(5);
-			Destroy (this.gameObject);
+			PlayerController playerScript = obj.GetComponent<PlayerController> ();
+			if(playerScript.playerHP < playerScript.maxHP){
+				playerScript.increaseHP(5);
+				Destroy (this.gameObject);
+			}
+			else{
+				Text error = GetComponent<Text>();
+				error.text = "Your health is already full";
+			}
+
 		}
 	}
 
