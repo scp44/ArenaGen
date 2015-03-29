@@ -7,7 +7,22 @@ public class EnemyBasic : MonoBehaviour {
 	public float equipped = 0;
 	public float speed = 100;
 
-	public double distanceScale = 0.3;
+	public float commScale = 4;
+	public float visionScale = 10;
+	public float alertScale = 15; 
+	public float fov = 100;
+
+	//0 = HEALER, 1 = SOLDIER, 2 = DEFENDER, 3 = BOSS
+	public float enemyType = 0;
+
+
+	public Vector3 bossPos;
+	public bool bossFound = false;
+	public Transform playerPos;
+	public double lastTimeSeen;
+
+
+
 
 	//power up stuff
 	public int armorCount;
@@ -125,19 +140,63 @@ public class EnemyBasic : MonoBehaviour {
 		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
 	}
 
-	public void interruptCheck(){
-		Transform powerUp = GameObject.FindGameObjectsWithTag ("PowerUp") [0].transform;
-		if ((powerUp.position - transform.position).magnitude < (distanceScale * speed)) {
-			//FireBullet();
+	public GameObject visionCheck(){
+		GameObject[] pUs = GameObject.FindGameObjectsWithTag ("MedPackPU");
+		GameObject player = GameObject.FindGameObjectsWithTag ("Player") [0];
+		GameObject closestPack = pUs[0];
+				
+		Vector3 forward = transform.forward;
+		float angle;
+		Vector3 targetDir;
+
+
+		Transform playerLocPos = player.transform;
+		targetDir = playerLocPos.position - transform.position;
+		angle = Vector3.Angle (targetDir, forward);
+
+		if ((playerLocPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
+				this.playerPos = playerLocPos;
+				//this.lastTimeSeen = this.LocationInfo.timestamp;
+				return player;
 		}
 
-		Transform player = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
-		if ((player.position - transform.position).magnitude < (distanceScale * speed)) {
-			//FireBullet();
+		int i;
+		for (i = 0; i < pUs.Length; i++) {
+				Transform powerUpPos = pUs [i].transform;
+				GameObject powerUp = pUs [i];
+				targetDir = powerUpPos.position - transform.position;
+				angle = Vector3.Angle (targetDir,forward); 
+
+			if ((powerUpPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
+				if((powerUpPos.position - transform.position).magnitude < (closestPack.transform.position - transform.position).magnitude){
+					closestPack = powerUp;		}
+			}
 		}
+		if ((closestPack.transform.position - transform.position).magnitude < (visionScale) && angle <= fov) {
+			return closestPack;
+		}
+		return null;
+	}
 
+	public void commCheck(){
+		GameObject[] eUs = GameObject.FindGameObjectsWithTag ("Enemy");
 
-
+		int i;
+		for(i = 0; i < eUs.Length; i++){
+			Transform npcPos = eUs[i].transform;
+			GameObject npc = eUs[i];
+			EnemyBasic npcScript = npc.GetComponent<EnemyBasic>();
+			if ((npcPos.position - transform.position).magnitude < (commScale)) {
+				if(bossFound){
+					//pass information
+					npcScript.bossPos = this.bossPos;
+				}
+				if(npcScript.lastTimeSeen < this.lastTimeSeen){
+					npcScript.lastTimeSeen = this.lastTimeSeen;
+					npcScript.playerPos = this.playerPos;
+				}
+			}}
+		
 	}
 
 	public void increaseHP(int HP){
