@@ -18,6 +18,8 @@ public class AI: MonoBehaviour {
 
 	private Transform target;
 
+	private int enemyID; // 0 healer, 1 solder, 2 Defender, 3 boss
+
 	public bool canSearch = true;
 
 	public bool canMove = true;
@@ -103,11 +105,7 @@ public class AI: MonoBehaviour {
 			return targetReached;
 		}
 	}
-	
-	/** Holds if the Start function has been run.
-	 * Used to test if coroutines should be started in OnEnable to prevent calculating paths
-	 * in the awake stage (or rather before start on frame 0).
-	 */
+
 	private bool startHasRun = false;
 	
 	/** Initializes reference variables.
@@ -215,6 +213,10 @@ public class AI: MonoBehaviour {
 		
 		//We should search from the current position
 		seeker.StartPath (GetFeetPosition(), targetPosition);
+	}
+
+	public void setTarget(Transform tar){
+		target = tar;	
 	}
 	
 	public virtual void OnTargetReached () {
