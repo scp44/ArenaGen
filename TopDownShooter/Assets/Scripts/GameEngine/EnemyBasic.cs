@@ -225,6 +225,12 @@ public class EnemyBasic : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		GameObject target = visionCheck ();
+		//vision check + shoot at player
+		if (target.tag = "Player") {
+			FireBullet();
+		}
+
 		//if armor broken, cancel effect.
 		if (armorOn && armorCount <= 0) {
 			armorOn = false;
