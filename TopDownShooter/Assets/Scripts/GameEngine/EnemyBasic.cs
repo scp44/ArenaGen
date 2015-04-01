@@ -235,14 +235,14 @@ public class EnemyBasic : MonoBehaviour {
 		}
 
 		GameObject target = null;
-		if(false/*armor in line of sight*/){
+		if(!armorOn /*armor in line of sight*/){
 			//interrupt module
 			//target = armor;
 		}
 		
 		if(enemyHP < 5 /*&& medpack in line of sight*/){
 			//interrupt module
-			//if(medPack is closer than armor)
+			//if(medPack is closer than current target)
 				//target = medPack;
 		}
 
