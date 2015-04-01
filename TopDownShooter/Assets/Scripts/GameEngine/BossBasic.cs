@@ -1,37 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyBasic : MonoBehaviour {
+public class BossBasic : MonoBehaviour {
 	public float enemyHP = 5;
 	public float maxHP = 5;
 	public float equipped = 0;
+	public int gun1 = 0;
+	public int gun2 = 0;
 	public float speed = 100;
-
+	
 	public float commScale = 4;
 	public float visionScale = 10;
 	public float alertScale = 15; 
 	public float fov = 100;
-
+	
 	//0 = HEALER, 1 = SOLDIER, 2 = DEFENDER, 3 = BOSS
 	public float enemyType = 0;
-
-
+	
+	
 	public Vector3 bossPos;
 	public bool bossFound = false;
 	public Transform playerPos;
 	public double lastTimeSeen;
-
+	
 	//power up stuff
 	public int armorCount;
 	public bool armorOn = false;
-	public int medPack = 0;
-	public Rigidbody MedPack;
-
+	
 	public Rigidbody Bullet;
 	// Use this for initialization
-
+	
 	public AI searchScript;
-
+	
 	float BulletLength(){
 		if (equipped == 0) {
 			return 50f;
@@ -105,7 +105,7 @@ public class EnemyBasic : MonoBehaviour {
 		Rigidbody bulletClone = (Rigidbody) Instantiate(Bullet, transform.position, transform.rotation);
 		bulletClone.velocity = transform.forward * speed * BulletSpeed();
 		
-
+		
 		if (equipped == 0) {
 			EnemyBulletBehaviors bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
 			bulletScript.lifeSpan = BulletLength ();
@@ -131,39 +131,47 @@ public class EnemyBasic : MonoBehaviour {
 			bulletScript.lifeSpan = BulletLength ();
 			bulletScript.damage = BulletDamage ();
 		}
-
-	
+		
+		
 		
 		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
 	}
 
+	void SwitchGun(){
+		if (equipped == gun1) {
+			equipped = gun2;
+		} else {
+			equipped = gun1;
+		}
+	}
+	
 	public GameObject visionCheck(){
 		GameObject[] pUs = GameObject.FindGameObjectsWithTag ("MedPackPU");
 		GameObject player = GameObject.FindGameObjectsWithTag ("Player") [0];
 		GameObject closestPack = pUs[0];
-				
+		
 		Vector3 forward = transform.forward;
 		float angle;
 		Vector3 targetDir;
-
-
+		
+		
 		Transform playerLocPos = player.transform;
 		targetDir = playerLocPos.position - transform.position;
 		angle = Vector3.Angle (targetDir, forward);
-
+		
 		if ((playerLocPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
-				this.playerPos = playerLocPos;
-				//this.lastTimeSeen = this.LocationInfo.timestamp;
-				return player;
+			this.playerPos = playerLocPos;
+			//this.lastTimeSeen = this.LocationInfo.timestamp;
+			return player;
 		}
-
+		
 		int i;
 		for (i = 0; i < pUs.Length; i++) {
-				Transform powerUpPos = pUs [i].transform;
-				GameObject powerUp = pUs [i];
-				targetDir = powerUpPos.position - transform.position;
-				angle = Vector3.Angle (targetDir,forward); 
-
+			Transform powerUpPos = pUs [i].transform;
+			GameObject powerUp = pUs [i];
+			targetDir = powerUpPos.position - transform.position;
+			angle = Vector3.Angle (targetDir,forward); 
+			
 			if ((powerUpPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
 				if((powerUpPos.position - transform.position).magnitude < (closestPack.transform.position - transform.position).magnitude){
 					closestPack = powerUp;		}
@@ -174,10 +182,10 @@ public class EnemyBasic : MonoBehaviour {
 		}
 		return null;
 	}
-
+	
 	public void commCheck(){
 		GameObject[] eUs = GameObject.FindGameObjectsWithTag ("Enemy");
-
+		
 		int i;
 		for(i = 0; i < eUs.Length; i++){
 			Transform npcPos = eUs[i].transform;
@@ -195,32 +203,18 @@ public class EnemyBasic : MonoBehaviour {
 			}}
 		
 	}
-
+	
 	public void increaseHP(int HP){
 		enemyHP += 5;
 	}
-
+	
 	public void activateArmor(){
 		armorOn = true;
 		armorCount = 5;
 	}
-
-	public void pickUp(){
-		medPack++;
-	}
-
-	public void dropItem(){
-		Rigidbody medPackClone = (Rigidbody) Instantiate(MedPack, transform.position, transform.rotation);
-	}
-
-	public void useMedPack(GameObject enemy){
-		EnemyBasic enemyScript = enemy.GetComponent<EnemyBasic>();
-		enemyScript.increaseHP (5);
-		medPack--;
-	}
-
-	void Start () {
 	
+	void Start () {
+		
 	}
 	
 	// Update is called once per frame
@@ -230,7 +224,7 @@ public class EnemyBasic : MonoBehaviour {
 			armorOn = false;
 			armorCount = 0;
 		}
-
+		
 		GameObject target = null;
 		if(!armorOn /*armor in line of sight*/){
 			//interrupt module
@@ -240,23 +234,16 @@ public class EnemyBasic : MonoBehaviour {
 		if(enemyHP < 5 /*&& medpack in line of sight*/){
 			//interrupt module
 			//if(medPack is closer than current target)
-				//target = medPack;
+			//target = medPack;
 		}
-
+		
 		if (target != null)
 			searchScript.goTo (target);
-
-		if(medPack > 0 /*&& ((enemy in com-check circle && has < some HP) || enemy is Boss)*/){
-			//interrupt module
-			//useMedPack(enemy);
-		}
-
+		
 		if (enemyHP <= 0) {
-			if(medPack > 0)
-				dropItem();
 			Destroy (this.gameObject);
 		}
-
-
+		
+		
 	}
 }

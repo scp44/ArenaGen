@@ -23,7 +23,7 @@ public class MedPack : MonoBehaviour {
 	void OnTriggerEnter(Collider obj){
 		if (obj.gameObject.tag == "Enemy") {
 			EnemyBasic enemyScript = obj.GetComponent<EnemyBasic> ();
-			if(enemyScript.medPack < 1 /*&& enemyScript.isMedic*/){
+			if(enemyScript.medPack < 1 && enemyScript.enemyType == 0){
 				enemyScript.pickUp ();
 				Destroy (this.gameObject);
 			}
