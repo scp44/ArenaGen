@@ -21,9 +21,6 @@ public class EnemyBasic : MonoBehaviour {
 	public Transform playerPos;
 	public double lastTimeSeen;
 
-
-
-
 	//power up stuff
 	public int armorCount;
 	public bool armorOn = false;
@@ -33,7 +30,7 @@ public class EnemyBasic : MonoBehaviour {
 	public Rigidbody Bullet;
 	// Use this for initialization
 
-	public AIPath searchScript;
+	public AI searchScript;
 
 	float BulletLength(){
 		if (equipped == 0) {

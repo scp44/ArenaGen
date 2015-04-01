@@ -17,7 +17,7 @@ public class EnemyBulletBehaviors : MonoBehaviour {
 			//run enemy health minus
 			
 			PlayerController enemyScript = other.GetComponent<PlayerController>();
-			enemyScript.enemyHP -= damage;
+			enemyScript.playerHP -= damage;
 
 			Destroy(this.gameObject);
 		}
