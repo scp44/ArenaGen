@@ -628,7 +628,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &281480648
 Transform:
   m_ObjectHideFlags: 0
@@ -741,7 +741,15 @@ MonoBehaviour:
   enemyHP: 5
   equipped: 0
   speed: 100
-  distanceScale: .29999999999999999
+  commScale: 4
+  visionScale: 10
+  alertScale: 15
+  fov: 100
+  enemyType: 0
+  bossPos: {x: 0, y: 0, z: 0}
+  bossFound: 0
+  playerPos: {fileID: 0}
+  lastTimeSeen: 0
   armorCount: 0
   armorOn: 0
   medPack: 0
@@ -1255,6 +1263,11 @@ MonoBehaviour:
   wallNodePrefab: {fileID: 426138, guid: d20bdfeeb196544979afefd6dd30bd39, type: 2}
   miscObstacleCellPrefabs:
   - {fileID: 11441530, guid: 2ad7989afc5994f4b9e33ea115f08d73, type: 2}
+  armorPrefab: {fileID: 434464, guid: 6dc659d029a0cea4f9351afb983d91b8, type: 2}
+  medpackPrefab: {fileID: 451638, guid: 3fbfe2312732abe4b9c35bfa8be579f8, type: 2}
+  numArmors: 3
+  numMedpacks: 7
+  powerupDistance: 10
   enemyTypes:
   - {fileID: 466936, guid: d80d693871606cc4697835abbeb37560, type: 2}
   mapLength: 100
@@ -1473,7 +1486,15 @@ MonoBehaviour:
   enemyHP: 5
   equipped: 0
   speed: 100
-  distanceScale: .29999999999999999
+  commScale: 4
+  visionScale: 10
+  alertScale: 15
+  fov: 100
+  enemyType: 0
+  bossPos: {x: 0, y: 0, z: 0}
+  bossFound: 0
+  playerPos: {fileID: 0}
+  lastTimeSeen: 0
   armorCount: 0
   armorOn: 0
   medPack: 0
@@ -2208,7 +2229,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1359735638
 Transform:
   m_ObjectHideFlags: 0
@@ -2424,6 +2445,10 @@ Prefab:
     - target: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_RootOrder
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 105592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
@@ -3077,7 +3102,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 166936, guid: d80d693871606cc4697835abbeb37560, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d80d693871606cc4697835abbeb37560, type: 2}
