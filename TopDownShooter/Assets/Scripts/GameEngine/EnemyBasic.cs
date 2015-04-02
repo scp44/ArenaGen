@@ -227,7 +227,7 @@ public class EnemyBasic : MonoBehaviour {
 	void Update () {
 		GameObject target = visionCheck ();
 		//vision check + shoot at player
-		if (target.tag = "Player") {
+		if (target.tag == "Player") {
 			FireBullet();
 		}
 

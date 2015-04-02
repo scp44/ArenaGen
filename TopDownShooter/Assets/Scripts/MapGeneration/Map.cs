@@ -331,7 +331,6 @@ public class Map: MonoBehaviour {
 					placeMedpackAtCell(coordinates);
 				else 
 					placeArmorAtCell(coordinates);
-				Debug.Log("Putting a powerup/medpack at " + coordinates.toString());
 			}
 		}
 	}
