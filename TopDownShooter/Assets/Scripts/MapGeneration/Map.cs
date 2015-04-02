@@ -20,7 +20,16 @@ public class Map: MonoBehaviour {
 	public Transform wallPrefab;
 	public Transform wallNodePrefab;
 	public MapCell[] miscObstacleCellPrefabs;
-	
+
+	//Powerups
+	public Transform armorPrefab;
+	public Transform medpackPrefab;
+	public int numArmors;
+	public int numMedpacks;
+	public float powerupDistance;
+	private List<IntVector2> armors;
+	private List<IntVector2> medpacks;
+
 	//Enemy types
 	public Transform[] enemyTypes;
 	
@@ -70,6 +79,7 @@ public class Map: MonoBehaviour {
 		generateEnemyCamps ();
 		generateGround ();
 		generateWalls ();
+		spawnPowerups ();
 		spawnEnemies ();
 		
 		//Put the player at the starting position
@@ -302,6 +312,29 @@ public class Map: MonoBehaviour {
 				placeWallNodeCell(walls.getNode(i).coordinates);
 		}
 	}
+
+	//spawn powerups and medpacks
+	private void spawnPowerups() {
+		medpacks = new List<IntVector2> ();
+		armors = new List<IntVector2> ();
+		IntVector2[] coordinatesArray = IntVector2.randomizeCoordinates (mapLength, mapWidth);
+		for (int p=0; p<coordinatesArray.Length; p++) {
+			if (medpacks.Count == numMedpacks && armors.Count == numArmors)
+				break;
+			IntVector2 coordinates = coordinatesArray[p];
+			int x=coordinates.x;
+			int z=coordinates.z;
+
+			if (distanceToClosestPowerup(coordinates)>powerupDistance && testCell (coordinates, 1) && !testCell(coordinates, 3)) {
+				//spawn a medpack or powerup
+				if (medpacks.Count < numMedpacks)
+					placeMedpackAtCell(coordinates);
+				else 
+					placeArmorAtCell(coordinates);
+				Debug.Log("Putting a powerup/medpack at " + coordinates.toString());
+			}
+		}
+	}
 	
 	//Create a cell with given type and coordinates
 	private MapCell createCell (MapCellType cellType, IntVector2 coordinates) {
@@ -361,6 +394,20 @@ public class Map: MonoBehaviour {
 		Transform node = Instantiate (wallNodePrefab) as Transform;
 		node.position = nodeCoordinates;
 	}
+
+	private void placeMedpackAtCell(IntVector2 coordinates) {
+		Vector3 nodeCoordinates = coordinatesFrom2D(coordinates, 0.5f);
+		Transform medpack = Instantiate (medpackPrefab) as Transform;
+		medpack.position = nodeCoordinates;
+		medpacks.Add (coordinates);
+	}
+
+	private void placeArmorAtCell(IntVector2 coordinates) {
+		Vector3 nodeCoordinates = coordinatesFrom2D(coordinates, 0.5f);
+		Transform armor = Instantiate (armorPrefab) as Transform;
+		armor.position = nodeCoordinates;
+		armors.Add (coordinates);
+	}
 	
 	//Get random coordinates within range
 	private IntVector2 getRandomCoordinates(int maxX, int maxZ) {
@@ -409,6 +456,26 @@ public class Map: MonoBehaviour {
 		for (int i=0; i<enemyCamps.Length; i++) {
 			if (withinMap(enemyCamps[i])) {
 				tempDistance = enemyCamps[i].distance(coordinates);
+				if (tempDistance != 0)
+					max = max < tempDistance ? max : tempDistance;			
+			}
+		}
+		return max;
+	}
+
+	private float distanceToClosestPowerup (IntVector2 coordinates) {
+		float max = 99999f;
+		float tempDistance;
+		for (int i=0; i<armors.Count; i++) {
+			if (withinMap(armors[i])) {
+				tempDistance = armors[i].distance(coordinates);
+				if (tempDistance != 0)
+					max = max < tempDistance ? max : tempDistance;			
+			}
+		}
+		for (int i=0; i<medpacks.Count; i++) {
+			if (withinMap(medpacks[i])) {
+				tempDistance = medpacks[i].distance(coordinates);
 				if (tempDistance != 0)
 					max = max < tempDistance ? max : tempDistance;			
 			}
