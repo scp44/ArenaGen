@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class EnemyBasic : MonoBehaviour {
@@ -140,39 +140,56 @@ public class EnemyBasic : MonoBehaviour {
 	public GameObject visionCheck(){
 		GameObject[] pUs = GameObject.FindGameObjectsWithTag ("MedPackPU");
 		GameObject player = GameObject.FindGameObjectsWithTag ("Player") [0];
-		GameObject closestPack = pUs[0];
-				
+		GameObject closestPack = pUs [0];
+		GameObject toReturn = null;
+
 		Vector3 forward = transform.forward;
 		float angle;
 		Vector3 targetDir;
+		int toUse = 0;
 
+
+		int i;
+		for (i = 0; i < pUs.Length; i++) {
+			Transform powerUpPos = pUs [i].transform;
+			GameObject powerUp = pUs [i];
+			targetDir = powerUpPos.position - transform.position;
+			angle = Vector3.Angle (targetDir, forward); 
+
+			if ((powerUpPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
+				if ((powerUpPos.position - transform.position).magnitude < (closestPack.transform.position - transform.position).magnitude) {
+					closestPack = powerUp;
+				}
+			}
+		}
+		if ((closestPack.transform.position - transform.position).magnitude < (visionScale) && 
+		    Vector3.Angle (closestPack.transform.position - transform.position, forward) <= fov) {
+				toReturn = closestPack;
+				toUse = 1;
+			}
+
+	
 
 		Transform playerLocPos = player.transform;
 		targetDir = playerLocPos.position - transform.position;
 		angle = Vector3.Angle (targetDir, forward);
-
+		
 		if ((playerLocPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
-				this.playerPos = playerLocPos;
-				//this.lastTimeSeen = this.LocationInfo.timestamp;
-				return player;
+			this.playerPos = playerLocPos;
+			//this.lastTimeSeen = this.LocationInfo.timestamp;
+			toReturn = player;
+			toUse = 2;
+		}
+		RaycastHit hit;
+		Collider other;
+		Physics.Raycast (transform.position, (toReturn.transform.position-transform.position),out hit, visionScale );
+		other = hit.collider; 
+		if (other.gameObject.tag == "Wall") {
+			return null;
 		}
 
-		int i;
-		for (i = 0; i < pUs.Length; i++) {
-				Transform powerUpPos = pUs [i].transform;
-				GameObject powerUp = pUs [i];
-				targetDir = powerUpPos.position - transform.position;
-				angle = Vector3.Angle (targetDir,forward); 
 
-			if ((powerUpPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
-				if((powerUpPos.position - transform.position).magnitude < (closestPack.transform.position - transform.position).magnitude){
-					closestPack = powerUp;		}
-			}
-		}
-		if ((closestPack.transform.position - transform.position).magnitude < (visionScale) && angle <= fov) {
-			return closestPack;
-		}
-		return null;
+		return toReturn;
 	}
 
 	public void commCheck(){
