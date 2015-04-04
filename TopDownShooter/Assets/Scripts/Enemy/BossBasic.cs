@@ -241,6 +241,7 @@ public class BossBasic : MonoBehaviour {
 			searchScript.goTo (target);
 		
 		if (enemyHP <= 0) {
+			Application.LoadLevel ("WinScreen");
 			Destroy (this.gameObject);
 		}
 		

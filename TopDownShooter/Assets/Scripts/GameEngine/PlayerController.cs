@@ -169,6 +169,9 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetMouseButtonDown(1)) {
 			SwitchGun();
 		}
+
+		if (playerHP <= 0)
+			Application.LoadLevel ("GameOver");
 	
 	}
 
