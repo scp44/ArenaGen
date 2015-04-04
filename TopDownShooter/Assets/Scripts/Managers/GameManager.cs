@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour {
 
 	public Map map;
-	public Image healthBar;
+	public Slider healthBar;
 
 	// Use this for initialization
 	void Start () {
@@ -15,6 +15,6 @@ public class GameManager : MonoBehaviour {
 
 	public void updateHealthBar(GameObject player){
 		PlayerController playerScript = player.GetComponent<PlayerController>();
-		healthBar.fillAmount = playerScript.playerHP / playerScript.maxHP;
+		healthBar.value = playerScript.playerHP / playerScript.maxHP;
 	}
 }
