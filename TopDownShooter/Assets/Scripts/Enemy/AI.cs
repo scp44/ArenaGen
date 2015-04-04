@@ -123,6 +123,17 @@ public class AI: MonoBehaviour {
 	
 	public Rigidbody Bullet;
 	// Use this for initialization
+
+	/** Starts searching for paths.
+	 * If you override this function you should in most cases call base.Start () at the start of it.
+	 * \see OnEnable
+	 * \see RepeatTrySearchPath
+	 */
+	protected virtual void Start () {
+		target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
+		startHasRun = true;
+		OnEnable ();
+	}
 	
 	float BulletLength(){
 		if (equipped == 0) {
@@ -327,47 +338,6 @@ public class AI: MonoBehaviour {
 		enemyScript.increaseHP (5);
 		medPack--;
 	}
-	
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		//if armor broken, cancel effect.
-		if (armorOn && armorCount <= 0) {
-			armorOn = false;
-			armorCount = 0;
-		}
-		
-		GameObject target = null;
-		if(!armorOn /*armor in line of sight*/){
-			//interrupt module
-			//target = armor;
-		}
-		
-		if(enemyHP < 5 /*&& medpack in line of sight*/){
-			//interrupt module
-			//if(medPack is closer than current target)
-			//target = medPack;
-		}
-		
-		if (target != null)
-			goTo (target);
-		
-		if(medPack > 0 /*&& ((enemy in com-check circle && has < some HP) || enemy is Boss)*/){
-			//interrupt module
-			//useMedPack(enemy);
-		}
-		
-		if (enemyHP <= 0) {
-			if(medPack > 0)
-				dropItem();
-			Destroy (this.gameObject);
-		}
-		
-		
-	}
 
 	/** Returns if the end-of-path has been reached
 	 * \see targetReached */
@@ -398,17 +368,6 @@ public class AI: MonoBehaviour {
 		rvoController = GetComponent<RVOController>();
 		if ( rvoController != null ) rvoController.enableRotation = false;
 		rigid = rigidbody;
-	}
-	
-	/** Starts searching for paths.
-	 * If you override this function you should in most cases call base.Start () at the start of it.
-	 * \see OnEnable
-	 * \see RepeatTrySearchPath
-	 */
-	protected virtual void Start () {
-		target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
-		startHasRun = true;
-		OnEnable ();
 	}
 	
 	/** Run at start and when reenabled.
@@ -585,7 +544,38 @@ public class AI: MonoBehaviour {
 	}
 	
 	public virtual void Update () {
+		//if armor broken, cancel effect.
+		if (armorOn && armorCount <= 0) {
+			armorOn = false;
+			armorCount = 0;
+		}
 		
+		GameObject target = null;
+		if(!armorOn /*armor in line of sight*/){
+			//interrupt module
+			//target = armor;
+		}
+		
+		if(enemyHP < 5 /*&& medpack in line of sight*/){
+			//interrupt module
+			//if(medPack is closer than current target)
+			//target = medPack;
+		}
+		
+		if (target != null)
+			goTo (target);
+		
+		if(medPack > 0 /*&& ((enemy in com-check circle && has < some HP) || enemy is Boss)*/){
+			//interrupt module
+			//useMedPack(enemy);
+		}
+		
+		if (enemyHP <= 0) {
+			if(medPack > 0)
+				dropItem();
+			Destroy (this.gameObject);
+		}
+
 		if (!canMove) { return; }
 		
 		Vector3 dir = CalculateVelocity (GetFeetPosition());
