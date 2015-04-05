@@ -618,14 +618,14 @@ GameObject:
   - 4: {fileID: 281480648}
   - 114: {fileID: 281480652}
   - 114: {fileID: 281480651}
-  - 143: {fileID: 281480650}
   - 114: {fileID: 281480649}
   - 114: {fileID: 281480653}
   - 54: {fileID: 281480654}
   - 114: {fileID: 281480655}
+  - 65: {fileID: 281480650}
   m_Layer: 8
   m_Name: Bot
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -657,21 +657,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 1
---- !u!143 &281480650
-CharacterController:
+--- !u!65 &281480650
+BoxCollider:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 14364196, guid: d80d693871606cc4697835abbeb37560,
+  m_PrefabParentObject: {fileID: 6574704, guid: d80d693871606cc4697835abbeb37560,
     type: 2}
   m_PrefabInternal: {fileID: 1974130547}
   m_GameObject: {fileID: 281480647}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Height: .870000005
-  m_Radius: .349999994
-  m_SlopeLimit: 45
-  m_StepOffset: .300000012
-  m_SkinWidth: .0799999982
-  m_MinMoveDistance: 0
-  m_Center: {x: 0, y: .479999989, z: 0}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &281480651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -710,8 +708,7 @@ MonoBehaviour:
   armorCount: 0
   armorOn: 0
   medPack: 0
-  MedPack: {fileID: 0}
-  Bullet: {fileID: 0}
+  Bullet: {fileID: 5456608, guid: edfaf2011a2a3714794c0677bf8cd0f8, type: 2}
   anim: {fileID: 1119290607}
   sleepVelocity: .200000003
   animationSpeed: .400000006
@@ -771,7 +768,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!114 &281480655
 MonoBehaviour:
@@ -1345,16 +1342,16 @@ GameObject:
   m_Component:
   - 4: {fileID: 800215147}
   - 114: {fileID: 800215151}
-  - 143: {fileID: 800215149}
   - 114: {fileID: 800215148}
   - 114: {fileID: 800215152}
   - 54: {fileID: 800215153}
   - 114: {fileID: 800215155}
+  - 65: {fileID: 800215149}
   - 114: {fileID: 800215150}
   - 114: {fileID: 800215154}
   m_Layer: 8
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1386,21 +1383,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   priority: 1
---- !u!143 &800215149
-CharacterController:
+--- !u!65 &800215149
+BoxCollider:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 14364196, guid: d80d693871606cc4697835abbeb37560,
+  m_PrefabParentObject: {fileID: 6574704, guid: d80d693871606cc4697835abbeb37560,
     type: 2}
   m_PrefabInternal: {fileID: 1154440982}
   m_GameObject: {fileID: 800215146}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Height: .870000005
-  m_Radius: .349999994
-  m_SlopeLimit: 45
-  m_StepOffset: .300000012
-  m_SkinWidth: .0799999982
-  m_MinMoveDistance: 0
-  m_Center: {x: 0, y: .479999989, z: 0}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &800215150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1438,7 +1433,6 @@ MonoBehaviour:
   armorCount: 0
   armorOn: 0
   medPack: 0
-  MedPack: {fileID: 0}
   Bullet: {fileID: 0}
   anim: {fileID: 0}
   sleepVelocity: .400000006
@@ -1499,7 +1493,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!114 &800215154
 MonoBehaviour:
@@ -2493,7 +2487,6 @@ MonoBehaviour:
   armorCount: 0
   armorOn: 0
   medPack: 0
-  MedPack: {fileID: 0}
   Bullet: {fileID: 0}
 --- !u!114 &1359735646
 MonoBehaviour:
@@ -2533,7 +2526,6 @@ MonoBehaviour:
   armorCount: 0
   armorOn: 0
   medPack: 0
-  MedPack: {fileID: 0}
   Bullet: {fileID: 0}
   anim: {fileID: 0}
   sleepVelocity: .400000006

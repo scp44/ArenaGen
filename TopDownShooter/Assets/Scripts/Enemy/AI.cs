@@ -301,7 +301,9 @@ public class AI: MonoBehaviour {
 		
 		return toReturn;
 	}
-	
+
+
+
 	public void commCheck(){
 		GameObject[] eUs = GameObject.FindGameObjectsWithTag ("Enemy");
 		
@@ -322,7 +324,12 @@ public class AI: MonoBehaviour {
 			}}
 		
 	}
-	
+	public void deathCheck(){
+		if (enemyHP <= 0) {
+			Destroy(this.gameObject);}
+	}
+
+
 	public void increaseHP(int HP){
 		enemyHP += 5;
 	}
