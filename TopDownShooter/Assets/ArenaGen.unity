@@ -142,10 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHP: 10
-<<<<<<< HEAD
   maxHP: 10
-=======
->>>>>>> master
   armorCount: 0
   armorOn: 0
   rotationSpeed: 450
@@ -646,7 +643,7 @@ Transform:
   - {fileID: 1119290606}
   - {fileID: 60049628}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
 --- !u!114 &281480649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -760,30 +757,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663f7357f4d649b478623f4c53116f76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyHP: 5
-  maxHP: 5
-  equipped: 0
-  speed: 100
-  commScale: 4
-  visionScale: 10
-  alertScale: 15
-  fov: 100
-  enemyType: 0
-  bossPos: {x: 0, y: 0, z: 0}
-  bossFound: 0
-  playerPos: {fileID: 0}
-  lastTimeSeen: 0
-  armorCount: 0
-  armorOn: 0
-  medPack: 0
-<<<<<<< HEAD
-  MedPack: {fileID: 5451638, guid: 3fbfe2312732abe4b9c35bfa8be579f8, type: 2}
-  Bullet: {fileID: 5456608, guid: edfaf2011a2a3714794c0677bf8cd0f8, type: 2}
-  searchScript: {fileID: 0}
-=======
-  MedPack: {fileID: 0}
-  Bullet: {fileID: 0}
->>>>>>> master
 --- !u!54 &281480654
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -814,68 +787,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 40
   nextWaypointDistance: 3
---- !u!1 &331063054
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 331063057}
-  - 212: {fileID: 331063056}
-  - 114: {fileID: 331063055}
-  m_Layer: 0
-  m_Name: ArmorSprite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &331063055
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 331063054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91dec7d053644cc41998d306d8d02643, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!212 &331063056
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 331063054}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 2100000, guid: 2c815fddade3ec040ba1f0ebf05bd87f, type: 2}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: .996078432, g: .513725519, b: 0, a: 1}
---- !u!4 &331063057
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 331063054}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 404.5, y: 153, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
 --- !u!1 &432062126
 GameObject:
   m_ObjectHideFlags: 0
@@ -1088,56 +999,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 1974130547}
   m_GameObject: {fileID: 591772549}
   m_Mesh: {fileID: 4300002, guid: caeffedc34d9f4161b7694ad0d84bbd3, type: 3}
---- !u!1 &622627175
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 622627177}
-  - 212: {fileID: 622627176}
-  m_Layer: 0
-  m_Name: MedPackSprite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!212 &622627176
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 622627175}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 2100000, guid: a3861b4f6807a824d9bfe76ffc934627, type: 2}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0, g: .996078432, b: .56078434, a: 1}
---- !u!4 &622627177
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 622627175}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 404.5, y: 153, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
 --- !u!1 &712242700
 GameObject:
   m_ObjectHideFlags: 0
@@ -1396,8 +1257,8 @@ MonoBehaviour:
   mapLength: 100
   mapWidth: 100
   obstacleProbability: 0
-  enemyProbInsideCamp: 0
-  enemyProbOutsideCamp: 0
+  enemyProbInsideCamp: .0120000001
+  enemyProbOutsideCamp: .00669999979
   wallNodeProbability: .128000006
   numberOfEnemyCamps: 3
   enemyCampSize: 10
@@ -1511,7 +1372,7 @@ Transform:
   - {fileID: 1334722334}
   - {fileID: 142364605}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
 --- !u!114 &800215148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1624,30 +1485,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663f7357f4d649b478623f4c53116f76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyHP: 5
-  maxHP: 5
-  equipped: 0
-  speed: 100
-  commScale: 4
-  visionScale: 10
-  alertScale: 15
-  fov: 100
-  enemyType: 0
-  bossPos: {x: 0, y: 0, z: 0}
-  bossFound: 0
-  playerPos: {fileID: 0}
-  lastTimeSeen: 0
-  armorCount: 0
-  armorOn: 0
-  medPack: 0
-<<<<<<< HEAD
-  MedPack: {fileID: 5451638, guid: 3fbfe2312732abe4b9c35bfa8be579f8, type: 2}
-  Bullet: {fileID: 5456608, guid: edfaf2011a2a3714794c0677bf8cd0f8, type: 2}
-  searchScript: {fileID: 0}
-=======
-  MedPack: {fileID: 0}
-  Bullet: {fileID: 0}
->>>>>>> master
 --- !u!54 &800215153
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2121,7 +1958,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 10
 --- !u!1 &1119290605
 GameObject:
   m_ObjectHideFlags: 0
@@ -2209,7 +2046,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 466936, guid: d80d693871606cc4697835abbeb37560, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 166936, guid: d80d693871606cc4697835abbeb37560, type: 2}
       propertyPath: m_IsActive
@@ -2528,7 +2365,7 @@ Transform:
   - {fileID: 1947372246}
   - {fileID: 1748725560}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
 --- !u!143 &1359735639
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2756,7 +2593,7 @@ RectTransform:
   m_Children:
   - {fileID: 1415127396}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 6
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -2936,7 +2773,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 105592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_IsActive
@@ -3586,7 +3423,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 466936, guid: d80d693871606cc4697835abbeb37560, type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 166936, guid: d80d693871606cc4697835abbeb37560, type: 2}
       propertyPath: m_Name

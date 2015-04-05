@@ -322,8 +322,6 @@ public class Map: MonoBehaviour {
 			if (medpacks.Count == numMedpacks && armors.Count == numArmors)
 				break;
 			IntVector2 coordinates = coordinatesArray[p];
-			int x=coordinates.x;
-			int z=coordinates.z;
 
 			if (distanceToClosestPowerup(coordinates)>powerupDistance && testCell (coordinates, 1) && !testCell(coordinates, 3)) {
 				//spawn a medpack or powerup

@@ -190,7 +190,7 @@ public class BossBasic : MonoBehaviour {
 		for(i = 0; i < eUs.Length; i++){
 			Transform npcPos = eUs[i].transform;
 			GameObject npc = eUs[i];
-			EnemyBasic npcScript = npc.GetComponent<EnemyBasic>();
+			AI npcScript = npc.GetComponent<AI>();
 			if ((npcPos.position - transform.position).magnitude < (commScale)) {
 				if(bossFound){
 					//pass information
