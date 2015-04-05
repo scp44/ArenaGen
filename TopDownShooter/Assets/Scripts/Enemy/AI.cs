@@ -75,7 +75,7 @@ public class AI: MonoBehaviour {
 	protected Path path;
 	
 	/** Cached CharacterController component */
-	protected CharacterController controller;
+	//protected CharacterController controller;
 	
 	/** Cached NavmeshController component */
 	protected NavmeshController navController;
@@ -121,9 +121,19 @@ public class AI: MonoBehaviour {
 	public int armorCount;
 	public bool armorOn = false;
 	public int medPack = 0;
-	public Rigidbody MedPack;
+	private Rigidbody MedPack;
 	
 	public Rigidbody Bullet;
+
+
+	private GameObject[] pUs;
+	private GameObject player;
+
+	private GameObject toReturn = null;
+
+	private float angle;
+	private Vector3 targetDir;
+	private int toUse = 0;
 	// Use this for initialization
 
 	/** Starts searching for paths.
@@ -199,7 +209,7 @@ public class AI: MonoBehaviour {
 		} else if (equipped == 4) {
 			return 2f;
 		} else {
-			return 10f;
+			return 2f;
 		}
 	}
 	
@@ -243,15 +253,10 @@ public class AI: MonoBehaviour {
 	}
 	
 	public GameObject visionCheck(){
-		GameObject[] pUs = GameObject.FindGameObjectsWithTag ("MedPackPU");
-		GameObject player = GameObject.FindGameObjectsWithTag ("Player") [0];
+		pUs = GameObject.FindGameObjectsWithTag ("MedPackPU");
+		player = GameObject.FindGameObjectsWithTag ("Player") [0];
 		GameObject closestPack = pUs [0];
-		GameObject toReturn = null;
-		
 		Vector3 forward = transform.forward;
-		float angle;
-		Vector3 targetDir;
-		int toUse = 0;
 		
 		
 		int i;
@@ -287,7 +292,7 @@ public class AI: MonoBehaviour {
 		}
 		RaycastHit hit;
 		Collider other;
-		Physics.Raycast (transform.position, (toReturn.transform.position-transform.position),out hit, visionScale );
+		Physics.Raycast (transform.position, (toReturn.transform.position-transform.position), out hit, visionScale );
 		other = hit.collider; 
 		if (other.gameObject.tag == "Wall") {
 			return null;
@@ -361,7 +366,7 @@ public class AI: MonoBehaviour {
 		tr = transform;
 		
 		//Cache some other components (not all are necessarily there)
-		controller = GetComponent<CharacterController>();
+
 		navController = GetComponent<NavmeshController>();
 		rvoController = GetComponent<RVOController>();
 		if ( rvoController != null ) rvoController.enableRotation = false;
@@ -537,9 +542,6 @@ public class AI: MonoBehaviour {
 	public virtual Vector3 GetFeetPosition () {
 		if (rvoController != null) {
 			return tr.position - Vector3.up*rvoController.height*0.5f;
-		} else
-		if (controller != null) {
-			return tr.position - Vector3.up*controller.height*0.5F;
 		}
 
 		return tr.position;
@@ -564,8 +566,10 @@ public class AI: MonoBehaviour {
 			//target = medPack;
 		}
 		
-		if (target != null)
-			goTo (target);
+		target = this.visionCheck ();
+		if (target.gameObject.tag == "Player") {
+						FireBullet ();
+				}
 		
 		if(medPack > 0 /*&& ((enemy in com-check circle && has < some HP) || enemy is Boss)*/){
 			//interrupt module
@@ -578,27 +582,8 @@ public class AI: MonoBehaviour {
 			Destroy (this.gameObject);
 		}
 
-		if (!canMove) { return; }
-		
-		Vector3 dir = CalculateVelocity (GetFeetPosition());
-		
-		//Rotate towards targetDirection (filled in by CalculateVelocity)
-		RotateTowards (targetDirection);
+
 	
-		if (rvoController != null) {
-			rvoController.Move (dir);
-		} else
-		if (navController != null) {
-#if FALSE
-			navController.SimpleMove (GetFeetPosition(),dir);
-#endif
-		} else if (controller != null) {
-			controller.SimpleMove (dir);
-		} else if (rigid != null) {
-			rigid.AddForce (dir);
-		} else {
-			transform.Translate (dir*Time.deltaTime, Space.World);
-		}
 	}
 	
 	/** Point to where the AI is heading.

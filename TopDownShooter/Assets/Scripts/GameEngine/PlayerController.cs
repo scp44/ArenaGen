@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour {
 
 	public Rigidbody Bullet;
 	//bullet speed scale
-	public float speed = 100;
+	public float speed = 10;
 
 	//gun and cooldown tracker
 	public float gun1;

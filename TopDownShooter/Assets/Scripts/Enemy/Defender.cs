@@ -45,58 +45,5 @@ using Pathfinding.RVO;
 			return tr.position;
 		}
 		
-		protected new void Update () {
-			
-			//Get velocity in world-space
-			Vector3 velocity;
-			if (canMove) {
-				
-				//Calculate desired velocity
-				Vector3 dir = CalculateVelocity (GetFeetPosition());
-				
-				//Rotate towards targetDirection (filled in by CalculateVelocity)
-				RotateTowards (targetDirection);
-
-				//Vector3 lookDirection = targetDirection;
-				//lookDirection.Set (lookDirection.x, 0f, lookDirection.z);
-				//transform.rotation = Quaternion.LookRotation (lookDirection);
-				
-				dir.y = 0;
-				if (dir.sqrMagnitude > sleepVelocity*sleepVelocity) {
-					//If the velocity is large enough, move
-				} else {
-					//Otherwise, just stand still (this ensures gravity is applied)
-					dir = Vector3.zero;
-				}
-				
-				if ( this.rvoController != null ) {
-					rvoController.Move ( dir );
-					velocity = rvoController.velocity;
-				} else 
-				if (navController != null) {
-					#if FALSE
-					navController.SimpleMove (GetFeetPosition(), dir);
-					#endif
-					velocity = Vector3.zero;
-				} else if (controller != null) {
-					controller.SimpleMove (dir);
-					velocity = controller.velocity;
-				} else {
-					Debug.LogWarning ("No NavmeshController or CharacterController attached to GameObject");
-					velocity = Vector3.zero;
-				}
-			} else {
-				velocity = Vector3.zero;
-			}
-			
-			
-			//Animation
-			
-			//Calculate the velocity relative to this transform's orientation
-			Vector3 relVelocity = tr.InverseTransformDirection (velocity);
-			relVelocity.y = 0;
-
-				float speed = relVelocity.z;
-
-			}
+		
 		}
