@@ -142,7 +142,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHP: 10
+<<<<<<< HEAD
   maxHP: 10
+=======
+>>>>>>> master
   armorCount: 0
   armorOn: 0
   rotationSpeed: 450
@@ -185,7 +188,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: .0500000007
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -773,9 +776,14 @@ MonoBehaviour:
   armorCount: 0
   armorOn: 0
   medPack: 0
+<<<<<<< HEAD
   MedPack: {fileID: 5451638, guid: 3fbfe2312732abe4b9c35bfa8be579f8, type: 2}
   Bullet: {fileID: 5456608, guid: edfaf2011a2a3714794c0677bf8cd0f8, type: 2}
   searchScript: {fileID: 0}
+=======
+  MedPack: {fileID: 0}
+  Bullet: {fileID: 0}
+>>>>>>> master
 --- !u!54 &281480654
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1378,6 +1386,11 @@ MonoBehaviour:
   wallNodePrefab: {fileID: 426138, guid: d20bdfeeb196544979afefd6dd30bd39, type: 2}
   miscObstacleCellPrefabs:
   - {fileID: 11441530, guid: 2ad7989afc5994f4b9e33ea115f08d73, type: 2}
+  armorPrefab: {fileID: 434464, guid: 6dc659d029a0cea4f9351afb983d91b8, type: 2}
+  medpackPrefab: {fileID: 451638, guid: 3fbfe2312732abe4b9c35bfa8be579f8, type: 2}
+  numArmors: 3
+  numMedpacks: 7
+  powerupDistance: 10
   enemyTypes:
   - {fileID: 466936, guid: d80d693871606cc4697835abbeb37560, type: 2}
   mapLength: 100
@@ -1627,9 +1640,14 @@ MonoBehaviour:
   armorCount: 0
   armorOn: 0
   medPack: 0
+<<<<<<< HEAD
   MedPack: {fileID: 5451638, guid: 3fbfe2312732abe4b9c35bfa8be579f8, type: 2}
   Bullet: {fileID: 5456608, guid: edfaf2011a2a3714794c0677bf8cd0f8, type: 2}
   searchScript: {fileID: 0}
+=======
+  MedPack: {fileID: 0}
+  Bullet: {fileID: 0}
+>>>>>>> master
 --- !u!54 &800215153
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2501,8 +2519,8 @@ Transform:
   m_PrefabParentObject: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
   m_PrefabInternal: {fileID: 1432406688}
   m_GameObject: {fileID: 1359735637}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: -4.37113883e-08}
-  m_LocalPosition: {x: 1.57599998, y: .600000024, z: 1.37600005}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.58000004, y: .600000024, z: -.170000002}
   m_LocalScale: {x: 15, y: 15, z: 15}
   m_Children:
   - {fileID: 1290258094}
@@ -2890,7 +2908,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 1.57599998
+      value: 1.58000004
       objectReference: {fileID: 0}
     - target: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_LocalPosition.y
@@ -2898,7 +2916,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1.37600005
+      value: -.170000002
       objectReference: {fileID: 0}
     - target: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2906,7 +2924,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_LocalRotation.z
@@ -2914,7 +2932,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_LocalRotation.w
-      value: -4.37113883e-08
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 405592, guid: 8b882b749929eb44fad56c6a5cc5d9b4, type: 2}
       propertyPath: m_RootOrder
