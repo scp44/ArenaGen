@@ -9,11 +9,11 @@ GameObject:
   m_Component:
   - 4: {fileID: 456608}
   - 33: {fileID: 3356608}
-  - 65: {fileID: 6556608}
   - 23: {fileID: 2356608}
   - 54: {fileID: 5456608}
   - 65: {fileID: 6542218}
   - 114: {fileID: 11492332}
+  - 65: {fileID: 6556608}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -89,7 +89,7 @@ BoxCollider:
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &6556608
 BoxCollider:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 156608}
@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifeSpan: 50
+  damage: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

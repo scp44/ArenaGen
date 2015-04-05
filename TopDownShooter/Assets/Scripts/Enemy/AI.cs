@@ -219,36 +219,11 @@ public class AI: MonoBehaviour {
 		
 		Rigidbody bulletClone = (Rigidbody) Instantiate(Bullet, transform.position, transform.rotation);
 		bulletClone.velocity = transform.forward * movementSpeed * BulletSpeed();
-		
-		
-		if (equipped == 0) {
-			EnemyBulletBehaviors bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
-			bulletScript.lifeSpan = BulletLength ();
-			bulletScript.damage = BulletDamage ();
-		} else if (equipped == 1) {
-			EnemyBullet1Behaviors bulletScript = bulletClone.GetComponent<EnemyBullet1Behaviors> ();
-			bulletScript.lifeSpan = BulletLength ();
-			bulletScript.damage = BulletDamage ();
-		} else if (equipped == 2) {
-			EnemyBullet2Behaviors bulletScript = bulletClone.GetComponent<EnemyBullet2Behaviors> ();
-			bulletScript.lifeSpan = BulletLength ();
-			bulletScript.damage = BulletDamage ();
-		}else if (equipped == 3) {
-			EnemyBullet3Behaviors bulletScript = bulletClone.GetComponent<EnemyBullet3Behaviors> ();
-			bulletScript.lifeSpan = BulletLength ();
-			bulletScript.damage = BulletDamage ();
-		}else if (equipped == 4) {
-			EnemyBullet4Behaviors bulletScript = bulletClone.GetComponent<EnemyBullet4Behaviors> ();
-			bulletScript.lifeSpan = BulletLength ();
-			bulletScript.damage = BulletDamage ();
-		} else {
-			EnemyBulletBehaviors bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
-			bulletScript.lifeSpan = BulletLength ();
-			bulletScript.damage = BulletDamage ();
-		}
-		
-		
-		
+
+		EnemyBulletBehaviors bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
+		bulletScript.lifeSpan = BulletLength ();
+		bulletScript.damage = BulletDamage ();
+
 		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
 	}
 	
@@ -290,13 +265,17 @@ public class AI: MonoBehaviour {
 			toReturn = player;
 			toUse = 2;
 		}
-		RaycastHit hit;
-		Collider other;
-		Physics.Raycast (transform.position, (toReturn.transform.position-transform.position), out hit, visionScale );
-		other = hit.collider; 
-		if (other.gameObject.tag == "Wall") {
-			return null;
-		}
+
+		if (toReturn != null) {
+				RaycastHit hit;
+				Collider other;
+				Physics.Raycast (transform.position, (toReturn.transform.position - transform.position), out hit, visionScale);
+				other = hit.collider;
+				if(other.gameObject != null){
+				if (other.gameObject.tag == "Wall") {
+						return null;
+				}}
+				}
 		
 		
 		return toReturn;
@@ -326,6 +305,8 @@ public class AI: MonoBehaviour {
 	}
 	public void deathCheck(){
 		if (enemyHP <= 0) {
+			if(medPack > 0){
+				dropItem();}
 			Destroy(this.gameObject);}
 	}
 
@@ -574,8 +555,11 @@ public class AI: MonoBehaviour {
 		}
 		
 		target = this.visionCheck ();
-		if (target.gameObject.tag == "Player") {
-						FireBullet ();
+		if (target != null) {
+						if (target.gameObject.tag == "Player") {
+								FireBullet ();
+								target = null;
+						}
 				}
 		
 		if(medPack > 0 /*&& ((enemy in com-check circle && has < some HP) || enemy is Boss)*/){
@@ -583,11 +567,7 @@ public class AI: MonoBehaviour {
 			//useMedPack(enemy);
 		}
 		
-		if (enemyHP <= 0) {
-			if(medPack > 0)
-				dropItem();
-			Destroy (this.gameObject);
-		}
+		deathCheck ();
 
 
 	

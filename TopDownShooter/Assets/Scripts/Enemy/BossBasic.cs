@@ -104,34 +104,11 @@ public class BossBasic : MonoBehaviour {
 		
 		Rigidbody bulletClone = (Rigidbody) Instantiate(Bullet, transform.position, transform.rotation);
 		bulletClone.velocity = transform.forward * speed * BulletSpeed();
-		
-		
-		if (equipped == 0) {
-			EnemyBulletBehaviors bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
-			bulletScript.lifeSpan = BulletLength ();
-			bulletScript.damage = BulletDamage ();
-		} else if (equipped == 1) {
-			EnemyBullet1Behaviors bulletScript = bulletClone.GetComponent<EnemyBullet1Behaviors> ();
-			bulletScript.lifeSpan = BulletLength ();
-			bulletScript.damage = BulletDamage ();
-		} else if (equipped == 2) {
-			EnemyBullet2Behaviors bulletScript = bulletClone.GetComponent<EnemyBullet2Behaviors> ();
-			bulletScript.lifeSpan = BulletLength ();
-			bulletScript.damage = BulletDamage ();
-		}else if (equipped == 3) {
-			EnemyBullet3Behaviors bulletScript = bulletClone.GetComponent<EnemyBullet3Behaviors> ();
-			bulletScript.lifeSpan = BulletLength ();
-			bulletScript.damage = BulletDamage ();
-		}else if (equipped == 4) {
-			EnemyBullet4Behaviors bulletScript = bulletClone.GetComponent<EnemyBullet4Behaviors> ();
-			bulletScript.lifeSpan = BulletLength ();
-			bulletScript.damage = BulletDamage ();
-		} else {
-			EnemyBulletBehaviors bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
-			bulletScript.lifeSpan = BulletLength ();
-			bulletScript.damage = BulletDamage ();
-		}
-		
+	
+		EnemyBulletBehaviors bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
+		bulletScript.lifeSpan = BulletLength ();
+		bulletScript.damage = BulletDamage ();
+
 		
 		
 		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
