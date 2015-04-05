@@ -513,7 +513,6 @@ public class Map: MonoBehaviour {
 			if (cellCoordinates.distance(startLocation) < startPositionSize)
 				return false;
 			if (walls.isReachable(wallNode1, wallNode2)) {
-				print ("cycle is eliminated.");
 				return false;
 			}
 		}

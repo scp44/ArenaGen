@@ -16,10 +16,9 @@ public class EnemyBulletBehaviors : MonoBehaviour {
 		else if (other.gameObject.tag == "Player") {
 			//run enemy health minus
 			
-			EnemyBasic enemyScript = other.GetComponent<EnemyBasic>();
-			enemyScript.enemyHP -= damage;
-			
-			
+			PlayerController enemyScript = other.GetComponent<PlayerController>();
+			enemyScript.playerHP -= damage;
+
 			Destroy(this.gameObject);
 		}
 	}

@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour {
 
 	//player HP
 	public float playerHP = 10;
+	public float maxHP = 10;
 	public int armorCount;
 	public bool armorOn = false;
 
@@ -168,6 +169,9 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetMouseButtonDown(1)) {
 			SwitchGun();
 		}
+
+		if (playerHP <= 0)
+			Application.LoadLevel ("GameOver");
 	
 	}
 
