@@ -22,7 +22,7 @@ public class MedPack : MonoBehaviour {
 
 	void OnTriggerEnter(Collider obj){
 		if (obj.gameObject.tag == "Enemy") {
-			EnemyBasic enemyScript = obj.GetComponent<EnemyBasic> ();
+			AI enemyScript = obj.GetComponent<AI> ();
 			if(enemyScript.medPack < 1 && enemyScript.enemyType == 0){
 				enemyScript.pickUp ();
 				Destroy (this.gameObject);
@@ -46,7 +46,7 @@ public class MedPack : MonoBehaviour {
 	}
 
 	void useMedPack (GameObject obj){
-		EnemyBasic objScript = obj.GetComponent<EnemyBasic> ();
+		AI objScript = obj.GetComponent<AI> ();
 		objScript.increaseHP(5);
 	}
 }

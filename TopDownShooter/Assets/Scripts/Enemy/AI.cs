@@ -205,7 +205,7 @@ public class AI: MonoBehaviour {
 	
 	//Transfers bullet stats to bullets
 	void FireBullet () {
-		var inFront = new Vector3 (0, 1, 0);
+		//var inFront = new Vector3 (0, 1, 0);
 		
 		Rigidbody bulletClone = (Rigidbody) Instantiate(Bullet, transform.position, transform.rotation);
 		bulletClone.velocity = transform.forward * movementSpeed * BulletSpeed();
@@ -304,7 +304,7 @@ public class AI: MonoBehaviour {
 		for(i = 0; i < eUs.Length; i++){
 			Transform npcPos = eUs[i].transform;
 			GameObject npc = eUs[i];
-			EnemyBasic npcScript = npc.GetComponent<EnemyBasic>();
+			AI npcScript = npc.GetComponent<AI>();
 			if ((npcPos.position - transform.position).magnitude < (commScale)) {
 				if(bossFound){
 					//pass information
@@ -336,7 +336,7 @@ public class AI: MonoBehaviour {
 	}
 	
 	public void useMedPack(GameObject enemy){
-		EnemyBasic enemyScript = enemy.GetComponent<EnemyBasic>();
+		AI enemyScript = enemy.GetComponent<AI>();
 		enemyScript.increaseHP (5);
 		medPack--;
 	}

@@ -16,7 +16,7 @@ public class EnemyBullet3Behaviors : MonoBehaviour {
 		else if (other.gameObject.tag == "Player") {
 			//run enemy health minus
 			
-			EnemyBasic enemyScript = other.GetComponent<EnemyBasic>();
+			AI enemyScript = other.GetComponent<AI>();
 			enemyScript.enemyHP -= damage;
 			
 			
