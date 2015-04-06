@@ -724,7 +724,6 @@ MonoBehaviour:
   alertScale: 15
   fov: 45
   armorBonusHP: 0
-  armorOn: 0
   medPack: 0
   canSearch: 1
   canMove: 1
@@ -1692,7 +1691,6 @@ MonoBehaviour:
   alertScale: 15
   fov: 100
   armorBonusHP: 0
-  armorOn: 0
   medPack: 0
   canSearch: 1
   canMove: 1
@@ -2987,7 +2985,6 @@ MonoBehaviour:
   alertScale: 15
   fov: 100
   armorBonusHP: 0
-  armorOn: 0
   medPack: 0
   canSearch: 1
   canMove: 1
@@ -3021,7 +3018,6 @@ MonoBehaviour:
   alertScale: 15
   fov: 100
   armorBonusHP: 0
-  armorOn: 0
   medPack: 0
   canSearch: 1
   canMove: 1
@@ -4542,7 +4538,7 @@ MonoBehaviour:
     bulletCooldown: 1
     bulletLength: 50
   - weaponType: 1
-    bulletDamage: 1.5
+    bulletDamage: 2
     aoeRadius: 0
     bulletSpeed: .100000001
     bulletCooldown: 1

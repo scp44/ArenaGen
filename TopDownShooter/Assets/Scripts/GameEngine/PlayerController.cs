@@ -4,6 +4,9 @@ using System.Collections;
 //[RequireComponent (typeof (CharacterController))]
 public class PlayerController : MonoBehaviour {
 
+	private const float ARMOR_AMOUNT = 5;
+	private const float MEDPACK_HEALTH = 5;
+
 	//player HP
 	public float playerHP = 10;
 	public float maxHP = 10;
@@ -90,6 +93,7 @@ public class PlayerController : MonoBehaviour {
 		BulletBehaviors bulletScript = bulletClone.GetComponent<BulletBehaviors>();
 		bulletScript.lifeSpan = equippedWeapon.bulletLength;
 		bulletScript.damage = equippedWeapon.bulletDamage;
+		bulletScript.startPosition = transform.position;
 
 		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
 	}
@@ -110,8 +114,15 @@ public class PlayerController : MonoBehaviour {
 		playerHP += hp;
 	}
 
+	public void takeDamage(float damage) {
+		float armorDamage = Mathf.Min (damage, armorBonusHP);
+		float hpDamage = damage - armorDamage;
+		armorBonusHP -= armorDamage;
+		playerHP -= hpDamage;
+	}
+
 	public void activateArmor(){
 		armorOn = true;
-		armorBonusHP = 5;
+		armorBonusHP = ARMOR_AMOUNT;
 	}
 }

@@ -31,20 +31,19 @@ public class EnemyBasic: MonoBehaviour {
 	public float visionScale = 10;
 	public float alertScale = 15; 
 	public float fov = 100;
+	public bool isFiring = false;
 
 	//information that can be passed between enemies
 	private PassedInfo passedInfo;
 
 	//power up variables
 	public float armorBonusHP;
-	public bool armorOn = false;
 	public int medPack = 0;
 	private Rigidbody MedPack;
 
 	//AI parameters
 	private float timeSinceStateChange = 0;
 	private int state = -1; //the states are defined in the specific enemy classes
-	private bool isFiring = false;
 
 	//Do we really need these 2 variables?
 	//All enemies can search and move
@@ -138,13 +137,12 @@ public class EnemyBasic: MonoBehaviour {
 			return;
 
 		//if armor broken, cancel effect.
-		if (armorOn && armorBonusHP <= 0) {
-			armorOn = false;
+		if (armorBonusHP <= 0) {
 			armorBonusHP = 0;
 		}
 		
 		GameObject target = null;
-		if(!armorOn /*armor in line of sight*/){
+		if(armorBonusHP == 0 /*armor in line of sight*/){
 			//interrupt module
 			//target = armor;
 		}
@@ -157,10 +155,11 @@ public class EnemyBasic: MonoBehaviour {
 		
 		target = this.visionCheck ();
 		if (target != null && target.gameObject.tag == "Player") {
-			//FireBullet ();
 			StartFiring();
 			lookAt(target);
-			target = null;
+			this.passedInfo.playerPos = player.transform.position;
+			this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
+			//target = null;
 		}
 		else {
 			StopFiring();
@@ -205,8 +204,6 @@ public class EnemyBasic: MonoBehaviour {
 		angle = Vector3.Angle (targetDir, forward);
 		
 		if ((playerLocPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
-			this.passedInfo.playerPos = playerLocPos;
-			//this.lastTimeSeen = this.LocationInfo.timestamp;
 			toReturn = player;
 			toUse = 2;
 		}
@@ -216,12 +213,14 @@ public class EnemyBasic: MonoBehaviour {
 			Collider other;
 			//Debug.Log (transform.position.y.ToString());
 			Physics.Raycast (transform.position, (toReturn.transform.position - transform.position), out hit, visionScale);
-			Debug.DrawRay(transform.position, (toReturn.transform.position - transform.position), Color.white, 100);
 			other = hit.collider;
 			if(other.gameObject != null){
 				if (other.gameObject.tag == "Wall") {
+					Debug.DrawRay(transform.position, (toReturn.transform.position - transform.position), Color.red, 5);
 					return null;
 				}	
+				else
+					Debug.DrawRay(transform.position, (toReturn.transform.position - transform.position), Color.yellow, 5);
 			}
 		}
 		
@@ -259,9 +258,15 @@ public class EnemyBasic: MonoBehaviour {
 	public void increaseHP(float hp){
 		enemyHP += hp;
 	}
+
+	public void takeDamage(float damage) {
+		float armorDamage = Mathf.Min (damage, armorBonusHP);
+		float hpDamage = damage - armorDamage;
+		armorBonusHP -= armorDamage;
+		enemyHP -= hpDamage;
+	}
 	
 	public void activateArmor(){
-		armorOn = true;
 		armorBonusHP = ARMOR_AMOUNT;
 	}
 	

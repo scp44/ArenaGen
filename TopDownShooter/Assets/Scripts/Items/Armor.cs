@@ -15,13 +15,13 @@ public class Armor : MonoBehaviour {
 	void OnTriggerEnter (Collider obj){
 		if (obj.gameObject.tag == "Enemy") {
 			EnemyBasic enemyScript = obj.GetComponent<EnemyBasic> ();
-			if(!enemyScript.armorOn){
+			if(enemyScript.armorBonusHP<=0){
 				enemyScript.activateArmor ();
 				Destroy (this.gameObject);
 			}
 		} else if (obj.gameObject.tag == "Player") {
 			PlayerController playerScript = obj.GetComponent<PlayerController> ();
-			if(!playerScript.armorOn){
+			if(playerScript.armorBonusHP<=0){
 				playerScript.activateArmor ();
 				Destroy (this.gameObject);
 			}
