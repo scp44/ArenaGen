@@ -1,227 +1,49 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BossBasic : MonoBehaviour {
-	public float enemyHP = 5;
-	public float maxHP = 5;
-	public float equipped = 0;
-	public int gun1 = 0;
-	public int gun2 = 0;
-	public float speed = 100;
-	
-	public float commScale = 4;
-	public float visionScale = 10;
-	public float alertScale = 15; 
-	public float fov = 100;
-	
-	//0 = HEALER, 1 = SOLDIER, 2 = DEFENDER, 3 = BOSS
-	public float enemyType = 0;
-	
-	
-	public Vector3 bossPos;
-	public bool bossFound = false;
-	public Transform playerPos;
-	public double lastTimeSeen;
-	
-	//power up stuff
-	public int armorCount;
-	public bool armorOn = false;
-	
-	public Rigidbody Bullet;
-	// Use this for initialization
-	
-	public AI searchScript;
-	
-	float BulletLength(){
-		if (equipped == 0) {
-			return 50f;
-		} else if (equipped == 1) {
-			return 15f;
-		}else if (equipped == 2) {
-			return 100f;
-		}else if (equipped == 3) {
-			return 30f;
-		}else if (equipped == 4) {
-			return 200f;
-		}
-		else{
-			return 10f;
-		}
-	}
-	//number of frames between shots
-	float BulletCooldown(){
-		if (equipped == 0) {
-			return 20f;
-		} else if (equipped == 1) {
-			return 1f;
-		}else if (equipped == 2) {
-			return 50f;
-		}else if (equipped == 3) {
-			return 5f;
-		}else if (equipped == 4) {
-			return 1f;
-		}
-		else{
-			return 10f;
-		}
-	}
-	//amount of damage per bullet
-	float BulletDamage(){
-		if (equipped == 0) {
-			return 3f;
-		} else if (equipped == 1) {
-			return 1f;
-		} else if (equipped == 2) {
-			return 10f;
-		} else if (equipped == 3) {
-			return 2f;
-		} else if (equipped == 4) {
-			return 1f;
-		} else {
-			return 10f;
-		}
-	}
-	//individual bullet velocity scale
-	float BulletSpeed(){
-		if (equipped == 0) {
-			return 1f;
-		} else if (equipped == 1) {
-			return 3f;
-		} else if (equipped == 2) {
-			return 10f;
-		} else if (equipped == 3) {
-			return 1f;
-		} else if (equipped == 4) {
-			return 2f;
-		} else {
-			return 10f;
-		}
-	}
-	
-	//Transfers bullet stats to bullets
-	void FireBullet () {
-		var inFront = new Vector3 (0, 1, 0);
-		
-		Rigidbody bulletClone = (Rigidbody) Instantiate(Bullet, transform.position, transform.rotation);
-		bulletClone.velocity = transform.forward * speed * BulletSpeed();
-	
-		EnemyBulletBehaviors bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
-		bulletScript.lifeSpan = BulletLength ();
-		bulletScript.damage = BulletDamage ();
+public class BossBasic : EnemyBasic {
+	//A boss has two weapons instead of one
+	public int equipped;
+	public Vector3 initialPosition;
+	[Range(0f, 1f)]
+	public float idleAmount;
 
-		
-		
-		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
+	//States of the boss AI
+	private const int STATE_IDLE = 0;
+	private const int STATE_ALERT = 1;
+	private const int STATE_COMBAT = 2;
+	private float timeSinceStateChange = 0;
+	private int state = -1;
+
+	protected override void Start() {
+		base.Start ();
+		changeState (STATE_IDLE);
 	}
 
-	void SwitchGun(){
-		if (equipped == gun1) {
-			equipped = gun2;
-		} else {
-			equipped = gun1;
+	protected override void Update() {
+		timeSinceStateChange += Time.deltaTime;
+
+		switch (state) {
+		case STATE_IDLE:
+			/*
+			 * In the idle state the boss stands still and sometimes
+			 * wanders around in a small area
+			 */
+			break;
+		case STATE_ALERT:
+			/*
+			 * In the alert state the boss fires a few more rounds at the
+			 * last seen player position, then stays facing this position
+			 */
+			break;
+		case STATE_COMBAT:
+			/*
+			 * In the combat state the boss fires everything he has at the player
+			 */
+			break;
+		default:
+			Debug.Log ("The boss has unknown state (" + state.ToString() + ")");
+			break;
 		}
-	}
-	
-	public GameObject visionCheck(){
-		GameObject[] pUs = GameObject.FindGameObjectsWithTag ("MedPackPU");
-		GameObject player = GameObject.FindGameObjectsWithTag ("Player") [0];
-		GameObject closestPack = pUs[0];
-		
-		Vector3 forward = transform.forward;
-		float angle;
-		Vector3 targetDir;
-		
-		
-		Transform playerLocPos = player.transform;
-		targetDir = playerLocPos.position - transform.position;
-		angle = Vector3.Angle (targetDir, forward);
-		
-		if ((playerLocPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
-			this.playerPos = playerLocPos;
-			//this.lastTimeSeen = this.LocationInfo.timestamp;
-			return player;
-		}
-		
-		int i;
-		for (i = 0; i < pUs.Length; i++) {
-			Transform powerUpPos = pUs [i].transform;
-			GameObject powerUp = pUs [i];
-			targetDir = powerUpPos.position - transform.position;
-			angle = Vector3.Angle (targetDir,forward); 
-			
-			if ((powerUpPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
-				if((powerUpPos.position - transform.position).magnitude < (closestPack.transform.position - transform.position).magnitude){
-					closestPack = powerUp;		}
-			}
-		}
-		if ((closestPack.transform.position - transform.position).magnitude < (visionScale) && angle <= fov) {
-			return closestPack;
-		}
-		return null;
-	}
-	
-	public void commCheck(){
-		GameObject[] eUs = GameObject.FindGameObjectsWithTag ("Enemy");
-		
-		int i;
-		for(i = 0; i < eUs.Length; i++){
-			Transform npcPos = eUs[i].transform;
-			GameObject npc = eUs[i];
-			AI npcScript = npc.GetComponent<AI>();
-			if ((npcPos.position - transform.position).magnitude < (commScale)) {
-				if(bossFound){
-					//pass information
-					npcScript.bossPos = this.bossPos;
-				}
-				if(npcScript.lastTimeSeen < this.lastTimeSeen){
-					npcScript.lastTimeSeen = this.lastTimeSeen;
-					npcScript.playerPos = this.playerPos;
-				}
-			}}
-		
-	}
-	
-	public void increaseHP(int HP){
-		enemyHP += 5;
-	}
-	
-	public void activateArmor(){
-		armorOn = true;
-		armorCount = 5;
-	}
-	
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		//if armor broken, cancel effect.
-		if (armorOn && armorCount <= 0) {
-			armorOn = false;
-			armorCount = 0;
-		}
-		
-		GameObject target = null;
-		if(!armorOn /*armor in line of sight*/){
-			//interrupt module
-			//target = armor;
-		}
-		
-		if(enemyHP < 5 /*&& medpack in line of sight*/){
-			//interrupt module
-			//if(medPack is closer than current target)
-			//target = medPack;
-		}
-		
-		if (target != null)
-			searchScript.goTo (target);
-		
-		if (enemyHP <= 0) {
-			Application.LoadLevel ("WinScreen");
-			Destroy (this.gameObject);
-		}
-		
-		
 	}
 }

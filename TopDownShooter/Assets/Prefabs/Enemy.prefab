@@ -719,16 +719,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f35b84b127b849e38b74966118e7e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  repathRate: .300000012
-  canSearch: 1
-  canMove: 1
-  speed: 4
-  turningSpeed: 6
-  slowdownDistance: .600000024
-  pickNextWaypointDist: 1.5
-  forwardLook: 1
-  endReachedDistance: .0500000007
-  closestOnPathCheck: 1
+  enemyType: 0
+  Bullet: {fileID: 5437702, guid: b6ad801921a065c49967cb295720b9a4, type: 2}
+  speed: 2
   enemyHP: 5
   maxHP: 5
   equipped: 0
@@ -736,16 +729,19 @@ MonoBehaviour:
   commScale: 4
   visionScale: 10
   alertScale: 15
-  fov: 100
-  enemyType: 0
-  bossPos: {x: 0, y: 0, z: 0}
-  bossFound: 0
-  playerPos: {fileID: 0}
-  lastTimeSeen: 0
+  fov: 45
   armorCount: 0
   armorOn: 0
   medPack: 0
-  Bullet: {fileID: 5437702, guid: b6ad801921a065c49967cb295720b9a4, type: 2}
+  canSearch: 1
+  canMove: 1
+  repathRate: .300000012
+  turningSpeed: 6
+  slowdownDistance: .600000024
+  pickNextWaypointDist: 1.5
+  forwardLook: 1
+  endReachedDistance: .0500000007
+  closestOnPathCheck: 1
   anim: {fileID: 11114590}
   sleepVelocity: .200000003
   animationSpeed: .400000006

@@ -4,7 +4,7 @@ using Pathfinding.RVO;
 
 namespace Pathfinding {
 	[RequireComponent(typeof(Seeker))]
-	public class Healer : AI {
+	public class Healer : EnemyBasic {
 		
 		public Animation anim;
 		

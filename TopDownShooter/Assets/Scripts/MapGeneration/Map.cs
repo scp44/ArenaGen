@@ -5,7 +5,6 @@ public class Map: MonoBehaviour {
 
 	//Testing variables
 	public bool willGenerateIsland;
-	public bool useAI;
 
 	//Player
 	public Transform player;
@@ -16,7 +15,6 @@ public class Map: MonoBehaviour {
 	
 	//Impassable terrain
 	public MapCell waterPrefab;
-	public MapCell mountainPrefab;
 	public Transform wallPrefab;
 	public Transform wallNodePrefab;
 	public MapCell[] miscObstacleCellPrefabs;
@@ -86,9 +84,6 @@ public class Map: MonoBehaviour {
 		Vector3 startPosition3D = coordinatesFrom2D(startLocation, 0.6f);
 		player.transform.position = startPosition3D;
 		AstarPath.active.Scan();
-		if (useAI) {
-
-		}
 	}
 
 	//Pick a location for the player to start

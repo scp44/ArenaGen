@@ -7,12 +7,18 @@ public class GameManager : MonoBehaviour {
 	public Map map;
 	public Slider healthBar;
 	public PauseMenu pauseScript;
+	public Slider armorBar;
+	public Text fullHealthText;
+
+	private static GameManager instance;
 
 	// Use this for initialization
 	void Start () {
+		instance = this;
 		// Generate the map
 		map.generate ();
-		//pauseScript = GetComponent <PauseMenu> ();
+		fullHealthText.enabled = false;
+		armorBar.gameObject.SetActive (false);
 	}
 
 	void Update () {
@@ -25,8 +31,27 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public void updateHealthBar(GameObject player){
-		PlayerController playerScript = player.GetComponent<PlayerController>();
-		healthBar.value = playerScript.playerHP / playerScript.maxHP;
+	public static void updateHealthBar(float value){
+		instance.healthBar.value = value;
+	}
+
+	public static void updateArmorBar(float value){
+		if (value > 0) {
+			instance.armorBar.gameObject.SetActive (true);
+			instance.armorBar.value = value;
+		}
+		else {
+			instance.armorBar.gameObject.SetActive (false);
+		}
+	}
+
+	public static void displayHealthMessage () {
+		Debug.Log ("Text should be enabled.");
+		instance.fullHealthText.enabled = true;
+	}
+
+	public static void hideHealthMessage () {
+		Debug.Log ("Text should be disabled.");
+		instance.fullHealthText.enabled = false;
 	}
 }

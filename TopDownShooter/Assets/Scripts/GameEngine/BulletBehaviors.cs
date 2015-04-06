@@ -23,7 +23,7 @@ public class BulletBehaviors : MonoBehaviour {
 	}
 
 	void takeDamage(float damage, GameObject other) {
-		AI enemyScript = other.GetComponent<AI>();
+		EnemyBasic enemyScript = other.GetComponent<EnemyBasic>();
 		
 		if (enemyScript.armorOn) {
 			damage--;

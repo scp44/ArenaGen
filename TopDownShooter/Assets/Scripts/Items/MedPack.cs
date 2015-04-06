@@ -3,26 +3,24 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class MedPack : MonoBehaviour {
-	int timer;
-	Text warning;
+	float timer;
+	float timerStart;
 	// Use this for initialization
 	void Start () {
-		warning = GetComponent<Text>();
-		int timer = 0;
+		timer = -1f;;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (timer > 0) {
-			timer--;
-			if(timer == 0)
-				warning.text = "";
+		if (timer > 0 && Time.timeSinceLevelLoad - timerStart > timer) {
+			GameManager.hideHealthMessage();
+			timer = -1f;
 		}
 	}
 
 	void OnTriggerEnter(Collider obj){
 		if (obj.gameObject.tag == "Enemy") {
-			AI enemyScript = obj.GetComponent<AI> ();
+			EnemyBasic enemyScript = obj.GetComponent<EnemyBasic> ();
 			if(enemyScript.medPack < 1 && enemyScript.enemyType == 0){
 				enemyScript.pickUp ();
 				Destroy (this.gameObject);
@@ -38,15 +36,17 @@ public class MedPack : MonoBehaviour {
 				Destroy (this.gameObject);
 			}
 			else{
-				warning.text = "Your health is already full";
-				timer = 10;
+				//warning.text = "Your health is already full";
+				GameManager.displayHealthMessage();
+				timerStart = Time.timeSinceLevelLoad;
+				timer = 2;
 			}
 
 		}
 	}
 
 	void useMedPack (GameObject obj){
-		AI objScript = obj.GetComponent<AI> ();
+		EnemyBasic objScript = obj.GetComponent<EnemyBasic> ();
 		objScript.increaseHP(5);
 	}
 }

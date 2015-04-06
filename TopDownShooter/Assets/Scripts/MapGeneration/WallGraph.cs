@@ -28,9 +28,9 @@ public class WallGraph {
 	}
 
 	public void addEdge(int i, int j) {
-		Debug.Log ("Adding a new edge " + i.ToString() + " " + j.ToString());
-		Debug.Log ("Before the new edge nodeA had " + nodes[i].reachableNodes.Count.ToString() + " reachable nodes");
-		Debug.Log ("Before the new edge nodeB had " + nodes[j].reachableNodes.Count.ToString() + " reachable nodes");
+		//Debug.Log ("Adding a new edge " + i.ToString() + " " + j.ToString());
+		//Debug.Log ("Before the new edge nodeA had " + nodes[i].reachableNodes.Count.ToString() + " reachable nodes");
+		//Debug.Log ("Before the new edge nodeB had " + nodes[j].reachableNodes.Count.ToString() + " reachable nodes");
 		if (!edgeExists(i,j)) {
 			//Add the edge
 			nodes[i].neighbors.Add (nodes[j]);
@@ -46,29 +46,11 @@ public class WallGraph {
 						nodeB.reachableNodes.Add (nodeA);
 				}
 			}
-			/*
-			for(int k=0; k<nodes[i].reachableNodes.Count; k++) {
-				WallGraphNode node = nodes[i].reachableNodes[k];
-				Debug.Log("nodeA has node " + node.numberInGraph.ToString() + " reachable.");
-				if (!node.reachableNodes.Contains(nodes[j]))
-					node.reachableNodes.Add (nodes[j]);
-				if (!nodes[j].reachableNodes.Contains(node))
-					nodes[j].reachableNodes.Add (node);
-			}
-			for(int k=0; k<nodes[j].reachableNodes.Count; k++) {
-				WallGraphNode node = nodes[j].reachableNodes[k];
-				Debug.Log("nodeB has node " + node.numberInGraph.ToString() + " reachable.");
-				if (!node.reachableNodes.Contains(nodes[i]))
-					node.reachableNodes.Add (nodes[i]);
-				if (!nodes[i].reachableNodes.Contains(node))
-					nodes[i].reachableNodes.Add (node);
-			}
-			*/
 			nodes[i].reachableNodes.Add (nodes[j]);
 			nodes[j].reachableNodes.Add (nodes[i]);
 		}
-		Debug.Log ("After the new edge nodeA had " + nodes[i].reachableNodes.Count.ToString() + " reachable nodes");
-		Debug.Log ("After the new edge nodeB had " + nodes[j].reachableNodes.Count.ToString() + " reachable nodes");
+		//Debug.Log ("After the new edge nodeA had " + nodes[i].reachableNodes.Count.ToString() + " reachable nodes");
+		//Debug.Log ("After the new edge nodeB had " + nodes[j].reachableNodes.Count.ToString() + " reachable nodes");
 	}
 
 	public bool isReachable(int i, int j) {

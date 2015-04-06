@@ -14,7 +14,7 @@ public class Armor : MonoBehaviour {
 
 	void OnTriggerEnter (Collider obj){
 		if (obj.gameObject.tag == "Enemy") {
-			AI enemyScript = obj.GetComponent<AI> ();
+			EnemyBasic enemyScript = obj.GetComponent<EnemyBasic> ();
 			if(!enemyScript.armorOn){
 				enemyScript.activateArmor ();
 				Destroy (this.gameObject);

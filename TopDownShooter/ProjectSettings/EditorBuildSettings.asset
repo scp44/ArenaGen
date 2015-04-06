@@ -9,3 +9,9 @@ EditorBuildSettings:
     path: Assets/StartMenu.unity
   - enabled: 1
     path: Assets/GunSelect.unity
+  - enabled: 1
+    path: Assets/ArenaGen.unity
+  - enabled: 1
+    path: Assets/GameOver.unity
+  - enabled: 1
+    path: Assets/WinScreen.unity

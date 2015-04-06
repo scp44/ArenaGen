@@ -5,52 +5,87 @@ using System.Collections.Generic;
 using Pathfinding;
 using Pathfinding.RVO;
 
-
+//This class defines the basic enemy operations including AI
+//It is used as base class for specific enemy classes
 [RequireComponent(typeof(Seeker))]
 [AddComponentMenu("Pathfinding/AI/AIPath (generic)")]
-public class AI: MonoBehaviour {
-	
+public class EnemyBasic: MonoBehaviour {
+
+	//define enemy types
+	private const int ENEMY_HEALER = 0;
+	private const int ENEMY_SOLDIER = 1;
+	private const int ENEMY_DEFENDER = 2;
+	private const int ENEMY_BOSS = 3;
+
+	private const float ARMOR_AMOUNT = 5;
+	private const float MEDPACK_HEALTH = 5;
+
+	//basic enemy parameters
+	public int enemyType;
+	public Rigidbody Bullet;
+	public float speed = 3;
+	public float enemyHP = 5;
+	public float maxHP = 5;	
+	public float equipped = 0;	//weapon type equipped
+	public float movementSpeed = 100;
+	public float commScale = 4;
+	public float visionScale = 10;
+	public float alertScale = 15; 
+	public float fov = 100;
+
+	//information that can be passed between enemies
+	private PassedInfo passedInfo;
+
+	//power up variables
+	public float armorCount;
+	public bool armorOn = false;
+	public int medPack = 0;
+	private Rigidbody MedPack;
+
+	//AI parameters
+	private float timeSinceStateChange = 0;
+	private int state = -1; //the states are defined in the specific enemy classes
+	private bool isFiring = false;
+
+	//Do we really need these 2 variables?
+	//All enemies can search and move
+	public bool canSearch = true;
+	public bool canMove = true;
+
+	//internal variables
+	private Transform target;
+	private Vector3 targetDir;
+	private GameObject[] pUs;
+	private GameObject player;
+	//private GameObject toReturn = null;
+	private float angle;
+	private int toUse = 0;
+
+	//The rest of the variables are related to Pathfinding
+
 	/** Determines how often it will search for new paths. 
 	 * If you have fast moving targets or AIs, you might want to set it to a lower value.
 	 * The value is in seconds between path requests.
 	 */
 	public float repathRate = 0.5F;
-
-	private Transform target;
-
-	private int enemyID; // 0 healer, 1 solder, 2 Defender, 3 boss
-
-	public bool canSearch = true;
-
-	public bool canMove = true;
-
-
-
-	public float speed = 3;
-	
 	/** Rotation speed.
 	 * Rotation is calculated using Quaternion.SLerp. This variable represents the damping, the higher, the faster it will be able to rotate.
 	 */
 	public float turningSpeed = 5;
-	
 	/** Distance from the target point where the AI will start to slow down.
 	 * Note that this doesn't only affect the end point of the path
  	 * but also any intermediate points, so be sure to set #forwardLook and #pickNextWaypointDist to a higher value than this
  	 */
 	public float slowdownDistance = 0.6F;
-	
 	/** Determines within what range it will switch to target the next waypoint in the path */
 	public float pickNextWaypointDist = 2;
-	
 	/** Target point is Interpolated on the current segment in the path so that it has a distance of #forwardLook from the AI.
 	  * See the detailed description of AIPath for an illustrative image */
 	public float forwardLook = 1;
-	
 	/** Distance to the end point to consider the end of path to be reached.
 	 * When this has been reached, the AI will not move anymore until the target changes and OnTargetReached will be called.
 	 */
 	public float endReachedDistance = 0.2F;
-	
 	/** Do a closest point on path check when receiving path callback.
 	 * Usually the AI has moved a bit between requesting the path, and getting it back, and there is usually a small gap between the AI
 	 * and the closest node.
@@ -59,180 +94,85 @@ public class AI: MonoBehaviour {
 	 * even though it really should just proceed forward.
 	 */
 	public bool closestOnPathCheck = true;
-	
 	protected float minMoveScale = 0.05F;
-	
 	/** Cached Seeker component */
 	protected Seeker seeker;
-	
 	/** Cached Transform component */
 	protected Transform tr;
-	
 	/** Time when the last path request was sent */
 	private float lastRepath = -9999;
-	
 	/** Current path which is followed */
 	protected Path path;
-	
 	/** Cached CharacterController component */
 	//protected CharacterController controller;
-	
 	/** Cached NavmeshController component */
 	protected NavmeshController navController;
-	
 	protected RVOController rvoController;
-	
 	/** Cached Rigidbody component */
 	protected Rigidbody rigid;
-	
 	/** Current index in the path which is current target */
 	protected int currentWaypointIndex = 0;
-	
 	/** Holds if the end-of-path is reached
 	 * \see TargetReached */
 	protected bool targetReached = false;
-	
 	/** Only when the previous path has been returned should be search for a new path */
 	protected bool canSearchAgain = true;
-
 	protected Vector3 lastFoundWaypointPosition;
 	protected float lastFoundWaypointTime = -9999;
 
-	public float enemyHP = 5;
-	public float maxHP = 5;
-	public float equipped = 0;
-	public float movementSpeed = 100;
-	
-	public float commScale = 4;
-	public float visionScale = 10;
-	public float alertScale = 15; 
-	public float fov = 100;
-	
-	//0 = HEALER, 1 = SOLDIER, 2 = DEFENDER, 3 = BOSS
-	public float enemyType = 0;
-	
-	
-	public Vector3 bossPos;
-	public bool bossFound = false;
-	public Transform playerPos;
-	public double lastTimeSeen;
-	
-	//power up stuff
-	public int armorCount;
-	public bool armorOn = false;
-	public int medPack = 0;
-	private Rigidbody MedPack;
-	
-	public Rigidbody Bullet;
+	//The Start() and Update() functions will probably be overriden
+	//However, base.Start() and base.Update() should be called
+	//The contents must be relevant to all the enemy types
 
-
-	private GameObject[] pUs;
-	private GameObject player;
-
-	private GameObject toReturn = null;
-
-	private float angle;
-	private Vector3 targetDir;
-	private int toUse = 0;
-	// Use this for initialization
-
-	/** Starts searching for paths.
-	 * If you override this function you should in most cases call base.Start () at the start of it.
-	 * \see OnEnable
-	 * \see RepeatTrySearchPath
-	 */
 	protected virtual void Start () {
 		target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 		startHasRun = true;
 		OnEnable ();
 	}
-	
-	float BulletLength(){
-		if (equipped == 0) {
-			return 50f;
-		} else if (equipped == 1) {
-			return 15f;
-		}else if (equipped == 2) {
-			return 100f;
-		}else if (equipped == 3) {
-			return 30f;
-		}else if (equipped == 4) {
-			return 200f;
+
+	protected virtual void Update () {
+		//if armor broken, cancel effect.
+		if (armorOn && armorCount <= 0) {
+			armorOn = false;
+			armorCount = 0;
 		}
-		else{
-			return 10f;
-		}
-	}
-	//number of frames between shots
-	float BulletCooldown(){
-		if (equipped == 0) {
-			return 20f;
-		} else if (equipped == 1) {
-			return 1f;
-		}else if (equipped == 2) {
-			return 50f;
-		}else if (equipped == 3) {
-			return 5f;
-		}else if (equipped == 4) {
-			return 1f;
-		}
-		else{
-			return 10f;
-		}
-	}
-	//amount of damage per bullet
-	float BulletDamage(){
-		if (equipped == 0) {
-			return 3f;
-		} else if (equipped == 1) {
-			return 1f;
-		} else if (equipped == 2) {
-			return 10f;
-		} else if (equipped == 3) {
-			return 2f;
-		} else if (equipped == 4) {
-			return 1f;
-		} else {
-			return 10f;
-		}
-	}
-	//individual bullet velocity scale
-	float BulletSpeed(){
-		if (equipped == 0) {
-			return 1f;
-		} else if (equipped == 1) {
-			return 3f;
-		} else if (equipped == 2) {
-			return 10f;
-		} else if (equipped == 3) {
-			return 1f;
-		} else if (equipped == 4) {
-			return 2f;
-		} else {
-			return 2f;
-		}
-	}
-	
-	//Transfers bullet stats to bullets
-	void FireBullet () {
-		//var inFront = new Vector3 (0, 1, 0);
 		
-		Rigidbody bulletClone = (Rigidbody) Instantiate(Bullet, transform.position, transform.rotation);
-		bulletClone.velocity = transform.forward * movementSpeed * BulletSpeed();
-
-		EnemyBulletBehaviors bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
-		bulletScript.lifeSpan = BulletLength ();
-		bulletScript.damage = BulletDamage ();
-
-		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
+		GameObject target = null;
+		if(!armorOn /*armor in line of sight*/){
+			//interrupt module
+			//target = armor;
+		}
+		
+		if(enemyHP < 5 /*&& medpack in line of sight*/){
+			//interrupt module
+			//if(medPack is closer than current target)
+			//target = medPack;
+		}
+		
+		target = this.visionCheck ();
+		if (target != null && target.gameObject.tag == "Player") {
+			//FireBullet ();
+			StartFiring();
+			target = null;
+		}
+		else {
+			StopFiring();
+		}
+		
+		if(medPack > 0 /*&& ((enemy in com-check circle && has < some HP) || enemy is Boss)*/){
+			//interrupt module
+			//useMedPack(enemy);
+		}
+		
+		deathCheck ();
 	}
-	
+
 	public GameObject visionCheck(){
+		GameObject toReturn = null;
 		pUs = GameObject.FindGameObjectsWithTag ("MedPackPU");
 		player = GameObject.FindGameObjectsWithTag ("Player") [0];
-		GameObject closestPack = pUs [0];
+		GameObject closestPack = pUs [0]; //TODO: make a proper function to find the closest pack
 		Vector3 forward = transform.forward;
-		
 		
 		int i;
 		for (i = 0; i < pUs.Length; i++) {
@@ -253,36 +193,32 @@ public class AI: MonoBehaviour {
 			toUse = 1;
 		}
 		
-		
-		
 		Transform playerLocPos = player.transform;
 		targetDir = playerLocPos.position - transform.position;
 		angle = Vector3.Angle (targetDir, forward);
 		
 		if ((playerLocPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
-			this.playerPos = playerLocPos;
+			this.passedInfo.playerPos = playerLocPos;
 			//this.lastTimeSeen = this.LocationInfo.timestamp;
 			toReturn = player;
 			toUse = 2;
 		}
-
-		if (toReturn != null) {
-				RaycastHit hit;
-				Collider other;
-				Physics.Raycast (transform.position, (toReturn.transform.position - transform.position), out hit, visionScale);
-				other = hit.collider;
-				if(other.gameObject != null){
-				if (other.gameObject.tag == "Wall") {
-						return null;
-				}}
-				}
 		
+		if (toReturn != null) {
+			RaycastHit hit;
+			Collider other;
+			Physics.Raycast (transform.position, (toReturn.transform.position - transform.position), out hit, visionScale);
+			other = hit.collider;
+			if(other.gameObject != null){
+				if (other.gameObject.tag == "Wall") {
+					return null;
+				}	
+			}
+		}
 		
 		return toReturn;
 	}
-
-
-
+	
 	public void commCheck(){
 		GameObject[] eUs = GameObject.FindGameObjectsWithTag ("Enemy");
 		
@@ -290,19 +226,20 @@ public class AI: MonoBehaviour {
 		for(i = 0; i < eUs.Length; i++){
 			Transform npcPos = eUs[i].transform;
 			GameObject npc = eUs[i];
-			AI npcScript = npc.GetComponent<AI>();
+			EnemyBasic npcScript = npc.GetComponent<EnemyBasic>();
 			if ((npcPos.position - transform.position).magnitude < (commScale)) {
-				if(bossFound){
-					//pass information
-					npcScript.bossPos = this.bossPos;
+				//pass information
+				if(this.passedInfo.bossFound){
+					npcScript.passedInfo.bossPos = this.passedInfo.bossPos;
 				}
-				if(npcScript.lastTimeSeen < this.lastTimeSeen){
-					npcScript.lastTimeSeen = this.lastTimeSeen;
-					npcScript.playerPos = this.playerPos;
+				if(npcScript.passedInfo.lastTimeSeen < this.passedInfo.lastTimeSeen){
+					npcScript.passedInfo.lastTimeSeen = this.passedInfo.lastTimeSeen;
+					npcScript.passedInfo.playerPos = this.passedInfo.playerPos;
 				}
-			}}
-		
+			}
+		}
 	}
+
 	public void deathCheck(){
 		if (enemyHP <= 0) {
 			if(medPack > 0){
@@ -310,14 +247,13 @@ public class AI: MonoBehaviour {
 			Destroy(this.gameObject);}
 	}
 
-
-	public void increaseHP(int HP){
-		enemyHP += 5;
+	public void increaseHP(float hp){
+		enemyHP += hp;
 	}
 	
 	public void activateArmor(){
 		armorOn = true;
-		armorCount = 5;
+		armorCount = ARMOR_AMOUNT;
 	}
 	
 	public void pickUp(){
@@ -329,10 +265,117 @@ public class AI: MonoBehaviour {
 	}
 	
 	public void useMedPack(GameObject enemy){
-		AI enemyScript = enemy.GetComponent<AI>();
-		enemyScript.increaseHP (5);
+		EnemyBasic enemyScript = enemy.GetComponent<EnemyBasic>();
+		enemyScript.increaseHP (Mathf.Max (enemyScript.maxHP-enemyScript.enemyHP, MEDPACK_HEALTH));
 		medPack--;
 	}
+
+	//Transfers bullet stats to bullets
+	protected void FireBullet () {
+		//var inFront = new Vector3 (0, 1, 0);
+		
+		Rigidbody bulletClone = (Rigidbody) Instantiate(Bullet, transform.position, transform.rotation);
+		bulletClone.velocity = transform.forward * movementSpeed * BulletSpeed();
+		
+		EnemyBulletBehaviors bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
+		bulletScript.lifeSpan = BulletLength ();
+		bulletScript.damage = BulletDamage ();
+		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
+	}
+	
+	protected void StartFiring () {
+		if (isFiring)
+			return;
+		else {
+			isFiring = true;
+			InvokeRepeating("FireBullet", 0, BulletCooldown());
+		}
+	}
+	
+	protected void StopFiring () {
+		if (isFiring) {
+			isFiring = false;
+			CancelInvoke("FireBullet");
+		}
+	}
+	
+	protected void changeState(int newState) {
+		if (state != newState) {
+			state = newState;
+			timeSinceStateChange = 0;
+		}
+	}
+
+	//TODO: create a class/struct for weapons and define all the parameters in Unity as public variables
+	//get the bullet path length
+	protected float BulletLength(){
+		if (equipped == 0) {
+			return 50f;
+		} else if (equipped == 1) {
+			return 15f;
+		}else if (equipped == 2) {
+			return 100f;
+		}else if (equipped == 3) {
+			return 30f;
+		}else if (equipped == 4) {
+			return 200f;
+		}
+		else{
+			return 10f;
+		}
+	}
+	
+	//number of frames between shots
+	protected float BulletCooldown(){
+		if (equipped == 0) {
+			return 1f;
+		} else if (equipped == 1) {
+			return 1f;
+		}else if (equipped == 2) {
+			return 1f;
+		}else if (equipped == 3) {
+			return 1f;
+		}else if (equipped == 4) {
+			return 1f;
+		}
+		else{
+			return 10f;
+		}
+	}
+	//amount of damage per bullet
+	protected float BulletDamage(){
+		if (equipped == 0) {
+			return 3f;
+		} else if (equipped == 1) {
+			return 1f;
+		} else if (equipped == 2) {
+			return 10f;
+		} else if (equipped == 3) {
+			return 2f;
+		} else if (equipped == 4) {
+			return 1f;
+		} else {
+			return 10f;
+		}
+	}
+	//individual bullet velocity scale
+	protected float BulletSpeed(){
+		if (equipped == 0) {
+			return 0.1f;
+		} else if (equipped == 1) {
+			return 0.3f;
+		} else if (equipped == 2) {
+			return 0.1f;
+		} else if (equipped == 3) {
+			return 0.1f;
+		} else if (equipped == 4) {
+			return 0.2f;
+		} else {
+			return 0.2f;
+		}
+	}
+
+	//The rest of the functions are related to Pathfinding
 
 	/** Returns if the end-of-path has been reached
 	 * \see targetReached */
@@ -485,7 +528,7 @@ public class AI: MonoBehaviour {
 		//Claim the new path
 		p.Claim (this);
 		
-		// Path couldn't be calculated of some reason.
+		// Path coßuldn't be calculated of some reason.
 		// More info in p.errorLog (debug string)
 		if (p.error) {
 			p.Release (this);
@@ -533,44 +576,6 @@ public class AI: MonoBehaviour {
 		}
 
 		return tr.position;
-	}
-	
-	public virtual void Update () {
-		//if armor broken, cancel effect.
-		if (armorOn && armorCount <= 0) {
-			armorOn = false;
-			armorCount = 0;
-		}
-		
-		GameObject target = null;
-		if(!armorOn /*armor in line of sight*/){
-			//interrupt module
-			//target = armor;
-		}
-		
-		if(enemyHP < 5 /*&& medpack in line of sight*/){
-			//interrupt module
-			//if(medPack is closer than current target)
-			//target = medPack;
-		}
-		
-		target = this.visionCheck ();
-		if (target != null) {
-						if (target.gameObject.tag == "Player") {
-								FireBullet ();
-								target = null;
-						}
-				}
-		
-		if(medPack > 0 /*&& ((enemy in com-check circle && has < some HP) || enemy is Boss)*/){
-			//interrupt module
-			//useMedPack(enemy);
-		}
-		
-		deathCheck ();
-
-
-	
 	}
 	
 	/** Point to where the AI is heading.
