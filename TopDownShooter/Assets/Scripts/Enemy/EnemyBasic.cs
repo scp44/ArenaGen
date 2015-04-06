@@ -153,6 +153,7 @@ public class EnemyBasic: MonoBehaviour {
 		if (target != null && target.gameObject.tag == "Player") {
 			//FireBullet ();
 			StartFiring();
+			lookAt(target);
 			target = null;
 		}
 		else {
@@ -207,7 +208,9 @@ public class EnemyBasic: MonoBehaviour {
 		if (toReturn != null) {
 			RaycastHit hit;
 			Collider other;
+			//Debug.Log (transform.position.y.ToString());
 			Physics.Raycast (transform.position, (toReturn.transform.position - transform.position), out hit, visionScale);
+			Debug.DrawRay(transform.position, (toReturn.transform.position - transform.position), Color.white, 100);
 			other = hit.collider;
 			if(other.gameObject != null){
 				if (other.gameObject.tag == "Wall") {
@@ -268,6 +271,12 @@ public class EnemyBasic: MonoBehaviour {
 		EnemyBasic enemyScript = enemy.GetComponent<EnemyBasic>();
 		enemyScript.increaseHP (Mathf.Max (enemyScript.maxHP-enemyScript.enemyHP, MEDPACK_HEALTH));
 		medPack--;
+	}
+
+	//Look at the object
+	//TODO: add slight error
+	protected void lookAt(GameObject target) {
+		this.transform.LookAt (target.transform, Vector3.up);
 	}
 
 	//Transfers bullet stats to bullets
