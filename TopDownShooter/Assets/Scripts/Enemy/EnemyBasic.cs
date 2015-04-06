@@ -22,11 +22,10 @@ public class EnemyBasic: MonoBehaviour {
 
 	//basic enemy parameters
 	public int enemyType;
-	public Rigidbody Bullet;
 	public float speed = 3;
 	public float enemyHP = 5;
 	public float maxHP = 5;	
-	public float equipped = 0;	//weapon type equipped
+	public int equipped = 0;	//weapon type equipped
 	public float movementSpeed = 100;
 	public float commScale = 4;
 	public float visionScale = 10;
@@ -37,7 +36,7 @@ public class EnemyBasic: MonoBehaviour {
 	private PassedInfo passedInfo;
 
 	//power up variables
-	public float armorCount;
+	public float armorBonusHP;
 	public bool armorOn = false;
 	public int medPack = 0;
 	private Rigidbody MedPack;
@@ -57,6 +56,8 @@ public class EnemyBasic: MonoBehaviour {
 	private Vector3 targetDir;
 	private GameObject[] pUs;
 	private GameObject player;
+	private WeaponInfo equippedWeapon;
+	private Rigidbody bullet;
 	//private GameObject toReturn = null;
 	private float angle;
 	private int toUse = 0;
@@ -127,14 +128,19 @@ public class EnemyBasic: MonoBehaviour {
 	protected virtual void Start () {
 		target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 		startHasRun = true;
+		equippedWeapon = WeaponManager.getWeapon (equipped);
+		bullet = WeaponManager.getEnemyBulletPrefab (equipped);
 		OnEnable ();
 	}
 
 	protected virtual void Update () {
+		if (Time.timeScale <= 0)
+			return;
+
 		//if armor broken, cancel effect.
-		if (armorOn && armorCount <= 0) {
+		if (armorOn && armorBonusHP <= 0) {
 			armorOn = false;
-			armorCount = 0;
+			armorBonusHP = 0;
 		}
 		
 		GameObject target = null;
@@ -256,7 +262,7 @@ public class EnemyBasic: MonoBehaviour {
 	
 	public void activateArmor(){
 		armorOn = true;
-		armorCount = ARMOR_AMOUNT;
+		armorBonusHP = ARMOR_AMOUNT;
 	}
 	
 	public void pickUp(){
@@ -283,12 +289,12 @@ public class EnemyBasic: MonoBehaviour {
 	protected void FireBullet () {
 		//var inFront = new Vector3 (0, 1, 0);
 		
-		Rigidbody bulletClone = (Rigidbody) Instantiate(Bullet, transform.position, transform.rotation);
-		bulletClone.velocity = transform.forward * movementSpeed * BulletSpeed();
+		Rigidbody bulletClone = (Rigidbody) Instantiate(bullet, transform.position, transform.rotation);
+		bulletClone.velocity = transform.forward * movementSpeed * equippedWeapon.bulletSpeed;
 		
 		EnemyBulletBehaviors bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
-		bulletScript.lifeSpan = BulletLength ();
-		bulletScript.damage = BulletDamage ();
+		bulletScript.lifeSpan = equippedWeapon.bulletLength;
+		bulletScript.damage = equippedWeapon.bulletDamage;
 		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
 	}
 	
@@ -297,7 +303,8 @@ public class EnemyBasic: MonoBehaviour {
 			return;
 		else {
 			isFiring = true;
-			InvokeRepeating("FireBullet", 0, BulletCooldown());
+			//InvokeRepeating("FireBullet", 0, BulletCooldown());
+			InvokeRepeating("FireBullet", 0, equippedWeapon.bulletCooldown);
 		}
 	}
 	
@@ -314,76 +321,7 @@ public class EnemyBasic: MonoBehaviour {
 			timeSinceStateChange = 0;
 		}
 	}
-
-	//TODO: create a class/struct for weapons and define all the parameters in Unity as public variables
-	//get the bullet path length
-	protected float BulletLength(){
-		if (equipped == 0) {
-			return 50f;
-		} else if (equipped == 1) {
-			return 15f;
-		}else if (equipped == 2) {
-			return 100f;
-		}else if (equipped == 3) {
-			return 30f;
-		}else if (equipped == 4) {
-			return 200f;
-		}
-		else{
-			return 10f;
-		}
-	}
 	
-	//number of frames between shots
-	protected float BulletCooldown(){
-		if (equipped == 0) {
-			return 1f;
-		} else if (equipped == 1) {
-			return 1f;
-		}else if (equipped == 2) {
-			return 1f;
-		}else if (equipped == 3) {
-			return 1f;
-		}else if (equipped == 4) {
-			return 1f;
-		}
-		else{
-			return 10f;
-		}
-	}
-	//amount of damage per bullet
-	protected float BulletDamage(){
-		if (equipped == 0) {
-			return 3f;
-		} else if (equipped == 1) {
-			return 1f;
-		} else if (equipped == 2) {
-			return 10f;
-		} else if (equipped == 3) {
-			return 2f;
-		} else if (equipped == 4) {
-			return 1f;
-		} else {
-			return 10f;
-		}
-	}
-	//individual bullet velocity scale
-	protected float BulletSpeed(){
-		if (equipped == 0) {
-			return 0.1f;
-		} else if (equipped == 1) {
-			return 0.3f;
-		} else if (equipped == 2) {
-			return 0.1f;
-		} else if (equipped == 3) {
-			return 0.1f;
-		} else if (equipped == 4) {
-			return 0.2f;
-		} else {
-			return 0.2f;
-		}
-	}
-
 	//The rest of the functions are related to Pathfinding
 
 	/** Returns if the end-of-path has been reached

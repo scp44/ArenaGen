@@ -27,7 +27,7 @@ public class BulletBehaviors : MonoBehaviour {
 		
 		if (enemyScript.armorOn) {
 			damage--;
-			enemyScript.armorCount--;
+			enemyScript.armorBonusHP--;
 		}
 		
 		enemyScript.enemyHP -= damage;

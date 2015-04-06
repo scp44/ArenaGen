@@ -143,15 +143,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHP: 10
   maxHP: 10
-  armorCount: 0
+  armorBonusHP: 0
   armorOn: 0
   rotationSpeed: 450
   walkSpeed: 5
   runSpeed: 3
-  Bullet: {fileID: 5456608, guid: edfaf2011a2a3714794c0677bf8cd0f8, type: 2}
   speed: 10
   gun1: 0
-  gun2: 2
+  gun2: 1
 --- !u!33 &25744905
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -715,7 +714,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 0
-  Bullet: {fileID: 5437702, guid: b6ad801921a065c49967cb295720b9a4, type: 2}
   speed: 2
   enemyHP: 5
   maxHP: 5
@@ -725,7 +723,7 @@ MonoBehaviour:
   visionScale: 10
   alertScale: 15
   fov: 45
-  armorCount: 0
+  armorBonusHP: 0
   armorOn: 0
   medPack: 0
   canSearch: 1
@@ -1684,7 +1682,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 0
-  Bullet: {fileID: 0}
   speed: 3
   enemyHP: 5
   maxHP: 5
@@ -1694,7 +1691,7 @@ MonoBehaviour:
   visionScale: 10
   alertScale: 15
   fov: 100
-  armorCount: 0
+  armorBonusHP: 0
   armorOn: 0
   medPack: 0
   canSearch: 1
@@ -2980,7 +2977,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 0
-  Bullet: {fileID: 0}
   speed: 3
   enemyHP: 5
   maxHP: 5
@@ -2990,7 +2986,7 @@ MonoBehaviour:
   visionScale: 10
   alertScale: 15
   fov: 100
-  armorCount: 0
+  armorBonusHP: 0
   armorOn: 0
   medPack: 0
   canSearch: 1
@@ -3015,7 +3011,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 0
-  Bullet: {fileID: 0}
   speed: 3
   enemyHP: 5
   maxHP: 5
@@ -3025,7 +3020,7 @@ MonoBehaviour:
   visionScale: 10
   alertScale: 15
   fov: 100
-  armorCount: 0
+  armorBonusHP: 0
   armorOn: 0
   medPack: 0
   canSearch: 1
@@ -4036,6 +4031,7 @@ Transform:
   - {fileID: 1297725443}
   - {fileID: 862054793}
   - {fileID: 911897821}
+  - {fileID: 2115133458}
   m_Father: {fileID: 0}
   m_RootOrder: 3
 --- !u!1 &1789783059
@@ -4499,3 +4495,91 @@ MonoBehaviour:
   inGameDebugPath: 
   isScanning: 0
   showGraphs: 1
+--- !u!1 &2115133457
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 2115133458}
+  - 114: {fileID: 2115133459}
+  m_Layer: 0
+  m_Name: WeaponManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2115133458
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2115133457}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1789653997}
+  m_RootOrder: 3
+--- !u!114 &2115133459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2115133457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1871f7528a7dd40109eefd61a8a1fded, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponStats:
+  - weaponType: 0
+    bulletDamage: 1
+    aoeRadius: 0
+    bulletSpeed: .200000003
+    bulletCooldown: 1
+    bulletLength: 50
+  - weaponType: 1
+    bulletDamage: 1.5
+    aoeRadius: 0
+    bulletSpeed: .100000001
+    bulletCooldown: 1
+    bulletLength: 50
+  - weaponType: 2
+    bulletDamage: 3
+    aoeRadius: 0
+    bulletSpeed: .100000001
+    bulletCooldown: 1
+    bulletLength: 50
+  - weaponType: 3
+    bulletDamage: .5
+    aoeRadius: 0
+    bulletSpeed: .100000001
+    bulletCooldown: 1
+    bulletLength: 50
+  - weaponType: 4
+    bulletDamage: 1
+    aoeRadius: 0
+    bulletSpeed: .100000001
+    bulletCooldown: 1
+    bulletLength: 50
+  weaponPrefabs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  enemyBulletPrefabs:
+  - {fileID: 11437702, guid: b6ad801921a065c49967cb295720b9a4, type: 2}
+  - {fileID: 11498384, guid: a6765575c6584444c99356f85c700568, type: 2}
+  - {fileID: 11453792, guid: 418d894d287c2f04e82b243a88c4583f, type: 2}
+  - {fileID: 11426738, guid: 4fa3689234e9eae4ebacea8707559d5b, type: 2}
+  - {fileID: 11468218, guid: 1e57bbfca0b1b694ca34e82389a1893c, type: 2}
+  playerBulletPrefabs:
+  - {fileID: 11492332, guid: edfaf2011a2a3714794c0677bf8cd0f8, type: 2}
+  - {fileID: 11492332, guid: a2134670cfb5c4210816adc89b38c224, type: 2}
+  - {fileID: 11492332, guid: c97fd5a98c88b46f98c86a9060edc521, type: 2}
+  - {fileID: 11492332, guid: 00ee74bc7f30049c8a602466a21bb515, type: 2}
+  - {fileID: 11492332, guid: 952b59e5f375c4b6cbbe7174487a8fe2, type: 2}

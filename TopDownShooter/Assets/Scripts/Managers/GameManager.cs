@@ -23,7 +23,6 @@ public class GameManager : MonoBehaviour {
 
 	void Update () {
 		if(Input.GetKey("escape")){
-			Debug.Log ("Pause here");
 			//actually pause the game
 			Time.timeScale = 0;
 			//load pause menu
@@ -46,12 +45,10 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public static void displayHealthMessage () {
-		Debug.Log ("Text should be enabled.");
 		instance.fullHealthText.enabled = true;
 	}
 
 	public static void hideHealthMessage () {
-		Debug.Log ("Text should be disabled.");
 		instance.fullHealthText.enabled = false;
 	}
 }
