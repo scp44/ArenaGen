@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 //------------------------------------------------
-public static class NotificationsManager 
+public static class NotificationManager 
 {
 	//Private variables
 	//------------------------------------------------

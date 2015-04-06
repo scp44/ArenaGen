@@ -136,43 +136,45 @@ public class PlayerController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		//if armor broken, cancel effect.
-		if (armorOn && armorCount <= 0) {
-			armorOn = false;
-			armorCount = 0;
-		}
+		if (Time.timeScale > 0) {
+			//if armor broken, cancel effect.
+			if (armorOn && armorCount <= 0) {
+				armorOn = false;
+				armorCount = 0;
+			}
 
-		Vector3 movement = new Vector3 (0, 0, 0);
+			Vector3 movement = new Vector3 (0, 0, 0);
 
-		var mouse = Input.mousePosition;
-		var screenPoint = Camera.main.WorldToScreenPoint(transform.localPosition);
-		var offset = new Vector2(mouse.x - screenPoint.x, mouse.y - screenPoint.y);
-		var angle = Mathf.Atan2(offset.x, offset.y) * Mathf.Rad2Deg;
-		transform.rotation = Quaternion.Euler(0, angle, 0);
+			var mouse = Input.mousePosition;
+			var screenPoint = Camera.main.WorldToScreenPoint (transform.localPosition);
+			var offset = new Vector2 (mouse.x - screenPoint.x, mouse.y - screenPoint.y);
+			var angle = Mathf.Atan2 (offset.x, offset.y) * Mathf.Rad2Deg;
+			transform.rotation = Quaternion.Euler (0, angle, 0);
 
-		//Vector3 input = new Vector3 (Input.GetAxisRaw ("Horizontal"), 0, Input.GetAxisRaw ("Vertical"));
-		float moveHorizontal = Input.GetAxis ("Horizontal");
-		float moveVertical = Input.GetAxis ("Vertical");
+			//Vector3 input = new Vector3 (Input.GetAxisRaw ("Horizontal"), 0, Input.GetAxisRaw ("Vertical"));
+			float moveHorizontal = Input.GetAxis ("Horizontal");
+			float moveVertical = Input.GetAxis ("Vertical");
 		
-		movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
-		rigidbody.velocity = movement * walkSpeed;
+			movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
+			rigidbody.velocity = movement * walkSpeed;
 
-		//fire on click. should handle special firing such as spreads.
-		if (Input.GetMouseButtonDown(0) && cdEq > BulletCooldown ()) {
-			cdEq = 0;
-			FireBullet();
-		}
-		cdEq++;
+			//fire on click. should handle special firing such as spreads.
+			if (Input.GetMouseButtonDown (0) && cdEq > BulletCooldown ()) {
+				cdEq = 0;
+				FireBullet ();
+			}
+			cdEq++;
 
 
-		//gun switcher
-		if (Input.GetMouseButtonDown(1)) {
-			SwitchGun();
-		}
+			//gun switcher
+			if (Input.GetMouseButtonDown (1)) {
+				SwitchGun ();
+			}
 
-		if (playerHP <= 0)
-			Application.LoadLevel ("GameOver");
+			if (playerHP <= 0)
+				Application.LoadLevel ("GameOver");
 	
+		}
 	}
 
 }
