@@ -5,6 +5,22 @@ using System.Collections.Generic;
 using Pathfinding;
 using Pathfinding.RVO;
 
+// visionCheck() returns the closest medpack or the player if closer if in field of view and not obstructed by a wall. else returns null.
+//commCheck() should be called in all updates- passes information to those in radius
+//move() moves the enemy to the curTarget- for example, curTarget = visionCheck(); move(); would move the enemy to the player if the player is in view.
+//moveTo(Vector3) moves the enemy to a specific position- you can specify a point a certain magnitude away, for instance.
+//lookAt(GameObject)
+//StartFiring()
+//StopFiring()
+
+
+
+
+
+
+
+
+
 //This class defines the basic enemy operations including AI
 //It is used as base class for specific enemy classes
 [RequireComponent(typeof(Seeker))]
