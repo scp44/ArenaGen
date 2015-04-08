@@ -73,7 +73,7 @@ public class EnemyBasic: MonoBehaviour {
 	private GameObject[] pUs;
 	private GameObject player;
 	private WeaponInfo equippedWeapon;
-	private Rigidbody bullet;
+	public Rigidbody bullet;
 	//private GameObject toReturn = null;
 	private float angle;
 	private int toUse = 0;
