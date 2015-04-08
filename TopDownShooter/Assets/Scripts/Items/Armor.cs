@@ -21,7 +21,7 @@ public class Armor : MonoBehaviour {
 			}
 		} else if (obj.gameObject.tag == "Player") {
 			PlayerController playerScript = obj.GetComponent<PlayerController> ();
-			if(playerScript.armorBonusHP<=0){
+			if(playerScript.armorBonusHP <= playerScript.maxArmor){
 				playerScript.activateArmor ();
 				Destroy (this.gameObject);
 			}
