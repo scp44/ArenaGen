@@ -129,7 +129,7 @@ public class EnemyBasic: MonoBehaviour {
 
 	protected virtual void Start () {
 		GameObject gunSelectInfo = GameObject.Find ("_Main");
-		gunSelectCSharp gunSelectScript = gunSelectInfo.GetComponent (gunSelectCSharp);
+		gunSelectCSharp gunSelectScript = gunSelectInfo.GetComponent<gunSelectCSharp>();
 		difficulty = gunSelectScript.selected[2];
 
 		target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
@@ -345,10 +345,10 @@ public class EnemyBasic: MonoBehaviour {
 
 		}
 
-	protected void moveTo(GameObject tar){
+	protected void moveTo(Vector3 tar){
 		Vector3 dir = Vector3.zero;
 		if (tar != null) {
-			dir = tar.transform.position - transform.position;
+			dir = tar - transform.position;
 		}
 		if (dir != Vector3.zero) {
 			rigidbody.velocity = dir * speed;
