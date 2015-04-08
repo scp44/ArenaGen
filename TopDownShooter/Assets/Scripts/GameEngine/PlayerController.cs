@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 //[RequireComponent (typeof (CharacterController))]
 public class PlayerController : MonoBehaviour {
@@ -30,12 +31,14 @@ public class PlayerController : MonoBehaviour {
 	private int equipped;
 	private WeaponInfo equippedWeapon;
 	private float cdStartTime=0;
+	public Text equippedtxt;
 
 	// Use this for initialization
 	void Start () {
 		equipped = gun1;
 		equippedWeapon = WeaponManager.getWeapon(gun1);
 		bullet = WeaponManager.getPlayerBulletPrefab(gun1);
+		equippedtxt.text = changeGunText (equipped);
 	}
 	
 	// Update is called once per frame
@@ -83,6 +86,21 @@ public class PlayerController : MonoBehaviour {
 			Application.LoadLevel ("GameOver");
 	}
 
+	string changeGunText(int gun){
+		if (gun == 1) {
+			return "Normal";
+		} else if (gun == 2) {
+			return "Speed";
+		} else if (gun == 3) {
+			return "AoE";
+		} else if (gun == 4) {
+			return "Sprayer";
+		} else if (gun == 5) {
+			return "Long";
+		} else
+			return "error";
+	}
+
 	//Transfers bullet stats to bullets
 	void FireBullet () {
 		var inFront = new Vector3 (0, 1, 0);
@@ -108,6 +126,7 @@ public class PlayerController : MonoBehaviour {
 			equippedWeapon = WeaponManager.getWeapon(gun1);
 			bullet = WeaponManager.getPlayerBulletPrefab(gun1);
 		}
+		equippedtxt.text = changeGunText (equipped);
 	}
 
 	public void increaseHP(int hp){
