@@ -32,6 +32,7 @@ public class EnemyBasic: MonoBehaviour {
 	public float alertScale = 15; 
 	public float fov = 100;
 	public bool isFiring = false;
+	protected int difficulty;
 
 	//information that can be passed between enemies
 	private PassedInfo passedInfo;
@@ -127,6 +128,10 @@ public class EnemyBasic: MonoBehaviour {
 	//The contents must be relevant to all the enemy types
 
 	protected virtual void Start () {
+		GameObject gunSelectInfo = GameObject.Find ("_Main");
+		gunSelectCSharp gunSelectScript = gunSelectInfo.GetComponent (gunSelectCSharp);
+		difficulty = gunSelectScript.selected[2];
+
 		target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 		startHasRun = true;
 		equippedWeapon = WeaponManager.getWeapon (equipped);
