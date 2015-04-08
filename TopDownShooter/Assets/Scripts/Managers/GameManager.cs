@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
 	public PauseMenu pauseScript;
 	public Slider armorBar;
 	public Text fullHealthText;
+	public Text fullArmorText;
 
 	private static GameManager instance;
 
@@ -50,5 +51,13 @@ public class GameManager : MonoBehaviour {
 
 	public static void hideHealthMessage () {
 		instance.fullHealthText.enabled = false;
+	}
+
+	public static void displayArmorMessage () {
+		instance.fullArmorText.enabled = true;
+	}
+	
+	public static void hideArmorMessage () {
+		instance.fullArmorText.enabled = false;
 	}
 }

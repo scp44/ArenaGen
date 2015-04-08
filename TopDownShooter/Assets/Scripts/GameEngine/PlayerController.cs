@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
 	//player HP
 	public float playerHP = 10;
 	public float maxHP = 10;
+	public float maxArmor = 5;
 	public float armorBonusHP;
 	public bool armorOn = false;
 
@@ -43,11 +44,12 @@ public class PlayerController : MonoBehaviour {
 		equipped = gun1;
 		equippedWeapon = WeaponManager.getWeapon(gun1);
 		bullet = WeaponManager.getPlayerBulletPrefab(gun1);
-		equippedtxt.text = changeGunText (equipped);
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		equippedtxt.text = changeGunText (equipped);
 		if (Time.timeScale <= 0)
 			return;
 		
@@ -58,7 +60,7 @@ public class PlayerController : MonoBehaviour {
 		}
 		
 		//update armor and health bars
-		GameManager.updateArmorBar (armorBonusHP/maxHP);
+		GameManager.updateArmorBar (armorBonusHP/maxArmor);
 		GameManager.updateHealthBar (playerHP/maxHP);
 		
 		Vector3 movement = new Vector3 (0, 0, 0);
