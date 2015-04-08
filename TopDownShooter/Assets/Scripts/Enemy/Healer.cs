@@ -66,7 +66,7 @@ namespace Pathfinding {
 			target = visionCheck ();
 			if(enemyHP < 5 && target != null && target.tag.Equals ("MedPackPU")){
 				//interrupt module
-				move (target);
+				moveTo (target.transform.position);
 			}
 			
 			target = this.visionCheck ();
@@ -107,7 +107,7 @@ namespace Pathfinding {
 
 		public GameObject commCheck(){
 			GameObject[] eUs = GameObject.FindGameObjectsWithTag ("Enemy");
-			GameObject weakest;
+			GameObject weakest = null;
 			float lowestHP;
 			int i;
 			for(i = 0; i < eUs.Length; i++){

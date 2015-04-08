@@ -174,7 +174,7 @@ public class EnemyBasic: MonoBehaviour {
 
 		if(enemyHP < 5 && target != null && target.tag.Equals ("MedPackPU")){
 			//interrupt module
-			move (target);
+			moveTo (target.transform.position);
 		}
 		
 		target = this.visionCheck ();
