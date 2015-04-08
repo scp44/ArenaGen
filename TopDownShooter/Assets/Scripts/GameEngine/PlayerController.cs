@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour {
 	public float playerHP = 10;
 	public float maxHP = 10;
 	public float maxArmor = 5;
-	public float armorBonusHP;
+	public float armorBonusHP=0;
 	public bool armorOn = false;
 
 	private Quaternion targetRotation;

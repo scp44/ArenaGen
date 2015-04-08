@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour {
 		// Generate the map
 		map.generate ();
 		fullHealthText.enabled = false;
+		fullArmorText.enabled = false;
 		armorBar.gameObject.SetActive (false);
 	}
 

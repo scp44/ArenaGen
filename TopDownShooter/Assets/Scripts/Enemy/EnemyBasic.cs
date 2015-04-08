@@ -51,7 +51,7 @@ public class EnemyBasic: MonoBehaviour {
 	protected int difficulty;
 
 	//information that can be passed between enemies
-	private PassedInfo passedInfo;
+	public PassedInfo passedInfo;
 
 	//power up variables
 	public float armorBonusHP;
@@ -165,15 +165,16 @@ public class EnemyBasic: MonoBehaviour {
 		}
 		
 		GameObject target = null;
-		if(armorBonusHP == 0 /*armor in line of sight*/){
+		if(armorBonusHP == 0 /*&& armor in line of sight*/){
 			//interrupt module
 			//target = armor;
 		}
-		
-		if(enemyHP < 5 /*&& medpack in line of sight*/){
+
+		target = visionCheck ();
+
+		if(enemyHP < 5 && target != null && target.tag.Equals ("MedPackPU")){
 			//interrupt module
-			//if(medPack is closer than current target)
-			//target = medPack;
+			move (target);
 		}
 		
 		target = this.visionCheck ();
@@ -186,11 +187,6 @@ public class EnemyBasic: MonoBehaviour {
 		}
 		else {
 			StopFiring();
-		}
-		
-		if(medPack > 0 /*&& ((enemy in com-check circle && has < some HP) || enemy is Boss)*/){
-			//interrupt module
-			//useMedPack(enemy);
 		}
 		
 		deathCheck ();
