@@ -61,6 +61,8 @@ public class EnemyBasic: MonoBehaviour {
 	private float angle;
 	private int toUse = 0;
 
+
+	protected GameObject curTarget;
 	//The rest of the variables are related to Pathfinding
 
 	/** Determines how often it will search for new paths. 
@@ -326,7 +328,28 @@ public class EnemyBasic: MonoBehaviour {
 			timeSinceStateChange = 0;
 		}
 	}
-	
+
+	protected void move(){
+		Vector3 dir = Vector3.zero;
+		if (curTarget != null) {
+						dir = curTarget.transform.position - transform.position;
+				}
+		if (dir != Vector3.zero) {
+						rigidbody.velocity = dir * speed;
+				}
+
+		}
+
+	protected void moveTo(GameObject tar){
+		Vector3 dir = Vector3.zero;
+		if (tar != null) {
+			dir = tar.transform.position - transform.position;
+		}
+		if (dir != Vector3.zero) {
+			rigidbody.velocity = dir * speed;
+		}
+		
+	}
 	//The rest of the functions are related to Pathfinding
 
 	/** Returns if the end-of-path has been reached
