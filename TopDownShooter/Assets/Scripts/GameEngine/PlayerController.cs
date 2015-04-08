@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		GameObject gunSelectInfo = GameObject.Find ("_Main");
-		gunSelectCSharp gunSelectScript = gunSelectInfo.GetComponent (gunSelectCSharp);
+		gunSelectCSharp gunSelectScript = gunSelectInfo.GetComponent <gunSelectCSharp> ();
 		gun1 = gunSelectScript.selected[0];
 		gun2 = gunSelectScript.selected[1];
 
@@ -92,15 +92,15 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	string changeGunText(int gun){
-		if (gun == 1) {
+		if (gun == 0) {
 			return "Normal";
-		} else if (gun == 2) {
+		} else if (gun == 1) {
 			return "Speed";
-		} else if (gun == 3) {
+		} else if (gun == 2) {
 			return "AoE";
-		} else if (gun == 4) {
+		} else if (gun == 3) {
 			return "Sprayer";
-		} else if (gun == 5) {
+		} else if (gun == 4) {
 			return "Long";
 		} else
 			return "error";
