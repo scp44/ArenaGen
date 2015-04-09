@@ -10,7 +10,7 @@ public class Defender : EnemyBasic {
 		public Animation anim;
 		
 		/** Minimum velocity for moving */
-		public float sleepVelocity = 0.4F;
+		//public float sleepVelocity = 0.4F;
 		
 		/** Speed relative to velocity with which to play animations */
 		public float animationSpeed = 0.2F;

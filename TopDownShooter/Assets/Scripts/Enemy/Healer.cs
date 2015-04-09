@@ -9,7 +9,7 @@ namespace Pathfinding {
 		public Animation anim;
 
 		/** Minimum velocity for moving */
-		public float sleepVelocity = 0.4F;
+		//public float sleepVelocity = 0.4F;
 		
 		/** Speed relative to velocity with which to play animations */
 		public float animationSpeed = 0.2F;
@@ -54,12 +54,22 @@ namespace Pathfinding {
 
 			target = this.visionCheck ();
 			if (target != null && target.gameObject.tag == "Player") {
-				if(this.passedInfo.bossFound)
+				if (this.passedInfo.bossFound)
 					state = STATE_FLEE;
 				else
 					state = STATE_COMBAT;
-			}
+			/*
+				StartFiring();
+				lookAt(target);
+				//setTarget(target.transform);
+				//SearchPath();
+				chase(target);
 
+				if (player != null)
+					this.passedInfo.playerPos = player.transform.position;
+				this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
+				//target = null;*/
+			}
 			switch (state) {
 			case STATE_IDLE:
 				if(enemyHP < maxHP && target != null && target.tag.Equals ("MedPackPU")){
