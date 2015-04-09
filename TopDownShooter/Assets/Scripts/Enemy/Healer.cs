@@ -9,7 +9,7 @@ namespace Pathfinding {
 		public Animation anim;
 
 		/** Minimum velocity for moving */
-		public float sleepVelocity = 0.4F;
+		//public float sleepVelocity = 0.4F;
 		
 		/** Speed relative to velocity with which to play animations */
 		public float animationSpeed = 0.2F;
@@ -66,6 +66,10 @@ namespace Pathfinding {
 			if (target != null && target.gameObject.tag == "Player") {
 				StartFiring();
 				lookAt(target);
+				//setTarget(target.transform);
+				//SearchPath();
+				chase(target);
+
 				if (player != null)
 					this.passedInfo.playerPos = player.transform.position;
 				this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;

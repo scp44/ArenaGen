@@ -78,6 +78,7 @@ public class EnemyBasic: MonoBehaviour {
 	private float angle;
 	private int toUse = 0;
 
+	public float sleepVelocity = 0.4F;
 
 	protected GameObject curTarget;
 	//The rest of the variables are related to Pathfinding
@@ -153,7 +154,7 @@ public class EnemyBasic: MonoBehaviour {
 			difficulty = gunSelectScript.selected[2];
 		}
 
-		target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
+		//target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 		startHasRun = true;
 		equippedWeapon = WeaponManager.getWeapon (equipped);
 		bullet = WeaponManager.getEnemyBulletPrefab (equipped);
@@ -186,6 +187,7 @@ public class EnemyBasic: MonoBehaviour {
 		if (target != null && target.gameObject.tag == "Player") {
 			StartFiring();
 			lookAt(target);
+			goTo(target);   //comment or not
 			this.passedInfo.playerPos = player.transform.position;
 			this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
 			//target = null;
@@ -195,6 +197,18 @@ public class EnemyBasic: MonoBehaviour {
 		}
 		
 		deathCheck ();
+	}
+
+	public void wander(){
+		Vector3 fwd = transform.TransformDirection(Vector3.forward);
+		RaycastHit hitinfo = new RaycastHit ();
+			
+
+		if (Physics.Raycast (transform.position, fwd, 10)) {
+			if (hitinfo.transform.tag == "Wall"){
+			}
+		}
+	
 	}
 
 	public GameObject visionCheck(){
@@ -462,7 +476,7 @@ public class EnemyBasic: MonoBehaviour {
 	
 	/** Requests a path to the target */
 	public virtual void SearchPath () {
-		target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
+		//target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 
 		if (target == null) throw new System.InvalidOperationException ("Target is null");
 
@@ -478,6 +492,61 @@ public class EnemyBasic: MonoBehaviour {
 		
 		//We should search from the current position
 		seeker.StartPath (GetFeetPosition(), targetPosition);
+	}
+
+	public void chase(GameObject tar){
+		setTarget (tar.transform);
+
+		//Get velocity in world-space
+		Vector3 velocity;
+		if (canMove) {
+			
+			//Calculate desired velocity
+			Vector3 dir = CalculateVelocity (GetFeetPosition());
+			
+			//Rotate towards targetDirection (filled in by CalculateVelocity)
+			RotateTowards (targetDirection);
+			
+			//Vector3 lookDirection = targetDirection;
+			//lookDirection.Set (lookDirection.x, 0f, lookDirection.z);
+			//transform.rotation = Quaternion.LookRotation (lookDirection);
+			
+			dir.y = 0;
+			if (dir.sqrMagnitude > sleepVelocity*sleepVelocity) {
+				//If the velocity is large enough, move
+			} else {
+				//Otherwise, just stand still (this ensures gravity is applied)
+				dir = Vector3.zero;
+			}
+			
+			if ( this.rvoController != null ) {
+				rvoController.Move ( dir );
+				velocity = rvoController.velocity;
+			} else 
+			if (navController != null) {
+				
+				velocity = Vector3.zero;
+			} else if (rigidbody != null) {
+				//rigidbody.SimpleMove (dir);
+				rigidbody.velocity = dir;
+				velocity = rigidbody.velocity;
+			} else {
+				Debug.LogWarning ("No NavmeshController or CharacterController attached to GameObject");
+				velocity = Vector3.zero;
+			}
+		} else {
+			velocity = Vector3.zero;
+		}
+		
+		
+		//Animation
+		
+		//Calculate the velocity relative to this transform's orientation
+		Vector3 relVelocity = tr.InverseTransformDirection (velocity);
+		relVelocity.y = 0;
+		
+		float speed = relVelocity.z;
+
 	}
 
 	//go toward a specified object
@@ -498,10 +567,12 @@ public class EnemyBasic: MonoBehaviour {
 		
 		//We should search from the current position
 		seeker.StartPath (GetFeetPosition(), targetPosition);
+		Debug.Log ("should work");
+
 	}
 
 	public void setTarget(Transform tar){
-		target = tar;	
+		this.target = tar;	
 	}
 	
 	public virtual void OnTargetReached () {
