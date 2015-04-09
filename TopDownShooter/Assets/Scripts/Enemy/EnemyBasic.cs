@@ -204,6 +204,7 @@ public class EnemyBasic: MonoBehaviour {
 		RaycastHit hitinfo = new RaycastHit ();
 			
 
+
 		if (Physics.Raycast (transform.position, fwd, 10)) {
 			if (hitinfo.transform.tag == "Wall"){
 			}
@@ -479,7 +480,7 @@ public class EnemyBasic: MonoBehaviour {
 		//target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 
 		if (target == null) throw new System.InvalidOperationException ("Target is null");
-
+		//Debug.Log ("here?");
 		lastRepath = Time.time;
 		//This is where we should search to
 		Vector3 targetPosition = target.position;
@@ -494,8 +495,8 @@ public class EnemyBasic: MonoBehaviour {
 		seeker.StartPath (GetFeetPosition(), targetPosition);
 	}
 
-	public void chase(GameObject tar){
-		setTarget (tar.transform);
+	public void chase(Transform pos){
+		setTarget (pos);
 
 		//Get velocity in world-space
 		Vector3 velocity;
@@ -528,7 +529,9 @@ public class EnemyBasic: MonoBehaviour {
 				velocity = Vector3.zero;
 			} else if (rigidbody != null) {
 				//rigidbody.SimpleMove (dir);
-				rigidbody.velocity = dir;
+				rigidbody.velocity = dir; 
+				//no game experience difference...maybe
+				//rigidbody.AddForce(dir * 5f);
 				velocity = rigidbody.velocity;
 			} else {
 				Debug.LogWarning ("No NavmeshController or CharacterController attached to GameObject");
