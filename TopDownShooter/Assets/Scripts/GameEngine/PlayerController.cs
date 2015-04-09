@@ -37,9 +37,15 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		GameObject gunSelectInfo = GameObject.Find ("_Main");
-		gunSelectCSharp gunSelectScript = gunSelectInfo.GetComponent <gunSelectCSharp> ();
-		gun1 = gunSelectScript.selected[0];
-		gun2 = gunSelectScript.selected[1];
+		if (gunSelectInfo == null) {
+			gun1 = 0;
+			gun2 = 1;
+		}
+		else {
+			gunSelectCSharp gunSelectScript = gunSelectInfo.GetComponent <gunSelectCSharp> ();
+			gun1 = gunSelectScript.selected[0];
+			gun2 = gunSelectScript.selected[1];
+		}
 
 		equipped = gun1;
 		equippedWeapon = WeaponManager.getWeapon(gun1);

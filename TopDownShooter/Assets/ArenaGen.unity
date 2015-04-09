@@ -2103,7 +2103,7 @@ MonoBehaviour:
   pauseScript: {fileID: 1297725442}
   armorBar: {fileID: 460542761}
   fullHealthText: {fileID: 1620330711}
-  fullArmorText: {fileID: 0}
+  fullArmorText: {fileID: 1488580939}
 --- !u!1 &921450148
 GameObject:
   m_ObjectHideFlags: 0

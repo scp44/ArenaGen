@@ -8,11 +8,6 @@ namespace Pathfinding {
 		
 		public Animation anim;
 
-		//information that can be passed between enemies
-		private PassedInfo passedInfo;
-
-		private GameObject player;
-		
 		/** Minimum velocity for moving */
 		public float sleepVelocity = 0.4F;
 		
@@ -27,8 +22,6 @@ namespace Pathfinding {
 		private const int STATE_IDLE = 0;
 		private const int STATE_ALERT = 1;
 		private const int STATE_COMBAT = 2;
-		private float timeSinceStateChange = 0;
-		private int state = -1;
 		
 		public new void Start () {
 //			target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
@@ -73,7 +66,8 @@ namespace Pathfinding {
 			if (target != null && target.gameObject.tag == "Player") {
 				StartFiring();
 				lookAt(target);
-				this.passedInfo.playerPos = player.transform.position;
+				if (player != null)
+					this.passedInfo.playerPos = player.transform.position;
 				this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
 				//target = null;
 			}

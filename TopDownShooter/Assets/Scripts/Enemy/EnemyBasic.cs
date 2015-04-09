@@ -59,8 +59,8 @@ public class EnemyBasic: MonoBehaviour {
 	private Rigidbody MedPack;
 
 	//AI parameters
-	private float timeSinceStateChange = 0;
-	private int state = -1; //the states are defined in the specific enemy classes
+	protected float timeSinceStateChange = 0;
+	protected int state = -1; //the states are defined in the specific enemy classes
 
 	//Do we really need these 2 variables?
 	//All enemies can search and move
@@ -71,8 +71,8 @@ public class EnemyBasic: MonoBehaviour {
 	private Transform target;
 	private Vector3 targetDir;
 	private GameObject[] pUs;
-	private GameObject player;
-	private WeaponInfo equippedWeapon;
+	protected GameObject player;
+	protected WeaponInfo equippedWeapon;
 	public Rigidbody bullet;
 	//private GameObject toReturn = null;
 	private float angle;
@@ -145,8 +145,13 @@ public class EnemyBasic: MonoBehaviour {
 
 	protected virtual void Start () {
 		GameObject gunSelectInfo = GameObject.Find ("_Main");
-		gunSelectCSharp gunSelectScript = gunSelectInfo.GetComponent<gunSelectCSharp>();
-		difficulty = gunSelectScript.selected[2];
+		if (gunSelectInfo == null) {
+			difficulty = 1;
+		}
+		else {
+			gunSelectCSharp gunSelectScript = gunSelectInfo.GetComponent<gunSelectCSharp>();
+			difficulty = gunSelectScript.selected[2];
+		}
 
 		target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 		startHasRun = true;
