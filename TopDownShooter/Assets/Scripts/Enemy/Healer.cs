@@ -16,13 +16,19 @@ namespace Pathfinding {
 		
 		/** Effect which will be instantiated when end of path is reached.
 		 * \see OnTargetReached */
+
 		public GameObject endOfPathEffect;
+		public Transform tar;
+
 
 		//state stuff
 		private const int STATE_IDLE = 0;
 		private const int STATE_ALERT = 1;
 		private const int STATE_COMBAT = 2;
 		private const int STATE_FLEE = 3;
+
+		//use to make enemy can follow
+		private bool awake = false;
 		
 		public new void Start () {
 //			target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
@@ -53,6 +59,56 @@ namespace Pathfinding {
 			GameObject target = null;
 
 			target = this.visionCheck ();
+
+			if(armorBonusHP == 0 /*&& armor in line of sight*/){
+				//interrupt module
+				//target = armor;
+			}
+			target = this.visionCheck ();//wonder if it should return a boolean 
+			//Test:just pick medpack
+			/*
+			if (target.tag.Equals ("MedPackPU")) {//get error: null referenceException
+				lookAt(target);
+				chase(target);
+			}
+			*/
+			int i;
+		if (target == null)
+				i = 0;
+			//Debug.Log("");
+		else {
+			//tar.position.x = target.transform.position.x; //use to make enemy silly
+			//tar.position.y = target.transform.position.y;
+				tar = target.transform;
+			//tar.position = new Vector3(target.transform.position.x,target.transform.position.y,0);
+				print (tar.position.x);
+			awake = true;
+		}
+
+		if (target != null) {
+			lookAt (target);
+			chase (target.transform);
+			if (target.gameObject.tag == "Player")
+				StartFiring ();
+			else
+				StopFiring ();
+		} else {
+			if (awake == true) {
+					Debug.Log(tar.ToString());
+				StopFiring ();
+				chase (tar);
+			}
+		}
+
+			if(enemyHP < 5 && target != null && target.tag.Equals ("MedPackPU")){
+				Debug.Log("why not move");
+				lookAt(target);
+				//interrupt module
+				chase (target.transform);
+			}
+			
+
+			/*
 			if (target != null && target.gameObject.tag == "Player") {
 				if (this.passedInfo.bossFound)
 					state = STATE_FLEE;
@@ -69,7 +125,8 @@ namespace Pathfinding {
 					this.passedInfo.playerPos = player.transform.position;
 				this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
 				//target = null;*/
-			}
+			//}
+
 			switch (state) {
 			case STATE_IDLE:
 				if(enemyHP < maxHP && target != null && target.tag.Equals ("MedPackPU")){
@@ -115,9 +172,9 @@ namespace Pathfinding {
 			}*/
 
 			/*if(armorBonusHP == 0 /*&& armor in line of sight){
-				//interrupt module
-				//target = armor;
-			}*/
+			*/
+
+	
 			
 			deathCheck ();
 		}
@@ -169,9 +226,8 @@ namespace Pathfinding {
 				EnemyBasic weakestScript = weakest.GetComponent<EnemyBasic> ();
 				if (weakestScript.enemyHP < weakestScript.maxHP)
 					return weakest;
-				else
-					return boss;
 			}
+			return boss;
 		}
 		
 
