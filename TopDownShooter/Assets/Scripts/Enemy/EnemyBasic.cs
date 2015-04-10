@@ -49,7 +49,9 @@ public class EnemyBasic: MonoBehaviour {
 	public float fov = 100;
 	public bool isFiring = false;
 	protected int difficulty;
-
+	public float wanderTimeMax = 6;
+	public float wanderTimeMin = 2;
+	private float timeLeft;
 	//information that can be passed between enemies
 	public PassedInfo passedInfo;
 
@@ -169,32 +171,19 @@ public class EnemyBasic: MonoBehaviour {
 		if (armorBonusHP <= 0) {
 			armorBonusHP = 0;
 		}
-		
+		if (timeLeft != null && timeLeft >0){
+			timeLeft--;
+		}
+		if(timeLeft <= 0){
+			stopMove();
+		}
+
 		GameObject target = null;
 		if(armorBonusHP == 0 /*&& armor in line of sight*/){
 			//interrupt module
 			//target = armor;
 		}
-
-		target = visionCheck ();
-
-		if(enemyHP < 5 && target != null && target.tag.Equals ("MedPackPU")){
-			//interrupt module
-			moveTo (target.transform.position);
-		}
-		
-		target = this.visionCheck ();
-		if (target != null && target.gameObject.tag == "Player") {
-			StartFiring();
-			lookAt(target);
-//			goTo(target);   //comment or not
-			this.passedInfo.playerPos = player.transform.position;
-			this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
-			//target = null;
-		}
-		else {
-			StopFiring();
-		}
+	
 		
 		deathCheck ();
 	}
@@ -254,7 +243,7 @@ public class EnemyBasic: MonoBehaviour {
 			Physics.Raycast (transform.position, (toReturn.transform.position - transform.position), out hit, visionScale);
 			other = hit.collider;
 			if(other.gameObject != null){
-				if (other.gameObject.tag == "Wall") {
+				if (other.gameObject.tag == "Wall" || other.gameObject.tag == "Enemy") {
 					Debug.DrawRay(transform.position, (toReturn.transform.position - transform.position), Color.red, 5);
 					return null;
 				}	
@@ -353,7 +342,11 @@ public class EnemyBasic: MonoBehaviour {
 			InvokeRepeating("FireBullet", 0, equippedWeapon.bulletCooldown);
 		}
 	}
-	
+
+	protected string getTag(GameObject get){
+		return get.gameObject.tag;
+	}
+
 	protected void StopFiring () {
 		if (isFiring) {
 			isFiring = false;
@@ -389,6 +382,22 @@ public class EnemyBasic: MonoBehaviour {
 		}
 		
 	}
+
+	protected void wander(){
+		float rand = Random.Range(1,361);
+		var rotation = Quaternion.AngleAxis(rand,Vector3.up);
+		var forward = Vector3.forward;
+		var toRotate = rotation * forward;
+		RotateTowards(toRotate);
+		timeLeft = Random.Range(wanderTimeMin, wanderTimeMax);
+		rigidbody.velocity = transform.forward * speed;
+	}
+
+	protected void stopMove(){
+		rigidbody.velocity = Vector3.zero;
+	}
+
+
 	//The rest of the functions are related to Pathfinding
 
 	/** Returns if the end-of-path has been reached
