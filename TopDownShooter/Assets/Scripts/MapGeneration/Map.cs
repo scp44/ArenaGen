@@ -67,11 +67,15 @@ public class Map: MonoBehaviour {
 		cells = new MapCell[mapLength, mapWidth];
 		walls = new WallGraph ();
 
+		float timestamp = Time.realtimeSinceStartup;
+
 		//Generate water around the map
 		if (willGenerateIsland)
 			generateIsland (20);
 		else
 			generateWaterBoundaries (20);
+		//print ("generateIsland: " + (Time.realtimeSinceStartup-timestamp).ToString() + " seconds");
+		timestamp = Time.realtimeSinceStartup;
 
 		generatePlayerStartLocation ();
 		generateEnemyCamps ();
@@ -184,6 +188,8 @@ public class Map: MonoBehaviour {
 			}
 		}
 
+		float timestamp = Time.realtimeSinceStartup;
+
 		//Put water instead of unreachable ground cells
 		//Starting with the map center, explore the reachable ground
 		List<IntVector2> exploredGround = new List<IntVector2>();
@@ -214,6 +220,8 @@ public class Map: MonoBehaviour {
 				}
 			}
 		}
+		//print ("deleting unreachable ground: " + (Time.realtimeSinceStartup-timestamp).ToString() + " seconds");
+		timestamp = Time.realtimeSinceStartup;
 
 		//Put water cells in proper locations
 		foreach (IntVector2 waterCell in waterCellList) {
@@ -406,6 +414,20 @@ public class Map: MonoBehaviour {
 		int x = Random.Range (0, maxX);
 		int z = Random.Range (0, maxZ);
 		return new IntVector2 (x,z);
+	}
+
+	//get random coordinates on the map where an enemy can stand
+	private IntVector2 getRandomPassableCoordinates() {
+		IntVector2 result = new IntVector2(-1, -1);
+		while (!testCell(result, 1)) {
+			result = getRandomCoordinates(mapLength, mapWidth);
+		}
+		return result;
+	}
+
+	//gets a random destination where an enemy can go
+	public Vector3 getRandomPassableDestination() {
+		return coordinatesFrom2D(getRandomPassableCoordinates(), 0.5f);
 	}
 
 	private List<IntVector2> getNeighbors (IntVector2 currentCell) {
