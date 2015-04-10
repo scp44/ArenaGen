@@ -43,7 +43,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 196818}
-  m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106709}
+  m_LocalRotation: {x: .707106888, y: 0, z: 0, w: .707106769}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -102,7 +102,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 84
   m_CollisionDetection: 0
 --- !u!65 &6596818
 BoxCollider:
@@ -138,11 +138,14 @@ MonoBehaviour:
   alertScale: 15
   fov: 100
   isFiring: 0
+  wanderTimeMax: 240
+  wanderTimeMin: 120
   armorBonusHP: 0
   medPack: 0
+  MedPack: {fileID: 5451638, guid: 3fbfe2312732abe4b9c35bfa8be579f8, type: 2}
   canSearch: 1
   canMove: 1
-  bullet: {fileID: 0}
+  bullet: {fileID: 5437702, guid: b6ad801921a065c49967cb295720b9a4, type: 2}
   sleepVelocity: .400000006
   repathRate: .5
   turningSpeed: 5
@@ -151,9 +154,10 @@ MonoBehaviour:
   forwardLook: 1
   endReachedDistance: .200000003
   closestOnPathCheck: 1
-  anim: {fileID: 0}
-  animationSpeed: .200000003
+  maxFollow: 0
+  followers: 0
   endOfPathEffect: {fileID: 0}
+  mapScript: {fileID: 0}
 --- !u!114 &11496820
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -190,7 +190,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 84
   m_CollisionDetection: 0
 --- !u!65 &25744908
 BoxCollider:
@@ -795,6 +795,7 @@ MonoBehaviour:
   wanderTimeMin: 2
   armorBonusHP: 0
   medPack: 0
+  MedPack: {fileID: 0}
   canSearch: 1
   canMove: 1
   bullet: {fileID: 5456608, guid: edfaf2011a2a3714794c0677bf8cd0f8, type: 2}
@@ -806,8 +807,6 @@ MonoBehaviour:
   forwardLook: 1
   endReachedDistance: .0500000007
   closestOnPathCheck: 1
-  anim: {fileID: 1119290607}
-  animationSpeed: .400000006
   maxFollow: 0
   followers: 0
   endOfPathEffect: {fileID: 100000, guid: 441e67a4721e749f0bca9581956f2729, type: 2}
@@ -2314,6 +2313,7 @@ MonoBehaviour:
   wanderTimeMin: 2
   armorBonusHP: 0
   medPack: 0
+  MedPack: {fileID: 0}
   canSearch: 1
   canMove: 1
   bullet: {fileID: 0}
@@ -2325,8 +2325,6 @@ MonoBehaviour:
   forwardLook: 1
   endReachedDistance: .200000003
   closestOnPathCheck: 1
-  anim: {fileID: 0}
-  animationSpeed: .200000003
   maxFollow: 0
   followers: 0
   endOfPathEffect: {fileID: 0}
@@ -3680,10 +3678,11 @@ MonoBehaviour:
   alertScale: 15
   fov: 100
   isFiring: 0
-  wanderTimeMax: 6
-  wanderTimeMin: 2
+  wanderTimeMax: 240
+  wanderTimeMin: 120
   armorBonusHP: 0
   medPack: 0
+  MedPack: {fileID: 0}
   canSearch: 1
   canMove: 1
   bullet: {fileID: 0}
@@ -3718,10 +3717,11 @@ MonoBehaviour:
   alertScale: 15
   fov: 100
   isFiring: 0
-  wanderTimeMax: 6
-  wanderTimeMin: 2
+  wanderTimeMax: 240
+  wanderTimeMin: 120
   armorBonusHP: 0
   medPack: 0
+  MedPack: {fileID: 0}
   canSearch: 1
   canMove: 1
   bullet: {fileID: 0}
@@ -3733,6 +3733,8 @@ MonoBehaviour:
   forwardLook: 1
   endReachedDistance: .200000003
   closestOnPathCheck: 1
+  anim: {fileID: 0}
+  animationSpeed: .200000003
   endOfPathEffect: {fileID: 0}
 --- !u!114 &1359735648
 MonoBehaviour:

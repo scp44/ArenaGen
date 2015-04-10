@@ -56,7 +56,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 176684}
-  m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106709}
+  m_LocalRotation: {x: .707106888, y: 0, z: 0, w: .707106769}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -102,7 +102,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 84
   m_CollisionDetection: 0
 --- !u!65 &6576682
 BoxCollider:
@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4808296b90dc7a45a3f4e897ff2f7e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: 0
+  enemyType: 2
   speed: 3
   enemyHP: 5
   maxHP: 5
@@ -138,11 +138,14 @@ MonoBehaviour:
   alertScale: 15
   fov: 100
   isFiring: 0
+  wanderTimeMax: 240
+  wanderTimeMin: 120
   armorBonusHP: 0
   medPack: 0
+  MedPack: {fileID: 0}
   canSearch: 1
   canMove: 1
-  bullet: {fileID: 0}
+  bullet: {fileID: 5453792, guid: 418d894d287c2f04e82b243a88c4583f, type: 2}
   sleepVelocity: .400000006
   repathRate: .5
   turningSpeed: 5

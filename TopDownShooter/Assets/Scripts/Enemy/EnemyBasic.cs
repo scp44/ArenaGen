@@ -49,8 +49,8 @@ public class EnemyBasic: MonoBehaviour {
 	public float fov = 100;
 	public bool isFiring = false;
 	protected int difficulty;
-	public float wanderTimeMax = 6;
-	public float wanderTimeMin = 2;
+	public float wanderTimeMax = 240;
+	public float wanderTimeMin = 120;
 	protected float timeLeft;
 	//information that can be passed between enemies
 	public PassedInfo passedInfo;
@@ -58,7 +58,7 @@ public class EnemyBasic: MonoBehaviour {
 	//power up variables
 	public float armorBonusHP;
 	public int medPack = 0;
-	private Rigidbody MedPack;
+	public Rigidbody MedPack;
 
 	//AI parameters
 	protected float timeSinceStateChange = 0;
@@ -204,30 +204,34 @@ public class EnemyBasic: MonoBehaviour {
 
 	public GameObject visionCheck(){
 		GameObject toReturn = null;
+		GameObject closestPack = null;
 		pUs = GameObject.FindGameObjectsWithTag ("MedPackPU");
 		player = GameObject.FindGameObjectsWithTag ("Player") [0];
-		GameObject closestPack = pUs [0]; //TODO: make a proper function to find the closest pack
+		if (pUs.Length != 0) {
+			closestPack = pUs [0];
+		} //TODO: make a proper function to find the closest pack
 		Vector3 forward = transform.forward;
 		
 		int i;
-		for (i = 0; i < pUs.Length; i++) {
-			Transform powerUpPos = pUs [i].transform;
-			GameObject powerUp = pUs [i];
-			targetDir = powerUpPos.position - transform.position;
-			angle = Vector3.Angle (targetDir, forward); 
+		if (closestPack != null) {
+			for (i = 0; i < pUs.Length; i++) {
+				Transform powerUpPos = pUs [i].transform;
+				GameObject powerUp = pUs [i];
+				targetDir = powerUpPos.position - transform.position;
+				angle = Vector3.Angle (targetDir, forward); 
 			
-			if ((powerUpPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
-				if ((powerUpPos.position - transform.position).magnitude < (closestPack.transform.position - transform.position).magnitude) {
-					closestPack = powerUp;
+				if ((powerUpPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
+					if ((powerUpPos.position - transform.position).magnitude < (closestPack.transform.position - transform.position).magnitude) {
+						closestPack = powerUp;
+					}
 				}
 			}
+			if ((closestPack.transform.position - transform.position).magnitude < (visionScale) && 
+				Vector3.Angle (closestPack.transform.position - transform.position, forward) <= fov) {
+				toReturn = closestPack;
+				toUse = 1;
+			}
 		}
-		if ((closestPack.transform.position - transform.position).magnitude < (visionScale) && 
-		    Vector3.Angle (closestPack.transform.position - transform.position, forward) <= fov) {
-			toReturn = closestPack;
-			toUse = 1;
-		}
-		
 		Transform playerLocPos = player.transform;
 		targetDir = playerLocPos.position - transform.position;
 		angle = Vector3.Angle (targetDir, forward);
@@ -385,11 +389,26 @@ public class EnemyBasic: MonoBehaviour {
 	}
 
 	protected void wander(){
-		float rand = Random.Range(1,361);
+		float rand = Random.Range(-45,46);
+		RaycastHit hit;
+		Collider other;
+		//Debug.Log (transform.position.y.ToString());
+
 		var rotation = Quaternion.AngleAxis(rand,Vector3.up);
 		var forward = Vector3.forward;
 		var toRotate = rotation * forward;
 		RotateTowards(toRotate);
+		Physics.Raycast (transform.position, transform.forward, out hit, visionScale);
+		other = hit.collider;
+		if (other != null) {
+			if (other.gameObject != null) {
+				if (other.gameObject.tag == "Wall") {
+					rotation = Quaternion.AngleAxis (rand + 180, Vector3.up);
+					toRotate = rotation * forward;
+					RotateTowards (toRotate);
+				}
+			}
+		}
 		timeLeft = Random.Range(wanderTimeMin, wanderTimeMax);
 		rigidbody.velocity = transform.forward * speed;
 	}

@@ -14,6 +14,7 @@ namespace Pathfinding {
 		// Use this for initialization
 		void Start () {
 			state = STATE_IDLE;
+			base.Start();
 		}
 		
 		// Update is called once per frame
@@ -36,11 +37,13 @@ namespace Pathfinding {
 						changeState(STATE_COMBAT);
 					}
 				}
-				toGuard = commCheck();
-				if(toGuard != null || healerScript.followers < healerScript.maxFollow){
+				/*toGuard = commCheck();
+				if(toGuard != null){
+					if(healerScript.followers < healerScript.maxFollow){
 					healerScript.followers++;
 					changeState(STATE_FOLLOWING);
 				}
+				}*/
 				else{
 					if(timeLeft <= 0){
 					wander();

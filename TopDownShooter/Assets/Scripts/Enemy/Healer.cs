@@ -6,13 +6,13 @@ namespace Pathfinding {
 	[RequireComponent(typeof(Seeker))]
 	public class Healer : EnemyBasic {
 		
-		public Animation anim;
+		//public Animation anim;
 
 		/** Minimum velocity for moving */
 		//public float sleepVelocity = 0.4F;
 		
 		/** Speed relative to velocity with which to play animations */
-		public float animationSpeed = 0.2F;
+		//public float animationSpeed = 0.2F;
 		
 		/** Effect which will be instantiated when end of path is reached.
 		 * \see OnTargetReached */
@@ -37,16 +37,16 @@ namespace Pathfinding {
 		public new void Start () {
 //			target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 			//Prioritize the walking animation
-			anim["forward"].layer = 10;
+			//anim["forward"].layer = 10;
 			
 			//Play all animations
-			anim.Play ("awake");
-			anim.Play ("forward");
+			//anim.Play ("awake");
+			//anim.Play ("forward");
 			
 			//Setup awake animations properties
-			anim["awake"].wrapMode = WrapMode.Clamp;
-			anim["awake"].speed = 0;
-			anim["awake"].normalizedTime = 1F;
+			//anim["awake"].wrapMode = WrapMode.Clamp;
+			//anim["awake"].speed = 0;
+			//anim["awake"].normalizedTime = 1F;
 
 			state = STATE_IDLE;
 			maxFollow = Mathf.FloorToInt(difficulty / 30);
@@ -142,6 +142,12 @@ namespace Pathfinding {
 
 			     break;
 			case STATE_ALERT:
+				if(target == null){
+					chase(passedInfo.playerPos);
+				}
+				else{
+					changeState(STATE_IDLE);
+				}
 				break;
 			case STATE_COMBAT:
 				if (target != null && target.gameObject.tag == "Player") {
@@ -160,7 +166,7 @@ namespace Pathfinding {
 				}
 				else {
 					StopFiring();
-					changeState(STATE_IDLE);
+					changeState(STATE_ALERT);
 				}
 				break;
 			case STATE_FLEE:
