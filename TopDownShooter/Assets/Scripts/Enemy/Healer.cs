@@ -56,15 +56,12 @@ namespace Pathfinding {
 				return;
 
 			GameObject weakEnemy = this.commCheck ();
-			EnemyBasic weakEnemyScript = weakEnemy.GetComponent <EnemyBasic>();
+			EnemyBasic weakEnemyScript = null;
+			if(weakEnemy != null)
+				weakEnemyScript = weakEnemy.GetComponent <EnemyBasic>();
+
 			GameObject target = null;
 
-			target = this.visionCheck ();
-
-			if(armorBonusHP == 0 /*&& armor in line of sight*/){
-				//interrupt module
-				//target = armor;
-			}
 			target = this.visionCheck ();//wonder if it should return a boolean 
 			//Test:just pick medpack
 			/*
@@ -74,43 +71,35 @@ namespace Pathfinding {
 			}
 			*/
 	
-		if (target != null) {
-			lookAt (target);
-			float x = target.transform.position.x; //use to make enemy silly
-			float z = target.transform.position.z;
+			/*if (target != null) {
+				lookAt (target);
+				float x = target.transform.position.x; //use to make enemy silly
+				float z = target.transform.position.z;
 
-			newTarget = new Vector3(x,0f,z);
+				newTarget = new Vector3(x,0f,z);
 
-			awake = true; //this awake is set the enemy in "searching player" model, when it faile, it will turn of to idle (not implemented yet)
-			chase (newTarget);
-			if (target.gameObject.tag == "Player")
-				StartFiring ();
-			else
-				StopFiring ();
-		} else {
-			if (awake == true) { //if target is null, but enemy is awake, it will go to the last position player at
-					//Debug.Log(tar.ToString());
-				StopFiring ();
+				awake = true; //this awake is set the enemy in "searching player" model, when it faile, it will turn of to idle (not implemented yet)
+				chase (newTarget);
+				if (target.gameObject.tag == "Player")
+					StartFiring ();
+				else
+					StopFiring ();
+			} else {
+				if (awake == true) { //if target is null, but enemy is awake, it will go to the last position player at
+						//Debug.Log(tar.ToString());
+					StopFiring ();
 					Debug.Log("targeet is null");
 					Debug.Log(newTarget.ToString());
-				chase (newTarget);
-			}
-		}
+					chase (newTarget);
+				}
+			}*/
 
-			if(enemyHP < 5 && target != null && target.tag.Equals ("MedPackPU")){
+			/*if(enemyHP < 5 && target != null && target.tag.Equals ("MedPackPU")){
 				Debug.Log("why not move");
 				lookAt(target);
-				//interrupt module
 				chase (target.transform.position);
-			}
-			
+			}*/
 
-			/*
-			if (target != null && target.gameObject.tag == "Player") {
-				if (this.passedInfo.bossFound)
-					state = STATE_FLEE;
-				else
-					state = STATE_COMBAT;
 			/*
 				StartFiring();
 				lookAt(target);
@@ -126,7 +115,17 @@ namespace Pathfinding {
 
 			switch (state) {
 			case STATE_IDLE:
-				if(enemyHP < maxHP && target != null && target.tag.Equals ("MedPackPU")){
+				if (target != null && target.gameObject.tag == "Player") {
+					if (this.passedInfo.bossFound){
+						state = STATE_FLEE;
+						break;
+					}
+					else{
+						state = STATE_COMBAT;
+						break;
+					}
+				}
+				if(medPack == 0 && target != null && target.tag.Equals ("MedPackPU")){
 					moveTo (target.transform.position);
 				}
 				if(medPack > 0 && weakEnemy != null &&
@@ -138,8 +137,14 @@ namespace Pathfinding {
 				break;
 			case STATE_COMBAT:
 				if (target != null && target.gameObject.tag == "Player") {
+					lookAt (target);
+					float x = target.transform.position.x; //use to make enemy silly
+					float z = target.transform.position.z;
+						
+					newTarget = new Vector3(x,0f,z);
+					chase (newTarget);
 					StartFiring();
-					lookAt(target);
+
 					if (player != null)
 						this.passedInfo.playerPos = player.transform.position;
 					this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
@@ -147,6 +152,7 @@ namespace Pathfinding {
 				}
 				else {
 					StopFiring();
+					state = STATE_IDLE;
 				}
 				break;
 			case STATE_FLEE:
@@ -156,19 +162,14 @@ namespace Pathfinding {
 					moveTo(this.passedInfo.bossPos);
 				}
 				else{
-					//go to random point somewhere
+					//Vector3 rdmPoint = getRandomPassableDestination();
+					//moveTo(rdmPoint);
 				}
 				break;
 			default:
 				break;
 
 			}
-
-			//if armor broken, cancel effect.
-			/*if (armorBonusHP <= 0) {
-				armorBonusHP = 0;
-			}*/
-
 			deathCheck ();
 		}
 		
