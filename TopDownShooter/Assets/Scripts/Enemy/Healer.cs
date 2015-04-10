@@ -159,7 +159,7 @@ namespace Pathfinding {
 				}
 				else {
 					StopFiring();
-					state = STATE_IDLE;
+					changeState(STATE_IDLE);
 				}
 				break;
 			case STATE_FLEE:
@@ -173,14 +173,14 @@ namespace Pathfinding {
 					newTarget = mapScript.getRandomPassableDestination();
 					moveTo(newTarget);
 				}
-				state = STATE_IS_FLEEING;
+				changeState(STATE_IS_FLEEING);
 				break;
 			case STATE_IS_FLEEING:
 				if(newTarget.Equals(this.transform.position))
-				   state = STATE_IDLE;
+				   changeState(STATE_IDLE);
 				break;
 			default:
-				state = STATE_IDLE;
+				changeState(STATE_IDLE);
 				break;
 
 			}

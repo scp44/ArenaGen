@@ -184,7 +184,7 @@ public class EnemyBasic: MonoBehaviour {
 			//interrupt module
 			//target = armor;
 		}
-	
+		commCheck();
 		
 		deathCheck ();
 	}
