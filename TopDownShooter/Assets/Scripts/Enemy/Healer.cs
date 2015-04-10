@@ -16,7 +16,8 @@ namespace Pathfinding {
 		
 		/** Effect which will be instantiated when end of path is reached.
 		 * \see OnTargetReached */
-
+		public int maxFollow;
+		public int followers;
 		public GameObject endOfPathEffect;
 		//private GameObject tar = new GameObject(); //save the last position of player
 		private Vector3 newTarget;
@@ -48,7 +49,7 @@ namespace Pathfinding {
 			anim["awake"].normalizedTime = 1F;
 
 			state = STATE_IDLE;
-			
+			maxFollow = Mathf.FloorToInt(difficulty / 30);
 			//Call Start in base script (AIPath)
 			base.Start ();
 		}
