@@ -3,7 +3,8 @@ using System.Collections;
 
 public class BossBasic : EnemyBasic {
 	//A boss has two weapons instead of one
-	public int equipped;
+	public int equipped1;
+	public int equipped2;
 	public Vector3 initialPosition;
 	[Range(0f, 1f)]
 	public float idleAmount;
@@ -12,8 +13,6 @@ public class BossBasic : EnemyBasic {
 	private const int STATE_IDLE = 0;
 	private const int STATE_ALERT = 1;
 	private const int STATE_COMBAT = 2;
-	private float timeSinceStateChange = 0;
-	private int state = -1;
 
 	protected override void Start() {
 		base.Start ();
@@ -21,7 +20,7 @@ public class BossBasic : EnemyBasic {
 	}
 
 	protected override void Update() {
-		timeSinceStateChange += Time.deltaTime;
+		base.Update ();
 
 		switch (state) {
 		case STATE_IDLE:

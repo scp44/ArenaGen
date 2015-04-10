@@ -727,7 +727,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &281480648
 Transform:
   m_ObjectHideFlags: 0
@@ -791,6 +791,8 @@ MonoBehaviour:
   alertScale: 15
   fov: 45
   isFiring: 0
+  wanderTimeMax: 6
+  wanderTimeMin: 2
   armorBonusHP: 0
   medPack: 0
   canSearch: 1
@@ -806,6 +808,8 @@ MonoBehaviour:
   closestOnPathCheck: 1
   anim: {fileID: 1119290607}
   animationSpeed: .400000006
+  maxFollow: 0
+  followers: 0
   endOfPathEffect: {fileID: 100000, guid: 441e67a4721e749f0bca9581956f2729, type: 2}
   mapScript: {fileID: 0}
 --- !u!114 &281480652
@@ -2121,7 +2125,6 @@ MonoBehaviour:
   player: {fileID: 25744902}
   groundCellPrefabs:
   - {fileID: 11460476, guid: 8dbc36c31bb714b1cbecc7e0d8308e2a, type: 2}
-  roadPrefab: {fileID: 11470894, guid: af698682f5d2843efb0ea49642dd6bfe, type: 2}
   waterPrefab: {fileID: 11418974, guid: 9c13dabc417d14b509cacfb628debc28, type: 2}
   wallPrefab: {fileID: 468708, guid: e0766c4a1e06b4fe980ddeaeef31fd50, type: 2}
   wallNodePrefab: {fileID: 426138, guid: d20bdfeeb196544979afefd6dd30bd39, type: 2}
@@ -2133,7 +2136,11 @@ MonoBehaviour:
   numMedpacks: 7
   powerupDistance: 10
   enemyTypes:
-  - {fileID: 466936, guid: d80d693871606cc4697835abbeb37560, type: 2}
+  - {fileID: 451254, guid: fa7e0c4ed703248669406c243f8019f8, type: 2}
+  - {fileID: 476682, guid: 62e034b8216db4e7c8e0b0bfcd9463bb, type: 2}
+  - {fileID: 496820, guid: c5b676322f59e457492b84f06d21888b, type: 2}
+  enemyNumbers: 070000000500000003000000
+  bossPrefab: {fileID: 467862, guid: c31491f2cc53340fa8ce95a99d3c19dd, type: 2}
   mapLength: 100
   mapWidth: 100
   obstacleProbability: 0
@@ -2143,6 +2150,9 @@ MonoBehaviour:
   numberOfEnemyCamps: 3
   enemyCampSize: 10
   startPositionSize: 10
+  minEnemiesAtCamp: 3
+  minBossPlayerDistance: 60
+  minEnemyPlayerDistance: 20
   shortestWallLength: 13
   minWallWaterDistance: 5
   maxWallLength: 20
@@ -2244,7 +2254,7 @@ Transform:
   m_PrefabParentObject: {fileID: 466936, guid: d80d693871606cc4697835abbeb37560, type: 2}
   m_PrefabInternal: {fileID: 1154440982}
   m_GameObject: {fileID: 800215146}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: .333737642, z: 0, w: .942665994}
   m_LocalPosition: {x: 1.53999996, y: .600000024, z: 3.36999989}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2300,6 +2310,8 @@ MonoBehaviour:
   alertScale: 15
   fov: 100
   isFiring: 0
+  wanderTimeMax: 6
+  wanderTimeMin: 2
   armorBonusHP: 0
   medPack: 0
   canSearch: 1
@@ -2315,6 +2327,8 @@ MonoBehaviour:
   closestOnPathCheck: 1
   anim: {fileID: 0}
   animationSpeed: .200000003
+  maxFollow: 0
+  followers: 0
   endOfPathEffect: {fileID: 0}
   mapScript: {fileID: 0}
 --- !u!114 &800215151
@@ -3666,6 +3680,8 @@ MonoBehaviour:
   alertScale: 15
   fov: 100
   isFiring: 0
+  wanderTimeMax: 6
+  wanderTimeMin: 2
   armorBonusHP: 0
   medPack: 0
   canSearch: 1
@@ -3702,6 +3718,8 @@ MonoBehaviour:
   alertScale: 15
   fov: 100
   isFiring: 0
+  wanderTimeMax: 6
+  wanderTimeMin: 2
   armorBonusHP: 0
   medPack: 0
   canSearch: 1
@@ -3715,8 +3733,6 @@ MonoBehaviour:
   forwardLook: 1
   endReachedDistance: .200000003
   closestOnPathCheck: 1
-  anim: {fileID: 0}
-  animationSpeed: .200000003
   endOfPathEffect: {fileID: 0}
 --- !u!114 &1359735648
 MonoBehaviour:
@@ -5375,7 +5391,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 166936, guid: d80d693871606cc4697835abbeb37560, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11428088, guid: d80d693871606cc4697835abbeb37560, type: 2}

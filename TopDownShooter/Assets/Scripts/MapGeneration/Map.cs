@@ -11,8 +11,7 @@ public class Map: MonoBehaviour {
 	
 	//Passable terrain
 	public MapCell[] groundCellPrefabs;
-	public MapCell roadPrefab;
-	
+
 	//Impassable terrain
 	public MapCell waterPrefab;
 	public Transform wallPrefab;
@@ -30,6 +29,8 @@ public class Map: MonoBehaviour {
 
 	//Enemy types
 	public Transform[] enemyTypes;
+	public int[] enemyNumbers;
+	public Transform bossPrefab;
 	
 	//Define map size
 	public int mapLength;
@@ -49,6 +50,9 @@ public class Map: MonoBehaviour {
 	public int numberOfEnemyCamps;
 	public int enemyCampSize;
 	public int startPositionSize;
+	public int minEnemiesAtCamp;
+	public float minBossPlayerDistance;
+	public float minEnemyPlayerDistance;
 	private IntVector2[] enemyCamps;
 	private IntVector2 startLocation;
 
@@ -64,6 +68,10 @@ public class Map: MonoBehaviour {
 
 	//Generate map
 	public void generate() {
+		if (enemyTypes.Length != enemyNumbers.Length) {
+			Debug.LogError("enemyTypes and enemyNumbers have different lengths.");
+		}
+
 		cells = new MapCell[mapLength, mapWidth];
 		walls = new WallGraph ();
 
@@ -83,6 +91,7 @@ public class Map: MonoBehaviour {
 		generateWalls ();
 		spawnPowerups ();
 		spawnEnemies ();
+		spawnBoss ();
 		
 		//Put the player at the starting position
 		Vector3 startPosition3D = coordinatesFrom2D(startLocation, 0.6f);
@@ -111,6 +120,61 @@ public class Map: MonoBehaviour {
 
 	//Spawn enemies
 	private void spawnEnemies() {
+		//put all the enemies in one array instead of N
+		List<int> enemiesToSpawn = new List<int>();
+		for (int enemyType=0; enemyType<enemyTypes.Length; enemyType++) {
+			for (int i=0; i<enemyNumbers[enemyType]; i++)
+				enemiesToSpawn.Add (enemyType);
+		}
+
+		//spawn enemies at the camps
+		foreach (IntVector2 enemyCamp in enemyCamps) {
+			int enemiesInCamp = 0;
+			//define the cells to pick from
+			List<IntVector2> neighborhood = new List<IntVector2>();
+			for (int i=enemyCamp.x-enemyCampSize; i<enemyCamp.x+enemyCampSize; i++) {
+				for (int j=enemyCamp.z-enemyCampSize; j<enemyCamp.z+enemyCampSize; j++) {
+					IntVector2 coordinates = new IntVector2(i,j);
+					if (testCell(coordinates, 1) && coordinates.distance(enemyCamp)<=enemyCampSize) {
+						neighborhood.Add (coordinates);
+					}
+				}
+			}
+			//pick random cells
+			while (enemiesInCamp < minEnemiesAtCamp && enemiesToSpawn.Count>0) {
+				IntVector2 cell = neighborhood[Random.Range(0, neighborhood.Count)];
+				if (testCell(cell, 1)) {
+					int enemyType = enemiesToSpawn[Random.Range(0, enemiesToSpawn.Count)];
+					enemiesToSpawn.Remove(enemyType);
+					placeEnemyAtCell(cell, enemyType);
+					cells[cell.x, cell.z].isPassable = false;
+					enemiesInCamp++;
+				}
+			}
+		}
+
+		//spawn enemies outside camps
+		foreach (int enemyType in enemiesToSpawn) {
+			IntVector2 location = new IntVector2(-1,-1);
+			while (!testCell(location, 1) || location.distance(startLocation)<minEnemyPlayerDistance) {
+				location = getRandomPassableCoordinates();
+			}
+			placeEnemyAtCell(location, enemyType);
+			cells[location.x, location.z].isPassable=false;
+		}
+	}
+
+	private void spawnBoss() {
+		IntVector2 location = new IntVector2(-1,-1);
+		while (!testCell(location, 1)) {
+			location = getRandomPassableCoordinates();
+		}
+		placeEnemyAtCell(location, -1);
+		cells[location.x, location.z].isPassable=false;
+	}
+
+	/*
+	private void spawnEnemies() {
 		bool spawnEnemy = false;
 		for (int i=0; i<mapLength; i++) {
 			for (int j=0; j<mapWidth; j++) {
@@ -134,6 +198,7 @@ public class Map: MonoBehaviour {
 			}
 		}
 	}
+	*/
 
 	//Generates water inside the map to make it look like an island
 	private void generateIsland(int padding) {
@@ -381,11 +446,18 @@ public class Map: MonoBehaviour {
 	}
 	
 	//Place an enemy soldier at the cell with given coordinates
-	private void placeEnemyAtCell(IntVector2 coordinates) {
+	private void placeEnemyAtCell(IntVector2 coordinates, int enemyType) {
 		Vector3 enemyCoordinates = coordinatesFrom2D(coordinates, 0.5f);
-		Transform prefab = enemyTypes [Random.Range (0, enemyTypes.Length)];
+		Transform prefab;
+		if (enemyType == -1) 
+			prefab = bossPrefab;
+		else
+			prefab = enemyTypes [enemyType];
 		Transform enemy = Instantiate (prefab) as Transform;
 		enemy.position = enemyCoordinates;
+		Vector3 eulerAngles = enemy.eulerAngles;
+		eulerAngles.y = Random.Range (0f, 360f);
+		enemy.eulerAngles = eulerAngles;
 	}
 
 	//Place a temp flag at the cell
