@@ -54,8 +54,7 @@ namespace Pathfinding {
 		}
 
 		protected virtual void Update () {
-			if (Time.timeScale <= 0)
-				return;
+			base.Update();
 
 			GameObject weakEnemy = this.commCheck ();
 			EnemyBasic weakEnemyScript = null;
@@ -127,13 +126,19 @@ namespace Pathfinding {
 						break;
 					}
 				}
-				if(medPack < 1 && target != null && target.tag.Equals ("MedPackPU")){
+				else if(medPack < 1 && target != null && target.tag.Equals ("MedPackPU")){
 					moveTo (target.transform.position);
 				}
-				if(medPack > 0 && weakEnemy != null &&
+				else if(medPack > 0 && weakEnemy != null &&
 				   (weakEnemyScript.enemyHP < weakEnemyScript.maxHP || weakEnemy.tag == "BossEnemy")){
 					useMedPack(weakEnemy);
 				}
+				else{
+					if(timeLeft <= 0){
+						wander();
+					}
+				}
+
 			     break;
 			case STATE_ALERT:
 				break;
@@ -143,7 +148,7 @@ namespace Pathfinding {
 					float x = target.transform.position.x; //use to make enemy silly
 					float z = target.transform.position.z;
 						
-					newTarget = new Vector3(x,0f,z);
+					newTarget = new Vector3(x,0.5f,z);
 					chase (newTarget);
 					StartFiring();
 
@@ -154,7 +159,7 @@ namespace Pathfinding {
 				}
 				else {
 					StopFiring();
-					state = STATE_IDLE;
+					changeState(STATE_IDLE);
 				}
 				break;
 			case STATE_FLEE:
@@ -168,14 +173,14 @@ namespace Pathfinding {
 					newTarget = mapScript.getRandomPassableDestination();
 					moveTo(newTarget);
 				}
-				state = STATE_IS_FLEEING;
+				changeState(STATE_IS_FLEEING);
 				break;
 			case STATE_IS_FLEEING:
 				if(newTarget.Equals(this.transform.position))
-				   state = STATE_IDLE;
+				   changeState(STATE_IDLE);
 				break;
 			default:
-				state = STATE_IDLE;
+				changeState(STATE_IDLE);
 				break;
 
 			}
@@ -233,7 +238,6 @@ namespace Pathfinding {
 			}
 			return boss;
 		}
-		
 
 	}
 }
