@@ -101,10 +101,7 @@ namespace Pathfinding {
 				Debug.Log("why not move");
 				lookAt(target);
 				//interrupt module
-<<<<<<< HEAD
 				chase (target.transform.position);
-=======
-				chase (target.transform);
 			}
 			
 
@@ -164,7 +161,7 @@ namespace Pathfinding {
 				break;
 			default:
 				break;
->>>>>>> origin/AIv2
+
 			}
 
 			//if armor broken, cancel effect.
@@ -172,18 +169,6 @@ namespace Pathfinding {
 				armorBonusHP = 0;
 			}*/
 
-<<<<<<< HEAD
-			if(medPack > 0 /*&& ((enemy in com-check circle && has < some HP) || enemy is Boss)*/){
-				//interrupt module
-				//useMedPack(enemy);
-			}
-=======
-			/*if(armorBonusHP == 0 /*&& armor in line of sight){
-			*/
-
-	
->>>>>>> origin/AIv2
-			
 			deathCheck ();
 		}
 		
