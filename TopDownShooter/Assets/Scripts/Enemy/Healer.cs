@@ -21,12 +21,14 @@ namespace Pathfinding {
 		//private GameObject tar = new GameObject(); //save the last position of player
 		private Vector3 newTarget;
 
+		public Map mapScript;
 
 		//state stuff
 		private const int STATE_IDLE = 0;
 		private const int STATE_ALERT = 1;
 		private const int STATE_COMBAT = 2;
 		private const int STATE_FLEE = 3;
+		private const int STATE_IS_FLEEING = 4;
 
 		//use to make enemy can follow
 		private bool awake = false;
@@ -45,7 +47,7 @@ namespace Pathfinding {
 			anim["awake"].speed = 0;
 			anim["awake"].normalizedTime = 1F;
 
-			state = STATE_ALERT;
+			state = STATE_IDLE;
 			
 			//Call Start in base script (AIPath)
 			base.Start ();
@@ -125,7 +127,7 @@ namespace Pathfinding {
 						break;
 					}
 				}
-				if(medPack == 0 && target != null && target.tag.Equals ("MedPackPU")){
+				if(medPack < 1 && target != null && target.tag.Equals ("MedPackPU")){
 					moveTo (target.transform.position);
 				}
 				if(medPack > 0 && weakEnemy != null &&
@@ -159,17 +161,25 @@ namespace Pathfinding {
 				int num = Random.Range(1, difficulty+1);
 				//less and less likely to go to the boss on higher difficulties
 				if(num == difficulty){
-					moveTo(this.passedInfo.bossPos);
+					newTarget = this.passedInfo.bossPos;
+					moveTo(newTarget);
 				}
 				else{
-					//Vector3 rdmPoint = getRandomPassableDestination();
-					//moveTo(rdmPoint);
+					newTarget = mapScript.getRandomPassableDestination();
+					moveTo(newTarget);
 				}
+				state = STATE_IS_FLEEING;
+				break;
+			case STATE_IS_FLEEING:
+				if(newTarget.Equals(this.transform.position))
+				   state = STATE_IDLE;
 				break;
 			default:
+				state = STATE_IDLE;
 				break;
 
 			}
+
 			deathCheck ();
 		}
 		
