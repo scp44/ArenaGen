@@ -54,8 +54,7 @@ namespace Pathfinding {
 		}
 
 		protected virtual void Update () {
-			if (Time.timeScale <= 0)
-				return;
+			base.Update();
 
 			GameObject weakEnemy = this.commCheck ();
 			EnemyBasic weakEnemyScript = null;
@@ -233,7 +232,6 @@ namespace Pathfinding {
 			}
 			return boss;
 		}
-		
 
 	}
 }

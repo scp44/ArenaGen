@@ -188,7 +188,7 @@ public class EnemyBasic: MonoBehaviour {
 		deathCheck ();
 	}
 
-	public void wander(){
+	/*public void wander(){
 		Vector3 fwd = transform.TransformDirection(Vector3.forward);
 		RaycastHit hitinfo = new RaycastHit ();
 			
@@ -199,7 +199,7 @@ public class EnemyBasic: MonoBehaviour {
 			}
 		}
 	
-	}
+	}*/
 
 	public GameObject visionCheck(){
 		GameObject toReturn = null;
