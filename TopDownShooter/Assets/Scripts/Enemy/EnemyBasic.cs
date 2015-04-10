@@ -296,6 +296,8 @@ public class EnemyBasic: MonoBehaviour {
 
 	public void increaseHP(float hp){
 		enemyHP += hp;
+		if (enemyHP > maxHP)
+			enemyHP = maxHP;
 	}
 
 	public void takeDamage(float damage) {
