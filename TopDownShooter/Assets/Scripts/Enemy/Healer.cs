@@ -126,13 +126,19 @@ namespace Pathfinding {
 						break;
 					}
 				}
-				if(medPack < 1 && target != null && target.tag.Equals ("MedPackPU")){
+				else if(medPack < 1 && target != null && target.tag.Equals ("MedPackPU")){
 					moveTo (target.transform.position);
 				}
-				if(medPack > 0 && weakEnemy != null &&
+				else if(medPack > 0 && weakEnemy != null &&
 				   (weakEnemyScript.enemyHP < weakEnemyScript.maxHP || weakEnemy.tag == "BossEnemy")){
 					useMedPack(weakEnemy);
 				}
+				else{
+					if(timeLeft <= 0){
+						wander();
+					}
+				}
+
 			     break;
 			case STATE_ALERT:
 				break;
@@ -142,7 +148,7 @@ namespace Pathfinding {
 					float x = target.transform.position.x; //use to make enemy silly
 					float z = target.transform.position.z;
 						
-					newTarget = new Vector3(x,0f,z);
+					newTarget = new Vector3(x,0.5f,z);
 					chase (newTarget);
 					StartFiring();
 

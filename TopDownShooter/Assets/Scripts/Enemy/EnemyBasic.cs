@@ -51,7 +51,7 @@ public class EnemyBasic: MonoBehaviour {
 	protected int difficulty;
 	public float wanderTimeMax = 6;
 	public float wanderTimeMin = 2;
-	private float timeLeft;
+	protected float timeLeft;
 	//information that can be passed between enemies
 	public PassedInfo passedInfo;
 
@@ -176,6 +176,7 @@ public class EnemyBasic: MonoBehaviour {
 		}
 		if(timeLeft <= 0){
 			stopMove();
+			timeLeft = 0;
 		}
 
 		GameObject target = null;
