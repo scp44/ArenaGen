@@ -654,7 +654,6 @@ GameObject:
   - 114: {fileID: 281480651}
   - 114: {fileID: 281480649}
   - 54: {fileID: 281480654}
-  - 114: {fileID: 281480655}
   - 65: {fileID: 281480650}
   m_Layer: 8
   m_Name: Bot
@@ -662,7 +661,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &281480648
 Transform:
   m_ObjectHideFlags: 0
@@ -731,6 +730,7 @@ MonoBehaviour:
   canSearch: 1
   canMove: 1
   bullet: {fileID: 5456608, guid: edfaf2011a2a3714794c0677bf8cd0f8, type: 2}
+  sleepVelocity: .200000003
   repathRate: .300000012
   turningSpeed: 6
   slowdownDistance: .600000024
@@ -739,7 +739,6 @@ MonoBehaviour:
   endReachedDistance: .0500000007
   closestOnPathCheck: 1
   anim: {fileID: 1119290607}
-  sleepVelocity: .200000003
   animationSpeed: .400000006
   endOfPathEffect: {fileID: 100000, guid: 441e67a4721e749f0bca9581956f2729, type: 2}
 --- !u!114 &281480652
@@ -787,20 +786,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 4
   m_CollisionDetection: 0
---- !u!114 &281480655
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11428088, guid: d80d693871606cc4697835abbeb37560,
-    type: 2}
-  m_PrefabInternal: {fileID: 1974130547}
-  m_GameObject: {fileID: 281480647}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3d90d17f28b2514db1eb0e30b1298e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 40
-  nextWaypointDistance: 3
 --- !u!1 &432062126
 GameObject:
   m_ObjectHideFlags: 0
@@ -1766,6 +1751,7 @@ MonoBehaviour:
   canSearch: 1
   canMove: 1
   bullet: {fileID: 0}
+  sleepVelocity: .400000006
   repathRate: .5
   turningSpeed: 5
   slowdownDistance: .600000024
@@ -1774,7 +1760,6 @@ MonoBehaviour:
   endReachedDistance: .200000003
   closestOnPathCheck: 1
   anim: {fileID: 0}
-  sleepVelocity: .400000006
   animationSpeed: .200000003
   endOfPathEffect: {fileID: 0}
 --- !u!114 &800215151
@@ -3063,6 +3048,7 @@ MonoBehaviour:
   canSearch: 1
   canMove: 1
   bullet: {fileID: 0}
+  sleepVelocity: .400000006
   repathRate: .5
   turningSpeed: 5
   slowdownDistance: .600000024
@@ -3098,6 +3084,7 @@ MonoBehaviour:
   canSearch: 1
   canMove: 1
   bullet: {fileID: 0}
+  sleepVelocity: .400000006
   repathRate: .5
   turningSpeed: 5
   slowdownDistance: .600000024
@@ -3106,7 +3093,6 @@ MonoBehaviour:
   endReachedDistance: .200000003
   closestOnPathCheck: 1
   anim: {fileID: 0}
-  sleepVelocity: .400000006
   animationSpeed: .200000003
   endOfPathEffect: {fileID: 0}
 --- !u!114 &1359735648
@@ -4457,9 +4443,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 166936, guid: d80d693871606cc4697835abbeb37560, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 11428088, guid: d80d693871606cc4697835abbeb37560, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: d80d693871606cc4697835abbeb37560, type: 2}
   m_RootGameObject: {fileID: 281480647}
   m_IsPrefabParent: 0

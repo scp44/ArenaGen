@@ -68,7 +68,7 @@ public class EnemyBasic: MonoBehaviour {
 	public bool canMove = true;
 
 	//internal variables
-	private Transform target;
+	private Vector3 target;
 	private Vector3 targetDir;
 	private GameObject[] pUs;
 	protected GameObject player;
@@ -187,7 +187,7 @@ public class EnemyBasic: MonoBehaviour {
 		if (target != null && target.gameObject.tag == "Player") {
 			StartFiring();
 			lookAt(target);
-			goTo(target);   //comment or not
+//			goTo(target);   //comment or not
 			this.passedInfo.playerPos = player.transform.position;
 			this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
 			//target = null;
@@ -479,23 +479,18 @@ public class EnemyBasic: MonoBehaviour {
 	public virtual void SearchPath () {
 		//target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 
-		if (target == null) throw new System.InvalidOperationException ("Target is null");
-		//Debug.Log ("here?");
+		//if (target == null) throw new System.InvalidOperationException ("Target is null");
+		//Debug.Log ("here is the bug?");
 		lastRepath = Time.time;
 		//This is where we should search to
-		Vector3 targetPosition = target.position;
+		Vector3 targetPosition = target;
 		
 		canSearchAgain = false;
-		
-		//Alternative way of requesting the path
-		//ABPath p = ABPath.Construct (GetFeetPosition(),targetPoint,null);
-		//seeker.StartPath (p);
-		
-		//We should search from the current position
+
 		seeker.StartPath (GetFeetPosition(), targetPosition);
 	}
 
-	public void chase(Transform pos){
+	public void chase(Vector3 pos){
 		setTarget (pos);
 
 		//Get velocity in world-space
@@ -507,11 +502,7 @@ public class EnemyBasic: MonoBehaviour {
 			
 			//Rotate towards targetDirection (filled in by CalculateVelocity)
 			RotateTowards (targetDirection);
-			
-			//Vector3 lookDirection = targetDirection;
-			//lookDirection.Set (lookDirection.x, 0f, lookDirection.z);
-			//transform.rotation = Quaternion.LookRotation (lookDirection);
-			
+
 			dir.y = 0;
 			if (dir.sqrMagnitude > sleepVelocity*sleepVelocity) {
 				//If the velocity is large enough, move
@@ -521,23 +512,25 @@ public class EnemyBasic: MonoBehaviour {
 			}
 			
 			if ( this.rvoController != null ) {
-				rvoController.Move ( dir );
+				rvoController.Move (dir);
 				velocity = rvoController.velocity;
-			} else 
-			if (navController != null) {
-				
-				velocity = Vector3.zero;
-			} else if (rigidbody != null) {
-				//rigidbody.SimpleMove (dir);
+			} 
+			else 
+				if (navController != null) {
+					velocity = Vector3.zero;
+				}
+				else if (rigidbody != null) {
+				//here is how to make enemy move, we can use force or velocity, I prefer use velocity
 				rigidbody.velocity = dir; 
 				//no game experience difference...maybe
 				//rigidbody.AddForce(dir * 5f);
 				velocity = rigidbody.velocity;
-			} else {
+				} else {
 				Debug.LogWarning ("No NavmeshController or CharacterController attached to GameObject");
 				velocity = Vector3.zero;
-			}
-		} else {
+				}
+		}
+		else {
 			velocity = Vector3.zero;
 		}
 		
@@ -551,7 +544,7 @@ public class EnemyBasic: MonoBehaviour {
 		float speed = relVelocity.z;
 
 	}
-
+	/*
 	//go toward a specified object
 	public virtual void goTo (GameObject obj) {
 		target = obj.transform;
@@ -572,9 +565,9 @@ public class EnemyBasic: MonoBehaviour {
 		seeker.StartPath (GetFeetPosition(), targetPosition);
 		Debug.Log ("should work");
 
-	}
+	}*/
 
-	public void setTarget(Transform tar){
+	public void setTarget(Vector3 tar){
 		this.target = tar;	
 	}
 	
@@ -730,14 +723,6 @@ public class EnemyBasic: MonoBehaviour {
 		Vector3 forward = tr.forward;
 		float dot = Vector3.Dot (dir.normalized,forward);
 		float sp = speed * Mathf.Max (dot,minMoveScale) * slowdown;
-		
-#if ASTARDEBUG
-		Debug.DrawLine (vPath[currentWaypointIndex-1] , vPath[currentWaypointIndex],Color.black);
-		Debug.DrawLine (GetFeetPosition(),targetPosition,Color.red);
-		Debug.DrawRay (targetPosition,Vector3.up, Color.red);
-		Debug.DrawRay (GetFeetPosition(),dir,Color.yellow);
-		Debug.DrawRay (GetFeetPosition(),forward*sp,Color.cyan);
-#endif
 		
 		if (Time.deltaTime	> 0) {
 			sp = Mathf.Clamp (sp,0,targetDist/(Time.deltaTime*2));

@@ -18,7 +18,8 @@ namespace Pathfinding {
 		 * \see OnTargetReached */
 
 		public GameObject endOfPathEffect;
-		public Transform tar;
+		//private GameObject tar = new GameObject(); //save the last position of player
+		private Vector3 newTarget;
 
 
 		//state stuff
@@ -69,31 +70,27 @@ namespace Pathfinding {
 				chase(target);
 			}
 			*/
-			int i;
-		if (target == null)
-				i = 0;
-			//Debug.Log("");
-		else {
-			//tar.position.x = target.transform.position.x; //use to make enemy silly
-			//tar.position.y = target.transform.position.y;
-				tar = target.transform;
-			//tar.position = new Vector3(target.transform.position.x,target.transform.position.y,0);
-				print (tar.position.x);
-			awake = true;
-		}
-
+	
 		if (target != null) {
 			lookAt (target);
-			chase (target.transform);
+			float x = target.transform.position.x; //use to make enemy silly
+			float z = target.transform.position.z;
+
+			newTarget = new Vector3(x,0f,z);
+
+			awake = true; //this awake is set the enemy in "searching player" model, when it faile, it will turn of to idle (not implemented yet)
+			chase (newTarget);
 			if (target.gameObject.tag == "Player")
 				StartFiring ();
 			else
 				StopFiring ();
 		} else {
-			if (awake == true) {
-					Debug.Log(tar.ToString());
+			if (awake == true) { //if target is null, but enemy is awake, it will go to the last position player at
+					//Debug.Log(tar.ToString());
 				StopFiring ();
-				chase (tar);
+					Debug.Log("targeet is null");
+					Debug.Log(newTarget.ToString());
+				chase (newTarget);
 			}
 		}
 
@@ -101,31 +98,10 @@ namespace Pathfinding {
 				Debug.Log("why not move");
 				lookAt(target);
 				//interrupt module
-				chase (target.transform);
+				chase (target.transform.position);
 			}
-			
-
-			/*
-			if (target != null && target.gameObject.tag == "Player") {
-				StartFiring();
-				lookAt(target);
-				//setTarget(target.transform);
-				//SearchPath();
-				chase(target);
-
-				if (player != null)
-					this.passedInfo.playerPos = player.transform.position;
-				this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
-				//target = null;
-			}
-			else {
-				StopFiring();
-			}
-			*/
 
 
-
-			
 			if(medPack > 0 /*&& ((enemy in com-check circle && has < some HP) || enemy is Boss)*/){
 				//interrupt module
 				//useMedPack(enemy);
