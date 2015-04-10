@@ -10,12 +10,17 @@ public class GameManager : MonoBehaviour {
 	public Slider armorBar;
 	public Text fullHealthText;
 	public Text fullArmorText;
+	public Canvas InstructionScreen;
+	public Button StartButton;
 
 	private static GameManager instance;
 
 	// Use this for initialization
 	void Start () {
 		instance = this;
+		InstructionScreen.enabled = true;
+		Time.timeScale = 0;
+		StartButton.interactable = false;
 		// Generate the map
 		map.generate ();
 		fullHealthText.enabled = false;
@@ -24,12 +29,20 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Update () {
+		if (Application.GetStreamProgressForLevel("ArenaGen") == 1)
+			StartButton.interactable = true;
+
 		if(Input.GetKey("escape")){
 			//actually pause the game
 			Time.timeScale = 0;
 			//load pause menu
 			pauseScript.activatePauseMenu();
 		}
+	}
+
+	public void StartGame () {
+		InstructionScreen.enabled = false;
+		Time.timeScale = 1;
 	}
 
 	public static void updateHealthBar(float value){
