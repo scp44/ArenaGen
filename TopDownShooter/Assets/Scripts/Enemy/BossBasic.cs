@@ -16,8 +16,29 @@ public class BossBasic : EnemyBasic {
 	private const int STATE_ALERT = 1;
 	private const int STATE_COMBAT = 2;
 
+	//other private variables
+	private Rigidbody bulletLeft;
+	private Rigidbody bulletRight;
+	private float lastBulletTimeLeft = 0;
+	private float lastBulletTimeRight = 0;
+	protected WeaponInfo equippedWeaponLeft;
+	protected WeaponInfo equippedWeaponRight;
+	private bool isFiringLeft = false;
+	private bool isFiringRight = false;
+
+	protected enum BossWeapon {
+		left,
+		right
+	};
+
 	protected override void Start() {
 		base.Start ();
+		equippedLeft = Random.Range (0, WeaponManager.numWeapons);
+		equippedRight = Random.Range (0, WeaponManager.numWeapons);
+		equippedWeaponLeft = WeaponManager.getWeapon (equippedLeft);
+		equippedWeaponRight = WeaponManager.getWeapon (equippedRight);
+		bulletLeft = WeaponManager.getEnemyBulletPrefab (equippedLeft);
+		bulletRight = WeaponManager.getEnemyBulletPrefab (equippedRight);
 		changeState (STATE_IDLE);
 	}
 
@@ -26,6 +47,26 @@ public class BossBasic : EnemyBasic {
 		if (this.enemyHP <= 0) {
 			Application.LoadLevel ("WinScreen");
 		}
+
+		GameObject target = this.visionCheck ();//wonder if it should return a boolean 
+		if (target != null) {
+			lookAt (target);
+			float x = target.transform.position.x; //use to make enemy silly
+			float z = target.transform.position.z;
+			
+			Vector3 newTarget = new Vector3(x,0f,z);
+			
+			chase (newTarget);
+			if (target.gameObject.tag == "Player") {
+				StartFiring (BossWeapon.left);
+				StartFiring (BossWeapon.right);
+			}
+			else {
+				StopFiring (BossWeapon.left);
+				StopFiring (BossWeapon.right);
+			}
+		}
+
 		switch (state) {
 		case STATE_IDLE:
 			/*
@@ -47,6 +88,71 @@ public class BossBasic : EnemyBasic {
 		default:
 			Debug.Log ("The boss has unknown state (" + state.ToString() + ")");
 			break;
+		}
+	}
+
+	//Transfers bullet stats to bullets
+	protected void FireBullet (BossWeapon weapon) {
+		if (bulletStartLeft == null) {
+			Debug.LogError("Left bullet start position is not specified.");
+		}
+		if (bulletStartRight == null) {
+			Debug.LogError("Right bullet start position is not specified.");
+		}
+		Vector3 bulletStartPosition;
+		Rigidbody bulletClone;
+		EnemyBulletBehaviors bulletScript;
+		if (weapon == BossWeapon.left) {
+			bulletStartPosition = bulletStartLeft.position;
+			lastBulletTimeLeft = Time.realtimeSinceStartup;
+			bulletClone = (Rigidbody) Instantiate(bulletLeft, bulletStartPosition, transform.rotation);
+			bulletClone.velocity = transform.forward * movementSpeed * equippedWeaponLeft.bulletSpeed;
+			bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
+			bulletScript.lifeSpan = equippedWeaponLeft.bulletLength;
+			bulletScript.damage = equippedWeaponLeft.bulletDamage;
+		}
+		else {
+			bulletStartPosition = bulletStartRight.position;
+			lastBulletTimeRight = Time.realtimeSinceStartup;
+			bulletClone = (Rigidbody) Instantiate(bulletRight, bulletStartPosition, transform.rotation);
+			bulletClone.velocity = transform.forward * movementSpeed * equippedWeaponRight.bulletSpeed;
+			bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
+			bulletScript.lifeSpan = equippedWeaponRight.bulletLength;
+			bulletScript.damage = equippedWeaponRight.bulletDamage;
+		}
+	}
+
+	private void FireBulletLeft() {
+		FireBullet (BossWeapon.left);
+	}
+
+	private void FireBulletRight() {
+		FireBullet (BossWeapon.right);
+	}
+
+	protected void StartFiring (BossWeapon weapon) {
+		if (weapon == BossWeapon.left && !isFiringLeft) {
+			isFiringLeft = true;
+			float delayTime;
+			delayTime = Mathf.Max(0, equippedWeaponLeft.bulletCooldown - (Time.realtimeSinceStartup - lastBulletTimeLeft));
+			InvokeRepeating("FireBulletLeft", delayTime, equippedWeaponLeft.bulletCooldown);
+		}
+		else if (weapon == BossWeapon.right && !isFiringRight) {
+			isFiringRight = true;
+			float delayTime;
+			delayTime = Mathf.Max(0, equippedWeaponRight.bulletCooldown - (Time.realtimeSinceStartup - lastBulletTimeRight));
+			InvokeRepeating("FireBulletRight", delayTime, equippedWeaponRight.bulletCooldown);
+		}
+	}
+	
+	protected void StopFiring (BossWeapon weapon) {
+		if (weapon == BossWeapon.left && isFiringLeft) {
+			isFiringLeft = false;
+			CancelInvoke("FireBulletLeft");
+		}
+		else if (weapon == BossWeapon.right && isFiringRight) {
+			isFiringRight = false;
+			CancelInvoke("FireBulletRight");
 		}
 	}
 }

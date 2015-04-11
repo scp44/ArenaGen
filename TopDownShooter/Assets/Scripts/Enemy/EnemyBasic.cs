@@ -362,17 +362,17 @@ public class EnemyBasic: MonoBehaviour {
 		}
 	}
 
-	protected string getTag(GameObject get){
-		return get.gameObject.tag;
-	}
-
 	protected void StopFiring () {
 		if (isFiring) {
 			isFiring = false;
 			CancelInvoke("FireBullet");
 		}
 	}
-	
+
+	protected string getTag(GameObject get){
+		return get.gameObject.tag;
+	}
+
 	protected void changeState(int newState) {
 		if (state != newState) {
 			state = newState;
