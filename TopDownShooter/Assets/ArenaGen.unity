@@ -3733,8 +3733,6 @@ MonoBehaviour:
   forwardLook: 1
   endReachedDistance: .200000003
   closestOnPathCheck: 1
-  anim: {fileID: 0}
-  animationSpeed: .200000003
   endOfPathEffect: {fileID: 0}
 --- !u!114 &1359735648
 MonoBehaviour:
@@ -5678,32 +5676,32 @@ MonoBehaviour:
   - weaponType: 0
     bulletDamage: 1
     aoeRadius: 0
-    bulletSpeed: .200000003
+    bulletSpeed: .170000002
     bulletCooldown: 1
     bulletLength: 50
   - weaponType: 1
     bulletDamage: 2
     aoeRadius: 0
     bulletSpeed: .100000001
-    bulletCooldown: 1
+    bulletCooldown: 1.20000005
     bulletLength: 50
   - weaponType: 2
-    bulletDamage: 3
+    bulletDamage: 3.5
     aoeRadius: 0
-    bulletSpeed: .100000001
-    bulletCooldown: 1
+    bulletSpeed: .0500000007
+    bulletCooldown: 2
     bulletLength: 50
   - weaponType: 3
-    bulletDamage: .5
+    bulletDamage: .100000001
     aoeRadius: 0
-    bulletSpeed: .100000001
-    bulletCooldown: 1
+    bulletSpeed: .200000003
+    bulletCooldown: .300000012
     bulletLength: 50
   - weaponType: 4
-    bulletDamage: 1
+    bulletDamage: 1.5
     aoeRadius: 0
-    bulletSpeed: .100000001
-    bulletCooldown: 1
+    bulletSpeed: .899999976
+    bulletCooldown: 1.10000002
     bulletLength: 50
   weaponPrefabs:
   - {fileID: 0}

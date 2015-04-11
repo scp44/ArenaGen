@@ -7,7 +7,7 @@ public class WeaponManager : MonoBehaviour {
 	public List<Transform> weaponPrefabs;
 	public List<EnemyBulletBehaviors> enemyBulletPrefabs;
 	public List<BulletBehaviors> playerBulletPrefabs;
-	private static int numWeapons;
+	public static int numWeapons;
 	private static WeaponManager instance;
 
 	void Awake() {

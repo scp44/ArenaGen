@@ -136,7 +136,7 @@ MonoBehaviour:
   commScale: 4
   visionScale: 10
   alertScale: 15
-  fov: 100
+  fov: 45
   isFiring: 0
   wanderTimeMax: 240
   wanderTimeMin: 120
@@ -154,8 +154,6 @@ MonoBehaviour:
   forwardLook: 1
   endReachedDistance: .200000003
   closestOnPathCheck: 1
-  anim: {fileID: 0}
-  animationSpeed: .200000003
   endOfPathEffect: {fileID: 0}
 --- !u!114 &11476684
 MonoBehaviour:

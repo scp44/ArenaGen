@@ -35,7 +35,7 @@ namespace Pathfinding {
 		private bool awake = false;
 		
 		public new void Start () {
-//			target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
+			//target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 			//Prioritize the walking animation
 			//anim["forward"].layer = 10;
 			
@@ -59,7 +59,7 @@ namespace Pathfinding {
 
 			GameObject weakEnemy = this.commCheck ();
 			EnemyBasic weakEnemyScript = null;
-			if(weakEnemy != null)
+			if (weakEnemy != null)
 				weakEnemyScript = weakEnemy.GetComponent <EnemyBasic>();
 
 			GameObject target = null;
@@ -73,7 +73,7 @@ namespace Pathfinding {
 			}
 			*/
 	
-			/*if (target != null) {
+			if (target != null) {
 				lookAt (target);
 				float x = target.transform.position.x; //use to make enemy silly
 				float z = target.transform.position.z;
@@ -90,17 +90,17 @@ namespace Pathfinding {
 				if (awake == true) { //if target is null, but enemy is awake, it will go to the last position player at
 						//Debug.Log(tar.ToString());
 					StopFiring ();
-					Debug.Log("targeet is null");
-					Debug.Log(newTarget.ToString());
+						//Debug.Log("targeet is null");
+						//Debug.Log(newTarget.ToString());
 					chase (newTarget);
 				}
-			}*/
+			}
 
-			/*if(enemyHP < 5 && target != null && target.tag.Equals ("MedPackPU")){
-				Debug.Log("why not move");
+			if(enemyHP < 5 && target != null && target.tag.Equals ("MedPackPU")){
+				//Debug.Log("why not move");
 				lookAt(target);
 				chase (target.transform.position);
-			}*/
+			}
 
 			/*
 				StartFiring();
@@ -221,7 +221,8 @@ namespace Pathfinding {
 				Transform npcPos = eUs[i].transform;
 				GameObject npc = eUs[i];
 				EnemyBasic npcScript = npc.GetComponent<EnemyBasic>();
-				if ((npcPos.position - transform.position).magnitude < (commScale)) {
+				//TODO: remove npsScript!=null check. Make sure it is not null.
+				if (npcScript != null && (npcPos.position - transform.position).magnitude < (commScale)) {
 					//pass information
 					if(this.passedInfo.bossFound){
 						npcScript.passedInfo.bossPos = this.passedInfo.bossPos;

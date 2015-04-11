@@ -79,6 +79,7 @@ public class EnemyBasic: MonoBehaviour {
 	//private GameObject toReturn = null;
 	private float angle;
 	private int toUse = 0;
+	private float lastBulletTime = 0;
 
 	public float sleepVelocity = 0.4F;
 
@@ -158,8 +159,14 @@ public class EnemyBasic: MonoBehaviour {
 
 		//target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 		startHasRun = true;
+		equipped = Random.Range (0, WeaponManager.numWeapons);
 		equippedWeapon = WeaponManager.getWeapon (equipped);
 		bullet = WeaponManager.getEnemyBulletPrefab (equipped);
+		passedInfo = new PassedInfo ();
+		passedInfo.bossFound = false;
+		passedInfo.bossPos = new Vector3 ();
+		passedInfo.playerPos = new Vector3 ();
+		passedInfo.lastTimeSeen = -999;
 		OnEnable ();
 	}
 
@@ -268,7 +275,8 @@ public class EnemyBasic: MonoBehaviour {
 			Transform npcPos = eUs[i].transform;
 			GameObject npc = eUs[i];
 			EnemyBasic npcScript = npc.GetComponent<EnemyBasic>();
-			if ((npcPos.position - transform.position).magnitude < (commScale)) {
+			//TODO: remove npsScript!=null check. Make sure it is not null.
+			if (npcScript != null && (npcPos.position - transform.position).magnitude < (commScale)) {
 				//pass information
 				if(this.passedInfo.bossFound){
 					npcScript.passedInfo.bossPos = this.passedInfo.bossPos;
@@ -335,6 +343,7 @@ public class EnemyBasic: MonoBehaviour {
 		EnemyBulletBehaviors bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
 		bulletScript.lifeSpan = equippedWeapon.bulletLength;
 		bulletScript.damage = equippedWeapon.bulletDamage;
+		lastBulletTime = Time.timeSinceLevelLoad;
 		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
 	}
 	
@@ -344,7 +353,9 @@ public class EnemyBasic: MonoBehaviour {
 		else {
 			isFiring = true;
 			//InvokeRepeating("FireBullet", 0, BulletCooldown());
-			InvokeRepeating("FireBullet", 0, equippedWeapon.bulletCooldown);
+			float delayTime;
+			delayTime = Mathf.Max(0, equippedWeapon.bulletCooldown - (Time.timeSinceLevelLoad - lastBulletTime));
+			InvokeRepeating("FireBullet", delayTime, equippedWeapon.bulletCooldown);
 		}
 	}
 

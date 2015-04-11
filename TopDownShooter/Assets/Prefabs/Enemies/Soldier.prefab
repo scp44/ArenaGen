@@ -136,7 +136,7 @@ MonoBehaviour:
   commScale: 4
   visionScale: 10
   alertScale: 15
-  fov: 100
+  fov: 45
   isFiring: 0
   wanderTimeMax: 6
   wanderTimeMin: 2
