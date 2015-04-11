@@ -52,6 +52,7 @@ public class EnemyBasic: MonoBehaviour {
 	public float wanderTimeMax = 240;
 	public float wanderTimeMin = 120;
 	protected float timeLeft;
+	public Transform bulletStartPosition;
 	//information that can be passed between enemies
 	public PassedInfo passedInfo;
 
@@ -336,8 +337,10 @@ public class EnemyBasic: MonoBehaviour {
 	//Transfers bullet stats to bullets
 	protected void FireBullet () {
 		//var inFront = new Vector3 (0, 1, 0);
-		
-		Rigidbody bulletClone = (Rigidbody) Instantiate(bullet, transform.position, transform.rotation);
+		if (bulletStartPosition == null) {
+			Debug.LogError("Bullet start position is not specified.");
+		}
+		Rigidbody bulletClone = (Rigidbody) Instantiate(bullet, bulletStartPosition.position, transform.rotation);
 		bulletClone.velocity = transform.forward * movementSpeed * equippedWeapon.bulletSpeed;
 		
 		EnemyBulletBehaviors bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();

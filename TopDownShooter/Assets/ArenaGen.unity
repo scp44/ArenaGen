@@ -793,6 +793,7 @@ MonoBehaviour:
   isFiring: 0
   wanderTimeMax: 6
   wanderTimeMin: 2
+  bulletStartPosition: {fileID: 0}
   armorBonusHP: 0
   medPack: 0
   MedPack: {fileID: 0}
@@ -1102,9 +1103,9 @@ Canvas:
   m_GameObject: {fileID: 441714188}
   m_Enabled: 1
   serializedVersion: 2
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
+  m_RenderMode: 1
+  m_Camera: {fileID: 802342378}
+  m_PlaneDistance: 5
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -2135,11 +2136,11 @@ MonoBehaviour:
   numMedpacks: 7
   powerupDistance: 10
   enemyTypes:
-  - {fileID: 451254, guid: fa7e0c4ed703248669406c243f8019f8, type: 2}
-  - {fileID: 476682, guid: 62e034b8216db4e7c8e0b0bfcd9463bb, type: 2}
-  - {fileID: 496820, guid: c5b676322f59e457492b84f06d21888b, type: 2}
+  - {fileID: 400694, guid: fa7e0c4ed703248669406c243f8019f8, type: 2}
+  - {fileID: 458662, guid: 62e034b8216db4e7c8e0b0bfcd9463bb, type: 2}
+  - {fileID: 483692, guid: c5b676322f59e457492b84f06d21888b, type: 2}
   enemyNumbers: 070000000500000003000000
-  bossPrefab: {fileID: 467862, guid: c31491f2cc53340fa8ce95a99d3c19dd, type: 2}
+  bossPrefab: {fileID: 423466, guid: c31491f2cc53340fa8ce95a99d3c19dd, type: 2}
   mapLength: 100
   mapWidth: 100
   obstacleProbability: 0
@@ -2311,6 +2312,7 @@ MonoBehaviour:
   isFiring: 0
   wanderTimeMax: 6
   wanderTimeMin: 2
+  bulletStartPosition: {fileID: 0}
   armorBonusHP: 0
   medPack: 0
   MedPack: {fileID: 0}
@@ -3680,6 +3682,7 @@ MonoBehaviour:
   isFiring: 0
   wanderTimeMax: 240
   wanderTimeMin: 120
+  bulletStartPosition: {fileID: 0}
   armorBonusHP: 0
   medPack: 0
   MedPack: {fileID: 0}
@@ -3719,6 +3722,7 @@ MonoBehaviour:
   isFiring: 0
   wanderTimeMax: 240
   wanderTimeMin: 120
+  bulletStartPosition: {fileID: 0}
   armorBonusHP: 0
   medPack: 0
   MedPack: {fileID: 0}

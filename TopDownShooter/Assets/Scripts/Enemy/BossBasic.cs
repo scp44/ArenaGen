@@ -3,8 +3,10 @@ using System.Collections;
 
 public class BossBasic : EnemyBasic {
 	//A boss has two weapons instead of one
-	public int equipped1;
-	public int equipped2;
+	public int equippedLeft;
+	public int equippedRight;
+	public Transform bulletStartLeft;
+	public Transform bulletStartRight;
 	public Vector3 initialPosition;
 	[Range(0f, 1f)]
 	public float idleAmount;
