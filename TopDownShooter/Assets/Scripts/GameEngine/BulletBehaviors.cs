@@ -7,6 +7,7 @@ public class BulletBehaviors : MonoBehaviour {
 	public Vector3 startPosition;
 	public float lifeSpan = 10;
 	public float damage = 1;
+	public WeaponInfo info;
 	private float count = 0;
 
 	void Update(){

@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviour {
 		
 		//fire on click. should handle special firing such as spreads.
 		if (Input.GetMouseButtonDown (0) && Time.timeSinceLevelLoad - cdStartTime > equippedWeapon.bulletCooldown) {
+
 			cdStartTime = Time.timeSinceLevelLoad;
 			FireBullet ();
 		}
@@ -125,6 +126,8 @@ public class PlayerController : MonoBehaviour {
 		bulletScript.lifeSpan = equippedWeapon.bulletLength;
 		bulletScript.damage = equippedWeapon.bulletDamage;
 		bulletScript.startPosition = transform.position;
+
+		
 
 		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
 	}

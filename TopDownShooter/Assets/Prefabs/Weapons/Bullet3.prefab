@@ -110,8 +110,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03694bd3e7b3a644b5996be92323314, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startPosition: {x: 0, y: 0, z: 0}
   lifeSpan: 50
-  damage: 1
+  damage: 3
+  info:
+    weaponType: 0
+    bulletDamage: 0
+    aoeRadius: 0
+    bulletSpeed: 0
+    bulletCooldown: 0
+    bulletLength: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

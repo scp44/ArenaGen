@@ -21,7 +21,9 @@ public class BossBasic : EnemyBasic {
 
 	protected override void Update() {
 		base.Update ();
-
+		if (this.enemyHP <= 0) {
+			Application.LoadLevel ("WinScreen");
+		}
 		switch (state) {
 		case STATE_IDLE:
 			/*
