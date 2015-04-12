@@ -8,6 +8,9 @@ public class WeaponManager : MonoBehaviour {
 	public List<EnemyBulletBehaviors> enemyBulletPrefabs;
 	public List<BulletBehaviors> playerBulletPrefabs;
 	public static int numWeapons;
+	public float angle = 90;
+	public int numBullets = 5;
+	public float angleBetween;
 	private static WeaponManager instance;
 
 	void Awake() {
@@ -18,6 +21,7 @@ public class WeaponManager : MonoBehaviour {
 		    || playerBulletPrefabs.Count != enemyBulletPrefabs.Count)
 			Debug.LogError("Not all lists specified in WeaponManager have the same length.");
 		numWeapons = weaponStats.Count;
+		angleBetween = angle / numBullets;
 	}
 
 	public static WeaponInfo getWeapon(int weaponType) {
@@ -34,6 +38,18 @@ public class WeaponManager : MonoBehaviour {
 				return instance.enemyBulletPrefabs[i].rigidbody;
 		Debug.LogError ("Could not get enemy bullet of type " + weaponType.ToString());
 		return new Rigidbody();
+	}
+
+	public static float getAngle (){
+		return instance.angle;
+	}
+
+	public static float getAngleBetween (){
+		return instance.angleBetween;
+	}
+
+	public static int getnumBullets (){
+		return instance.numBullets;
 	}
 
 	public static Rigidbody getPlayerBulletPrefab(int weaponType) {

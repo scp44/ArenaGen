@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour {
 	//bullet speed scale
 	public float speed = 10;
 
+
 	//gun and cooldown tracker
 	public int gun1;
 	public int gun2;
@@ -39,7 +40,7 @@ public class PlayerController : MonoBehaviour {
 		GameObject gunSelectInfo = GameObject.Find ("_Main");
 		if (gunSelectInfo == null) {
 			gun1 = 0;
-			gun2 = 1;
+			gun2 = 3;
 		}
 		else {
 			gunSelectCSharp gunSelectScript = gunSelectInfo.GetComponent <gunSelectCSharp> ();
@@ -119,17 +120,42 @@ public class PlayerController : MonoBehaviour {
 	void FireBullet () {
 		var inFront = new Vector3 (0, 1, 0);
 
-		Rigidbody bulletClone = (Rigidbody) Instantiate(bullet, transform.position, transform.rotation);
-		//TODO: figure out why player bullets are 10 times slower
-		bulletClone.velocity = 10*transform.forward * speed * equippedWeapon.bulletSpeed;
-		BulletBehaviors bulletScript = bulletClone.GetComponent<BulletBehaviors>();
-		bulletScript.lifeSpan = equippedWeapon.bulletLength;
-		bulletScript.damage = equippedWeapon.bulletDamage;
-		bulletScript.startPosition = transform.position;
-		if (equippedWeapon.weaponType == 2)
-			bulletScript.isAoE = true;
-		else
-			bulletScript.isAoE = false;
+		//not sprayer, don't need to fire multiple bullets
+		if (equippedWeapon.weaponType != 3) {
+			Rigidbody bulletClone = (Rigidbody)Instantiate (bullet, transform.position, transform.rotation);
+			//TODO: figure out why player bullets are 10 times slower
+			bulletClone.velocity = 10 * transform.forward * speed * equippedWeapon.bulletSpeed;
+			BulletBehaviors bulletScript = bulletClone.GetComponent<BulletBehaviors> ();
+			bulletScript.lifeSpan = equippedWeapon.bulletLength;
+			bulletScript.damage = equippedWeapon.bulletDamage;
+			bulletScript.startPosition = transform.position;
+
+			//if weapon is AoE
+			if (equippedWeapon.weaponType == 2)
+				bulletScript.isAoE = true;
+			else
+				bulletScript.isAoE = false;
+		}
+
+		//weapon is sprayer, need to fire multiple bullets
+		else {
+			int numBullets = WeaponManager.getnumBullets();
+			Vector3 startAngle = Quaternion.AngleAxis (-(WeaponManager.getAngle()/2), Vector3.up) * transform.forward;
+
+			for(int i = 0; i < numBullets; i++){
+				Rigidbody bulletClone = (Rigidbody) Instantiate(bullet, transform.position, transform.rotation);
+				//TODO: figure out why player bullets are 10 times slower
+				bulletClone.velocity = 10*startAngle * speed * equippedWeapon.bulletSpeed;
+				BulletBehaviors bulletScript = bulletClone.GetComponent<BulletBehaviors>();
+				bulletScript.lifeSpan = equippedWeapon.bulletLength;
+				bulletScript.damage = equippedWeapon.bulletDamage;
+				bulletScript.startPosition = transform.position;
+				
+				bulletScript.isAoE = false;
+
+				startAngle = Quaternion.AngleAxis (WeaponManager.getAngleBetween(), Vector3.up) * startAngle;
+			}
+		}
 		
 
 		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
