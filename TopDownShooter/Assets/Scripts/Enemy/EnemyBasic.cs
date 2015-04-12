@@ -84,6 +84,7 @@ public class EnemyBasic: MonoBehaviour {
 
 	public float sleepVelocity = 0.4F;
 
+	public bool isWander = false;
 	protected GameObject curTarget;
 	//The rest of the variables are related to Pathfinding
 
@@ -182,7 +183,8 @@ public class EnemyBasic: MonoBehaviour {
 		if (timeLeft != null && timeLeft >0){
 			timeLeft--;
 		}
-		if(timeLeft <= 0){
+		if(timeLeft <= 0 && isWander == true){
+			isWander = false;
 			stopMove();
 			timeLeft = 0;
 		}
@@ -338,6 +340,10 @@ public class EnemyBasic: MonoBehaviour {
 		this.transform.LookAt (target.transform, Vector3.up);
 	}
 
+	protected void lookAt(Vector3 target){
+		this.transform.LookAt (target, Vector3.up);
+	}
+
 	//Transfers bullet stats to bullets
 	protected void FireBullet () {
 		//var inFront = new Vector3 (0, 1, 0);
@@ -415,7 +421,7 @@ public class EnemyBasic: MonoBehaviour {
 		var rotation = Quaternion.AngleAxis(rand,Vector3.up);
 		var forward = Vector3.forward;
 		var toRotate = rotation * forward;
-		RotateTowards(toRotate);
+		lookAt(toRotate);
 		Physics.Raycast (transform.position, transform.forward, out hit, visionScale);
 		other = hit.collider;
 		if (other != null) {
@@ -423,15 +429,17 @@ public class EnemyBasic: MonoBehaviour {
 				if (other.gameObject.tag == "Wall") {
 					rotation = Quaternion.AngleAxis (rand + 180, Vector3.up);
 					toRotate = rotation * forward;
-					RotateTowards (toRotate);
+					lookAt(toRotate);
 				}
 			}
 		}
 		timeLeft = Random.Range(wanderTimeMin, wanderTimeMax);
+		isWander = true;
 		rigidbody.velocity = transform.forward * speed;
 	}
 
 	protected void stopMove(){
+		isWander = false;
 		rigidbody.velocity = Vector3.zero;
 	}
 
