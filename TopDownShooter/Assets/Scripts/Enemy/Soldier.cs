@@ -71,7 +71,10 @@ namespace Pathfinding {
 						changeState(STATE_IDLE);
 					}
 				}
-				else{changeState(STATE_IDLE);}
+				else{
+					StopFiring ();
+					changeState(STATE_IDLE);
+				}
 					break;
 
 			case STATE_FOLLOWING:

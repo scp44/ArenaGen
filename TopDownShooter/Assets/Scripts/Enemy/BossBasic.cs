@@ -34,7 +34,7 @@ public class BossBasic : EnemyBasic {
 	protected override void Start() {
 		base.Start ();
 		equippedLeft = Random.Range (0, WeaponManager.numWeapons);
-		equippedRight = Random.Range (0, WeaponManager.numWeapons);
+		equippedRight = (equippedLeft + Random.Range (0, WeaponManager.numWeapons))%WeaponManager.numWeapons;
 		equippedWeaponLeft = WeaponManager.getWeapon (equippedLeft);
 		equippedWeaponRight = WeaponManager.getWeapon (equippedRight);
 		bulletLeft = WeaponManager.getEnemyBulletPrefab (equippedLeft);
@@ -67,6 +67,10 @@ public class BossBasic : EnemyBasic {
 				StopFiring (BossWeapon.left);
 				StopFiring (BossWeapon.right);
 			}
+		}
+		else {
+			StopFiring (BossWeapon.left);
+			StopFiring (BossWeapon.right);
 		}
 
 		switch (state) {
