@@ -126,7 +126,10 @@ public class PlayerController : MonoBehaviour {
 		bulletScript.lifeSpan = equippedWeapon.bulletLength;
 		bulletScript.damage = equippedWeapon.bulletDamage;
 		bulletScript.startPosition = transform.position;
-
+		if (equippedWeapon.weaponType == 2)
+			bulletScript.isAoE = true;
+		else
+			bulletScript.isAoE = false;
 		
 
 		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
