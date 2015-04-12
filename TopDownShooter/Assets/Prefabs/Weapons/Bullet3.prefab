@@ -120,6 +120,8 @@ MonoBehaviour:
     bulletSpeed: 0
     bulletCooldown: 0
     bulletLength: 0
+  isAoE: 0
+  explosion: {fileID: 170428, guid: 7045c432b0ac03643b1da91ed027ae97, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

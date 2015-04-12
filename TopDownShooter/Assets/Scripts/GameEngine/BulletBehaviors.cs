@@ -10,7 +10,7 @@ public class BulletBehaviors : MonoBehaviour {
 	public WeaponInfo info;
 	public bool isAoE = false;
 	private float count = 0;
-	public Rigidbody explosion;
+	public GameObject explosion;
 
 	void Update(){
 		count++;
@@ -43,7 +43,7 @@ public class BulletBehaviors : MonoBehaviour {
 	}
 
 	void Explode(){
-		Rigidbody explosionClone = (Rigidbody) Instantiate(explosion, transform.position, transform.rotation);
+		GameObject explosionClone = (GameObject) Instantiate(explosion, transform.position, transform.rotation);
 		ExplosionScript explode = explosionClone.GetComponent<ExplosionScript> ();
 		explode.damage = damage;
 		explode.startPosition = startPosition;
