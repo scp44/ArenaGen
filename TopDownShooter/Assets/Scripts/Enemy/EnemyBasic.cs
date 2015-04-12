@@ -593,16 +593,12 @@ public class EnemyBasic: MonoBehaviour {
 		float speed = relVelocity.z;
 
 	}
-	/*
-	//go toward a specified object
-	public virtual void goTo (GameObject obj) {
-		target = obj.transform;
 
-		if (target == null) throw new System.InvalidOperationException ("Target is null");
+	//go toward a specified object
+	public virtual void goTo (Vector3 targetPos) {
 		
 		lastRepath = Time.time;
 		//This is where we should search to
-		Vector3 targetPosition = target.position;
 		
 		canSearchAgain = false;
 		
@@ -611,10 +607,10 @@ public class EnemyBasic: MonoBehaviour {
 		//seeker.StartPath (p);
 		
 		//We should search from the current position
-		seeker.StartPath (GetFeetPosition(), targetPosition);
-		Debug.Log ("should work");
+		seeker.StartPath (GetFeetPosition(), targetPos);
+		//Debug.Log ("should work");
 
-	}*/
+	}
 
 	public void setTarget(Vector3 tar){
 		this.target = tar;	

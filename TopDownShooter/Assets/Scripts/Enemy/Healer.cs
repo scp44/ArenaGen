@@ -73,34 +73,34 @@ namespace Pathfinding {
 			}
 			*/
 	
-			if (target != null) {
-				lookAt (target);
-				float x = target.transform.position.x; //use to make enemy silly
-				float z = target.transform.position.z;
-
-				newTarget = new Vector3(x,0f,z);
-
-				awake = true; //this awake is set the enemy in "searching player" model, when it faile, it will turn of to idle (not implemented yet)
-				chase (newTarget);
-				if (target.gameObject.tag == "Player")
-					StartFiring ();
-				else
-					StopFiring ();
-			} else {
-				if (awake == true) { //if target is null, but enemy is awake, it will go to the last position player at
-						//Debug.Log(tar.ToString());
-					StopFiring ();
-						//Debug.Log("targeet is null");
-						//Debug.Log(newTarget.ToString());
-					chase (newTarget);
-				}
-			}
-
-			if(enemyHP < 5 && target != null && target.tag.Equals ("MedPackPU")){
-				//Debug.Log("why not move");
-				lookAt(target);
-				chase (target.transform.position);
-			}
+//			if (target != null) {
+//				lookAt (target);
+//				float x = target.transform.position.x; //use to make enemy silly
+//				float z = target.transform.position.z;
+//
+//				newTarget = new Vector3(x,0f,z);
+//
+//				awake = true; //this awake is set the enemy in "searching player" model, when it faile, it will turn of to idle (not implemented yet)
+//				chase (newTarget);
+//				if (target.gameObject.tag == "Player")
+//					StartFiring ();
+//				else
+//					StopFiring ();
+//			} else {
+//				if (awake == true) { //if target is null, but enemy is awake, it will go to the last position player at
+//						//Debug.Log(tar.ToString());
+//					StopFiring ();
+//						//Debug.Log("targeet is null");
+//						//Debug.Log(newTarget.ToString());
+//					chase (newTarget);
+//				}
+//			}
+//
+//			if(enemyHP < 5 && target != null && target.tag.Equals ("MedPackPU")){
+//				//Debug.Log("why not move");
+//				lookAt(target);
+//				chase (target.transform.position);
+//			}
 
 			/*
 				StartFiring();
@@ -174,11 +174,11 @@ namespace Pathfinding {
 				//less and less likely to go to the boss on higher difficulties
 				if(num == difficulty){
 					newTarget = this.passedInfo.bossPos;
-					moveTo(newTarget);
+					goTo(newTarget);
 				}
 				else{
 					newTarget = mapScript.getRandomPassableDestination();
-					moveTo(newTarget);
+					goTo(newTarget);
 				}
 				changeState(STATE_IS_FLEEING);
 				break;
