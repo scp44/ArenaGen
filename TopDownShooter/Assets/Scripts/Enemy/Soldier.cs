@@ -37,9 +37,6 @@ namespace Pathfinding {
 						state = STATE_COMBAT;
 						break;
 				}
-				else if(medPack < 1 && target != null && target.tag.Equals ("MedPackPU")){
-					moveTo (target.transform.position);
-				}
 				else{
 					if(timeLeft <= 0){
 						wander();
