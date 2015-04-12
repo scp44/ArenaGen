@@ -255,7 +255,7 @@ public class EnemyBasic: MonoBehaviour {
 			//Debug.Log (transform.position.y.ToString());
 			Physics.Raycast (transform.position, (toReturn.transform.position - transform.position), out hit, visionScale);
 			other = hit.collider;
-			if(other.gameObject != null){
+			if(other != null && other.gameObject != null){
 				if (other.gameObject.tag == "Wall" || other.gameObject.tag == "Enemy") {
 					Debug.DrawRay(transform.position, (toReturn.transform.position - transform.position), Color.red, 5);
 					return null;
@@ -321,10 +321,14 @@ public class EnemyBasic: MonoBehaviour {
 	public void dropItem(){
 		Rigidbody medPackClone = (Rigidbody) Instantiate(MedPack, transform.position, transform.rotation);
 	}
+
+	public void activateHealthPack(){
+		enemyHP = Mathf.Min (maxHP, enemyHP + MEDPACK_HEALTH);
+	}
 	
 	public void useMedPack(GameObject enemy){
 		EnemyBasic enemyScript = enemy.GetComponent<EnemyBasic>();
-		enemyScript.increaseHP (Mathf.Max (enemyScript.maxHP-enemyScript.enemyHP, MEDPACK_HEALTH));
+		enemyScript.activateHealthPack ();
 		medPack--;
 	}
 

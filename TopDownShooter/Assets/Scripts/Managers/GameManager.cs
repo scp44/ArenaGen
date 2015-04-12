@@ -4,12 +4,20 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
+	public float minPlayerBossDistance = 30;
 	public Map map;
-	public Slider healthBar;
+	public Transform player;
+	public Transform boss;
 	public PauseMenu pauseScript;
+	public Slider healthBar;
 	public Slider armorBar;
+	public Text healthBarText;
+	public Text armorBarText;
 	public Text fullHealthText;
 	public Text fullArmorText;
+	public Text BossText;
+	public Slider bossHealthBar;
+	public Text bossHealthText;
 	public Canvas InstructionScreen;
 	public Button StartButton;
 
@@ -26,17 +34,27 @@ public class GameManager : MonoBehaviour {
 		fullHealthText.enabled = false;
 		fullArmorText.enabled = false;
 		armorBar.gameObject.SetActive (false);
+		hideBossUI ();
 	}
 
 	void Update () {
 		if (Application.GetStreamProgressForLevel("ArenaGen") == 1)
 			StartButton.interactable = true;
 
+		//pause menu
 		if(Input.GetKey("escape")){
 			//actually pause the game
 			Time.timeScale = 0;
 			//load pause menu
 			pauseScript.activatePauseMenu();
+		}
+
+		//enable boss UI if player and boss are close enough
+		if (player != null && boss != null && Vector3.Distance (player.position, boss.position) <= minPlayerBossDistance) {
+			showBossUI();
+		}
+		else {
+			hideBossUI();
 		}
 	}
 
@@ -45,17 +63,26 @@ public class GameManager : MonoBehaviour {
 		Time.timeScale = 1;
 	}
 
-	public static void updateHealthBar(float value){
-		instance.healthBar.value = value;
+	public static void updateHealthBar(float currentHealth, float maxHealth){
+		instance.healthBar.value = currentHealth/maxHealth;
+		instance.healthBarText.text = (currentHealth.ToString("F1") + "/" + maxHealth.ToString("F1")).PadLeft(9);
 	}
 
-	public static void updateArmorBar(float value){
-		if (value > 0) {
+	public static void updateBossHealthBar(float currentHealth, float maxHealth){
+		instance.bossHealthBar.value = currentHealth/maxHealth;
+		instance.bossHealthText.text = (currentHealth.ToString("F1") + "/" + maxHealth.ToString("F1")).PadLeft(9);
+	}
+
+	public static void updateArmorBar(float currentArmor, float maxArmor){
+		if (currentArmor > 0) {
 			instance.armorBar.gameObject.SetActive (true);
-			instance.armorBar.value = value;
+			instance.armorBarText.enabled = true;
+			instance.armorBar.value = currentArmor/maxArmor;
+			instance.armorBarText.text = (currentArmor.ToString("F1") + "/" + maxArmor.ToString("F1")).PadLeft(9);
 		}
 		else {
 			instance.armorBar.gameObject.SetActive (false);
+			instance.armorBarText.enabled = false;
 		}
 	}
 
@@ -73,5 +100,17 @@ public class GameManager : MonoBehaviour {
 	
 	public static void hideArmorMessage () {
 		instance.fullArmorText.enabled = false;
+	}
+
+	public static void showBossUI() {
+		instance.bossHealthBar.gameObject.SetActive (true);
+		instance.bossHealthText.enabled = true;
+		instance.BossText.enabled = true;
+	}
+
+	public static void hideBossUI() {
+		instance.bossHealthBar.gameObject.SetActive (false);
+		instance.bossHealthText.enabled = false;
+		instance.BossText.enabled = false;
 	}
 }

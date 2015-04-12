@@ -30,7 +30,8 @@ public class Map: MonoBehaviour {
 	//Enemy types
 	public Transform[] enemyTypes;
 	public int[] enemyNumbers;
-	public Transform bossPrefab;
+	//public Transform bossPrefab;
+	public Transform boss;
 	
 	//Define map size
 	public int mapLength;
@@ -448,12 +449,14 @@ public class Map: MonoBehaviour {
 	//Place an enemy soldier at the cell with given coordinates
 	private void placeEnemyAtCell(IntVector2 coordinates, int enemyType) {
 		Vector3 enemyCoordinates = coordinatesFrom2D(coordinates, 0.5f);
-		Transform prefab;
-		if (enemyType == -1) 
-			prefab = bossPrefab;
-		else
-			prefab = enemyTypes [enemyType];
-		Transform enemy = Instantiate (prefab) as Transform;
+		Transform enemy;
+		if (enemyType == -1) {
+			enemy = boss;
+		}
+		else {
+			Transform prefab = enemyTypes [enemyType];
+			enemy = Instantiate (prefab) as Transform;
+		}
 		enemy.position = enemyCoordinates;
 		Vector3 eulerAngles = enemy.eulerAngles;
 		eulerAngles.y = Random.Range (0f, 360f);

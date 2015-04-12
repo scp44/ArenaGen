@@ -66,8 +66,8 @@ public class PlayerController : MonoBehaviour {
 		}
 		
 		//update armor and health bars
-		GameManager.updateArmorBar (armorBonusHP/maxArmor);
-		GameManager.updateHealthBar (playerHP/maxHP);
+		GameManager.updateArmorBar (armorBonusHP, maxArmor);
+		GameManager.updateHealthBar (playerHP, maxHP);
 		
 		Vector3 movement = new Vector3 (0, 0, 0);
 		
@@ -159,5 +159,9 @@ public class PlayerController : MonoBehaviour {
 	public void activateArmor(){
 		armorOn = true;
 		armorBonusHP = ARMOR_AMOUNT;
+	}
+
+	public void activateHealthPack(){
+		playerHP = Mathf.Min (maxHP, playerHP + MEDPACK_HEALTH);
 	}
 }

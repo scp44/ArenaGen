@@ -48,6 +48,8 @@ public class BossBasic : EnemyBasic {
 			Application.LoadLevel ("WinScreen");
 		}
 
+		GameManager.updateBossHealthBar (enemyHP, maxHP);
+
 		GameObject target = this.visionCheck ();//wonder if it should return a boolean 
 		if (target != null) {
 			lookAt (target);

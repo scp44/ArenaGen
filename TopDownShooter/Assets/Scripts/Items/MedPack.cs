@@ -26,13 +26,13 @@ public class MedPack : MonoBehaviour {
 				Destroy (this.gameObject);
 			}
 			else if(enemyScript.enemyHP < enemyScript.maxHP){
-				enemyScript.increaseHP(5);
+				enemyScript.activateHealthPack();
 				Destroy (this.gameObject);
 			}
 		} else if (obj.gameObject.tag == "Player") {
 			PlayerController playerScript = obj.GetComponent<PlayerController> ();
 			if(playerScript.playerHP < playerScript.maxHP){
-				playerScript.increaseHP(5);
+				playerScript.activateHealthPack();
 				Destroy (this.gameObject);
 			}
 			else{
