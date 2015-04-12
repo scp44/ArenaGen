@@ -9,6 +9,16 @@ public class Defender : EnemyBasic {
 	public GameObject endOfPathEffect;
 	/** Point for the last spawn of #endOfPathEffect */
 	protected Vector3 lastTarget;
+
+	private const int STATE_IDLE = 0;
+	private const int STATE_ALERT = 1;
+	private const int STATE_COMBAT = 2;
+	private const int STATE_FLEE = 3;
+	private const int STATE_IS_FLEEING = 4;
+
+	private Vector3 newTarget;
+
+
 	
 	protected override void Start () {
 		base.Start ();
@@ -17,19 +27,28 @@ public class Defender : EnemyBasic {
 	protected override void Update() {
 		base.Update ();	
 		GameObject target = this.visionCheck ();//wonder if it should return a boolean 
-		if (target != null) {
+
+		if (target != null&&(target.gameObject.tag=="Player")) {
 			lookAt (target);
-			float x = target.transform.position.x; //use to make enemy silly
-			float z = target.transform.position.z;
-			
-			Vector3 newTarget = new Vector3(x,0f,z);
-			
+			StartFiring ();
+
+			newTarget = new Vector3(target.transform.position.x, 0f, target.transform.position.z);
+		
+			state = STATE_COMBAT;
+					
 			chase (newTarget);
-			if (target.gameObject.tag == "Player")
-				StartFiring ();
-			else
-				StopFiring ();
+		} else {
+			if(state == STATE_COMBAT){
+				StopFiring();
+				if(TargetReached){
+					state = STATE_IDLE;
+					wander();
+				}else{
+					chase(newTarget);
+				}
+			}
 		}
+		
 	}
 	
 	/**
