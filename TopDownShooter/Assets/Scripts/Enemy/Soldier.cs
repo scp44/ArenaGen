@@ -11,6 +11,7 @@ namespace Pathfinding {
 		private const int STATE_GUARD = 3;
 		private const int STATE_FOLLOWING = 4;
 		private GameObject toGuard;
+		private Vector3 newTarget;
 		// Use this for initialization
 		void Start () {
 			state = STATE_IDLE;
@@ -30,79 +31,56 @@ namespace Pathfinding {
 			target = visionCheck ();
 			Vector3 targetPos;
 
-			switch(state){
+			switch (state) {
 			case STATE_IDLE:
-				if(target != null){
-					if(getTag(target) == "Player"){
-						changeState(STATE_COMBAT);
-					}
+				if (target != null && target.gameObject.tag == "Player") {
+						state = STATE_COMBAT;
+						break;
 				}
-				/*toGuard = commCheck();
-				if(toGuard != null){
-					if(healerScript.followers < healerScript.maxFollow){
-					healerScript.followers++;
-					changeState(STATE_FOLLOWING);
+				else if(medPack < 1 && target != null && target.tag.Equals ("MedPackPU")){
+					moveTo (target.transform.position);
 				}
-				}*/
 				else{
 					if(timeLeft <= 0){
-					wander();
+						wander();
 					}
-
 				}
+				
 				break;
 			case STATE_ALERT:
+				if(target == null){
+					chase(passedInfo.playerPos);
+				}
+				else{
+					timeLeft = 0;
+					changeState(STATE_IDLE);
+				}
 				break;
 			case STATE_COMBAT:
-				if (target != null) {
+				if (target != null && target.gameObject.tag == "Player") {
 					lookAt (target);
 					float x = target.transform.position.x; //use to make enemy silly
 					float z = target.transform.position.z;
 					
-					 targetPos = new Vector3(x,0.5f,z);
-					chase (targetPos);
-					if (getTag(target) == "Player")
-						StartFiring ();
-						if (player != null){
+					newTarget = new Vector3(x,0.5f,z);
+					chase (newTarget);
+					StartFiring();
+					
+					if (player != null)
 						this.passedInfo.playerPos = player.transform.position;
-						this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;}
-					else{
-						StopFiring ();
-						changeState(STATE_IDLE);
-					}
+					this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
+					//target = null;
 				}
-				else{
-					StopFiring ();
-					changeState(STATE_IDLE);
+				else {
+					StopFiring();
+					changeState(STATE_ALERT);
 				}
-					break;
-
-			case STATE_FOLLOWING:
-				if(toGuard != null){
-					lookAt(toGuard);
-					float x = target.transform.position.x; //use to make enemy silly
-					float z = target.transform.position.z;
-					targetPos = new Vector3(x,0.5f,z);
-
-					chase (targetPos);
-					if(target != null){
-						if(getTag(target) == "Player"){
-							changeState(STATE_COMBAT);
-						}
-					}
-				}
-				else{
-					healerScript.followers--;
-					toGuard = null;
-					changeState(STATE_IDLE);
-
-					}
-				break;
-			case STATE_GUARD:
 				break;
 			default:
+				changeState(STATE_IDLE);
 				break;
-		}
+				
+			}
 	}
 		public GameObject commCheck(){
 			GameObject[] eUs = GameObject.FindGameObjectsWithTag ("Enemy");

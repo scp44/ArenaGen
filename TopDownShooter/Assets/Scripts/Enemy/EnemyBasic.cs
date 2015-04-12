@@ -419,8 +419,9 @@ public class EnemyBasic: MonoBehaviour {
 		//Debug.Log (transform.position.y.ToString());
 
 		var rotation = Quaternion.AngleAxis(rand,Vector3.up);
-		var forward = Vector3.forward;
+
 		Physics.Raycast (transform.position, transform.forward, out hit, visionScale);
+		Debug.DrawRay(transform.position, transform.forward, Color.blue, 5);
 		other = hit.collider;
 		if (other != null) {
 			if (other.gameObject != null) {

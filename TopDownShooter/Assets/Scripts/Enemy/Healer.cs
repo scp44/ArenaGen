@@ -146,6 +146,7 @@ namespace Pathfinding {
 					chase(passedInfo.playerPos);
 				}
 				else{
+					timeLeft = 0;
 					changeState(STATE_IDLE);
 				}
 				break;
