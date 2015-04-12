@@ -420,16 +420,13 @@ public class EnemyBasic: MonoBehaviour {
 
 		var rotation = Quaternion.AngleAxis(rand,Vector3.up);
 		var forward = Vector3.forward;
-		var toRotate = rotation * forward;
-		lookAt(toRotate);
 		Physics.Raycast (transform.position, transform.forward, out hit, visionScale);
 		other = hit.collider;
 		if (other != null) {
 			if (other.gameObject != null) {
 				if (other.gameObject.tag == "Wall") {
-					rotation = Quaternion.AngleAxis (rand + 180, Vector3.up);
-					toRotate = rotation * forward;
-					lookAt(toRotate);
+					rotation = Quaternion.AngleAxis (180, Vector3.up);
+
 				}
 			}
 		}
