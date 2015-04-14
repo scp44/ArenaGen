@@ -958,6 +958,7 @@ MonoBehaviour:
   canMove: 1
   bullet: {fileID: 5456608, guid: edfaf2011a2a3714794c0677bf8cd0f8, type: 2}
   sleepVelocity: .200000003
+  isWander: 0
   repathRate: .300000012
   turningSpeed: 6
   slowdownDistance: .600000024
@@ -2449,6 +2450,7 @@ MonoBehaviour:
   canMove: 1
   bullet: {fileID: 0}
   sleepVelocity: .400000006
+  isWander: 0
   repathRate: .5
   turningSpeed: 5
   slowdownDistance: .600000024
@@ -2818,6 +2820,7 @@ MonoBehaviour:
   canMove: 1
   bullet: {fileID: 0}
   sleepVelocity: .400000006
+  isWander: 0
   repathRate: .5
   turningSpeed: 5
   slowdownDistance: .600000024
@@ -4345,6 +4348,7 @@ MonoBehaviour:
   canMove: 1
   bullet: {fileID: 0}
   sleepVelocity: .400000006
+  isWander: 0
   repathRate: .5
   turningSpeed: 5
   slowdownDistance: .600000024
@@ -4385,6 +4389,7 @@ MonoBehaviour:
   canMove: 1
   bullet: {fileID: 0}
   sleepVelocity: .400000006
+  isWander: 0
   repathRate: .5
   turningSpeed: 5
   slowdownDistance: .600000024
@@ -6899,3 +6904,6 @@ MonoBehaviour:
   - {fileID: 11492332, guid: c97fd5a98c88b46f98c86a9060edc521, type: 2}
   - {fileID: 11492332, guid: 00ee74bc7f30049c8a602466a21bb515, type: 2}
   - {fileID: 11492332, guid: 952b59e5f375c4b6cbbe7174487a8fe2, type: 2}
+  angle: 90
+  numBullets: 5
+  angleBetween: 0
