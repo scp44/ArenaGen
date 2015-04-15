@@ -26,6 +26,11 @@ public class BossBasic : EnemyBasic {
 	private bool isFiringLeft = false;
 	private bool isFiringRight = false;
 
+	public Transform rightHand;
+	public Transform leftHand;
+	Transform gunRprefab;
+	Transform gunLprefab;
+
 	protected enum BossWeapon {
 		left,
 		right
@@ -39,6 +44,14 @@ public class BossBasic : EnemyBasic {
 		equippedWeaponRight = WeaponManager.getWeapon (equippedRight);
 		bulletLeft = WeaponManager.getEnemyBulletPrefab (equippedLeft);
 		bulletRight = WeaponManager.getEnemyBulletPrefab (equippedRight);
+
+		gunRprefab = (Transform)Instantiate (WeaponManager.getWeaponPrefab(equippedRight), rightHand.position, transform.rotation);
+		gunLprefab = (Transform)Instantiate (WeaponManager.getWeaponPrefab(equippedLeft), leftHand.position, transform.rotation);
+		gunRprefab.GetChild(0).renderer.enabled = true;
+		gunRprefab.parent = this.transform;
+		gunLprefab.GetChild(0).renderer.enabled = true;
+		gunLprefab.parent = this.transform;
+
 		changeState (STATE_IDLE);
 	}
 

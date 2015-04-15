@@ -32,6 +32,14 @@ public class WeaponManager : MonoBehaviour {
 		return new WeaponInfo();
 	}
 
+	public static Transform getWeaponPrefab(int weaponType) {
+		for (int i=0; i<numWeapons; i++)
+			if (instance.weaponStats[i].weaponType == weaponType)
+				return instance.weaponPrefabs[i];
+		Debug.LogError ("Could not get weapon of type " + weaponType.ToString());
+		return null;
+	}
+
 	public static Rigidbody getEnemyBulletPrefab(int weaponType) {
 		for (int i=0; i<numWeapons; i++)
 			if (instance.weaponStats[i].weaponType == weaponType)

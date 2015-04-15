@@ -53,6 +53,7 @@ public class EnemyBasic: MonoBehaviour {
 	public float wanderTimeMin = 120;
 	protected float timeLeft;
 	public Transform bulletStartPosition;
+	public Transform hands;
 	//information that can be passed between enemies
 	public PassedInfo passedInfo;
 
@@ -159,11 +160,21 @@ public class EnemyBasic: MonoBehaviour {
 			difficulty = gunSelectScript.selected[2];
 		}
 
+		movementSpeed = movementSpeed * (difficulty^(1/2));
+
 		//target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 		startHasRun = true;
 		equipped = Random.Range (0, WeaponManager.numWeapons);
 		equippedWeapon = WeaponManager.getWeapon (equipped);
 		bullet = WeaponManager.getEnemyBulletPrefab (equipped);
+
+		if (enemyType != ENEMY_BOSS) {
+			//instantiate the guns we need
+			Transform gunprefab = (Transform)Instantiate (WeaponManager.getWeaponPrefab (equipped), hands.position, transform.rotation);
+			gunprefab.GetChild (0).renderer.enabled = true;
+			gunprefab.parent = this.transform;
+		}
+
 		passedInfo = new PassedInfo ();
 		passedInfo.bossFound = false;
 		passedInfo.bossPos = new Vector3 ();
@@ -279,7 +290,7 @@ public class EnemyBasic: MonoBehaviour {
 			GameObject npc = eUs[i];
 			EnemyBasic npcScript = npc.GetComponent<EnemyBasic>();
 			//TODO: remove npsScript!=null check. Make sure it is not null.
-			if (npcScript != null && (npcPos.position - transform.position).magnitude < (commScale)) {
+			if (npcScript != null && (((difficulty)^(1/2)) * (npcPos.position - transform.position).magnitude) < (commScale)) {
 				//pass information
 				if(this.passedInfo.bossFound){
 					npcScript.passedInfo.bossPos = this.passedInfo.bossPos;

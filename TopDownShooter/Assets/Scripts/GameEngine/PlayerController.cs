@@ -35,12 +35,16 @@ public class PlayerController : MonoBehaviour {
 	private float cdStartTime=0;
 	public Text equippedtxt;
 
+	public Transform gunPrefPos;
+	Transform gun1prefab;
+	Transform gun2prefab;
+
 	// Use this for initialization
 	void Start () {
 		GameObject gunSelectInfo = GameObject.Find ("_Main");
 		if (gunSelectInfo == null) {
 			gun1 = 0;
-			gun2 = 3;
+			gun2 = 1;
 		}
 		else {
 			gunSelectCSharp gunSelectScript = gunSelectInfo.GetComponent <gunSelectCSharp> ();
@@ -48,10 +52,17 @@ public class PlayerController : MonoBehaviour {
 			gun2 = gunSelectScript.selected[1];
 		}
 
+		//instantiate the guns we need
+		gun1prefab = (Transform)Instantiate (WeaponManager.getWeaponPrefab(gun1), gunPrefPos.position, transform.rotation);
+		gun2prefab = (Transform)Instantiate (WeaponManager.getWeaponPrefab(gun2), gunPrefPos.position, transform.rotation);
+		gun1prefab.GetChild(0).renderer.enabled = true;
+		gun1prefab.parent = this.transform;
+		gun2prefab.GetChild(0).renderer.enabled = false;
+		gun2prefab.parent = this.transform;
+
 		equipped = gun1;
 		equippedWeapon = WeaponManager.getWeapon(gun1);
 		bullet = WeaponManager.getPlayerBulletPrefab(gun1);
-
 	}
 	
 	// Update is called once per frame
@@ -166,10 +177,14 @@ public class PlayerController : MonoBehaviour {
 			equipped = gun2;
 			equippedWeapon = WeaponManager.getWeapon(gun2);
 			bullet = WeaponManager.getPlayerBulletPrefab(gun2);
+			gun1prefab.GetChild(0).renderer.enabled = false;
+			gun2prefab.GetChild(0).renderer.enabled = true;
 		} else {
 			equipped = gun1;
 			equippedWeapon = WeaponManager.getWeapon(gun1);
 			bullet = WeaponManager.getPlayerBulletPrefab(gun1);
+			gun1prefab.GetChild(0).renderer.enabled = true;
+			gun2prefab.GetChild(0).renderer.enabled = false;
 		}
 		equippedtxt.text = changeGunText (equipped);
 	}

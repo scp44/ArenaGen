@@ -223,7 +223,7 @@ namespace Pathfinding {
 				GameObject npc = eUs[i];
 				EnemyBasic npcScript = npc.GetComponent<EnemyBasic>();
 				//TODO: remove npsScript!=null check. Make sure it is not null.
-				if (npcScript != null && (npcPos.position - transform.position).magnitude < (commScale)) {
+				if (npcScript != null && (((difficulty)^(1/2)) * (npcPos.position - transform.position).magnitude) < (commScale)) {
 					//pass information
 					if(this.passedInfo.bossFound){
 						npcScript.passedInfo.bossPos = this.passedInfo.bossPos;

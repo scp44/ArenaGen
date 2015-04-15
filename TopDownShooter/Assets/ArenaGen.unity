@@ -153,6 +153,7 @@ MonoBehaviour:
   gun1: 0
   gun2: 1
   equippedtxt: {fileID: 585410184}
+  gunPrefPos: {fileID: 0}
 --- !u!33 &25744905
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -650,6 +651,33 @@ MeshFilter:
   m_PrefabInternal: {fileID: 1154440982}
   m_GameObject: {fileID: 164967556}
   m_Mesh: {fileID: 4300008, guid: caeffedc34d9f4161b7694ad0d84bbd3, type: 3}
+--- !u!1 &205680340
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 205680341}
+  m_Layer: 0
+  m_Name: leftHand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &205680341
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 205680340}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -.156000003, y: 0, z: .460000008}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 776083934}
+  m_RootOrder: 4
 --- !u!1 &243959288
 GameObject:
   m_ObjectHideFlags: 0
@@ -951,6 +979,7 @@ MonoBehaviour:
   wanderTimeMax: 6
   wanderTimeMin: 2
   bulletStartPosition: {fileID: 0}
+  hands: {fileID: 0}
   armorBonusHP: 0
   medPack: 0
   MedPack: {fileID: 0}
@@ -1559,6 +1588,33 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!1 &474464049
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 474464050}
+  m_Layer: 0
+  m_Name: Hands
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &474464050
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 474464049}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: .531000018}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1464264733}
+  m_RootOrder: 1
 --- !u!1 &519443148
 GameObject:
   m_ObjectHideFlags: 0
@@ -2416,6 +2472,8 @@ Transform:
   - {fileID: 142870607}
   - {fileID: 1214251500}
   - {fileID: 2090965824}
+  - {fileID: 1563209895}
+  - {fileID: 205680341}
   m_Father: {fileID: 0}
   m_RootOrder: 1
 --- !u!114 &776083935
@@ -2429,7 +2487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5ce7ff2c7103ad46a6ea36e880387e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: 0
+  enemyType: 3
   speed: 3
   enemyHP: 15
   maxHP: 15
@@ -2443,6 +2501,7 @@ MonoBehaviour:
   wanderTimeMax: 240
   wanderTimeMin: 120
   bulletStartPosition: {fileID: 0}
+  hands: {fileID: 0}
   armorBonusHP: 0
   medPack: 0
   MedPack: {fileID: 0}
@@ -2464,6 +2523,8 @@ MonoBehaviour:
   bulletStartRight: {fileID: 1214251500}
   initialPosition: {x: 0, y: 0, z: 0}
   idleAmount: 0
+  rightHand: {fileID: 1563209895}
+  leftHand: {fileID: 205680341}
 --- !u!65 &776083936
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2636,9 +2697,9 @@ MonoBehaviour:
   numMedpacks: 7
   powerupDistance: 10
   enemyTypes:
-  - {fileID: 400694, guid: fa7e0c4ed703248669406c243f8019f8, type: 2}
-  - {fileID: 458662, guid: 62e034b8216db4e7c8e0b0bfcd9463bb, type: 2}
-  - {fileID: 483692, guid: c5b676322f59e457492b84f06d21888b, type: 2}
+  - {fileID: 497082, guid: c5b676322f59e457492b84f06d21888b, type: 2}
+  - {fileID: 402456, guid: 62e034b8216db4e7c8e0b0bfcd9463bb, type: 2}
+  - {fileID: 428732, guid: fa7e0c4ed703248669406c243f8019f8, type: 2}
   enemyNumbers: 070000000500000003000000
   boss: {fileID: 776083934}
   mapLength: 100
@@ -2813,6 +2874,7 @@ MonoBehaviour:
   wanderTimeMax: 6
   wanderTimeMin: 2
   bulletStartPosition: {fileID: 0}
+  hands: {fileID: 0}
   armorBonusHP: 0
   medPack: 0
   MedPack: {fileID: 0}
@@ -4341,6 +4403,7 @@ MonoBehaviour:
   wanderTimeMax: 240
   wanderTimeMin: 120
   bulletStartPosition: {fileID: 0}
+  hands: {fileID: 0}
   armorBonusHP: 0
   medPack: 0
   MedPack: {fileID: 0}
@@ -4382,6 +4445,7 @@ MonoBehaviour:
   wanderTimeMax: 240
   wanderTimeMin: 120
   bulletStartPosition: {fileID: 0}
+  hands: {fileID: 0}
   armorBonusHP: 0
   medPack: 0
   MedPack: {fileID: 0}
@@ -4812,6 +4876,7 @@ Transform:
   m_LocalScale: {x: 1.79999995, y: 1, z: 1.79999995}
   m_Children:
   - {fileID: 1625826576}
+  - {fileID: 474464050}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!65 &1464264734
@@ -4849,6 +4914,7 @@ MonoBehaviour:
   gun1: 0
   gun2: 0
   equippedtxt: {fileID: 585410184}
+  gunPrefPos: {fileID: 474464050}
 --- !u!143 &1464264736
 CharacterController:
   m_ObjectHideFlags: 0
@@ -5187,6 +5253,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 591772550}
   m_RootOrder: 0
+--- !u!1 &1563209894
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1563209895}
+  m_Layer: 0
+  m_Name: rightHand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1563209895
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1563209894}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: .129999995, y: 0, z: .460000008}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 776083934}
+  m_RootOrder: 3
 --- !u!1 &1579851319
 GameObject:
   m_ObjectHideFlags: 0
@@ -6634,7 +6727,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   astarData:
     hasBeenReverted: 0
-    data: 504b030414000008080012be854643c9bc6ebe010000360300000b0024006772617068302e6a736f6e0a0020000000000001001800f261f98f1c70d001f261f98f1c70d001e861f98f1c70d0017d52c16edb300cfd179dbdc14eda38f1b169d11d9666b07b2856f4c048b42d549632496ed214fef751b19d642b50f860bcc747527ce407ab5a2958f6c1de40b5c832562e90430a31ce79195fc58b6f13319b269b78914e16699cce12d6458cd760817bb43908d93a96c5dfaf8935da9bd6ae607f67adb12c9b10874a15f280a384e00f9455ed5996446c07ea15360a476a72a6964a369b21ab817da1cc968a4ce323ba1315fe445df99a720225758e9534ba6f358d180ae98d7d940a7b2a99cc23e607f8f41ffe3d608d60d1f9827ebc5e6bf5fe44911294c388b50e433577222c2a7c03edef2d6ceba2b525705c19113cbc350fc6e7f8a795161929c19155d46769949202ed459131b4425787e2deb697f4235a0b527fe62d9ed57c289b8fd15bf420150d45d694c6721437a6d5c22d5193206c7bcfb22b0abe93c1113b04d0fd2bed5d3b0a93eb5e99f452825d58827bbd389b743627d243b53af2cf2f1173b5d985a9d6ad5752e3f8d8403f904d4ba335724f3b3bbbe1fb690b68b6e3de6895524b2f41fd420dcaf72fa65b3879a2a1099ee774b6ae5f06592e2ceceee5a1312793a42e4dc1c936bd3e260f2d1bf056ee4f9390fc398ebefc5ebaee2f504b030414000008080012be854612bca0bb7700000085000000090024006d6574612e6a736f6e0a0020000000000001001800fc70f98f1c70d001fc70f98f1c70d001f270f98f1c70d0011d8cb10e82301400ffe5cdd8bc8250cbeae0668cab61a8f4153af84a683131c67fa775bbe1eebef0a635fac0d043235a21a1826935cb1ca19719376f333dc0691a8d3248a7d1e111f5a1b65d239fa855ad15aa4ec25041fa2c74352ffa17379366e7d97a9ec43dc7315dcab7781c2c9dc3c6a98838fc76504b01022d0014000008080012be854643c9bc6ebe010000360300000b00240000000000000000000000000000006772617068302e6a736f6e0a0020000000000001001800f261f98f1c70d001f261f98f1c70d001e861f98f1c70d001504b01022d0014000008080012be854612bca0bb770000008500000009002400000000000000000000000b0200006d6574612e6a736f6e0a0020000000000001001800fc70f98f1c70d001fc70f98f1c70d001f270f98f1c70d001504b05060000000002000200b8000000cd0200000000
+    data: 504b030414000008080019718f4643c9bc6ebe010000360300000b0024006772617068302e6a736f6e0a00200000000000010018009348dc39a777d0019348dc39a777d0019348dc39a777d0017d52c16edb300cfd179dbdc14eda38f1b169d11d9666b07b2856f4c048b42d549632496ed214fef751b19d642b50f860bcc747527ce407ab5a2958f6c1de40b5c832562e90430a31ce79195fc58b6f13319b269b78914e16699cce12d6458cd760817bb43908d93a96c5dfaf8935da9bd6ae607f67adb12c9b10874a15f280a384e00f9455ed5996446c07ea15360a476a72a6964a369b21ab817da1cc968a4ce323ba1315fe445df99a720225758e9534ba6f358d180ae98d7d940a7b2a99cc23e607f8f41ffe3d608d60d1f9827ebc5e6bf5fe44911294c388b50e433577222c2a7c03edef2d6ceba2b525705c19113cbc350fc6e7f8a795161929c19155d46769949202ed459131b4425787e2deb697f4235a0b527fe62d9ed57c289b8fd15bf420150d45d694c6721437a6d5c22d5193206c7bcfb22b0abe93c1113b04d0fd2bed5d3b0a93eb5e99f452825d58827bbd389b743627d243b53af2cf2f1173b5d985a9d6ad5752e3f8d8403f904d4ba335724f3b3bbbe1fb690b68b6e3de6895524b2f41fd420dcaf72fa65b3879a2a1099ee774b6ae5f06592e2ceceee5a1312793a42e4dc1c936bd3e260f2d1bf056ee4f9390fc398ebefc5ebaee2f504b030414000008080019718f4612bca0bb7700000085000000090024006d6574612e6a736f6e0a00200000000000010018007f6fdc39a777d0017f6fdc39a777d0017f6fdc39a777d0011d8cb10e82301400ffe5cdd8bc8250cbeae0668cab61a8f4153af84a683131c67fa775bbe1eebef0a635fac0d043235a21a1826935cb1ca19719376f333dc0691a8d3248a7d1e111f5a1b65d239fa855ad15aa4ec25041fa2c74352ffa17379366e7d97a9ec43dc7315dcab7781c2c9dc3c6a98838fc76504b01022d0014000008080019718f4643c9bc6ebe010000360300000b00240000000000000000000000000000006772617068302e6a736f6e0a00200000000000010018009348dc39a777d0019348dc39a777d0019348dc39a777d001504b01022d0014000008080019718f4612bca0bb770000008500000009002400000000000000000000000b0200006d6574612e6a736f6e0a00200000000000010018007f6fdc39a777d0017f6fdc39a777d0017f6fdc39a777d001504b05060000000002000200b8000000cd0200000000
     data_backup: 
     data_cachedStartup: 
     revertData: 
@@ -6887,11 +6980,11 @@ MonoBehaviour:
     bulletCooldown: 1.10000002
     bulletLength: 50
   weaponPrefabs:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 454506, guid: c833c6ba17e1d8a498f7f2bf6edbe71b, type: 2}
+  - {fileID: 425136, guid: deb295ed3a93e3d488f897c47f99dd7a, type: 2}
+  - {fileID: 497648, guid: f81ad8fa3494ddf4dbb248845dfe266f, type: 2}
+  - {fileID: 419102, guid: dec6c067cd59bda4fa80ce4fb3b55a94, type: 2}
+  - {fileID: 481982, guid: af75117f52f9d464db8ec273e01559b1, type: 2}
   enemyBulletPrefabs:
   - {fileID: 11437702, guid: b6ad801921a065c49967cb295720b9a4, type: 2}
   - {fileID: 11498384, guid: a6765575c6584444c99356f85c700568, type: 2}
