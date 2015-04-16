@@ -29,11 +29,14 @@ public class BulletBehaviors : MonoBehaviour {
 			}
 			Destroy(this.gameObject);
 		}
-		else if (other.gameObject.tag == "Enemy" && !isAoE) {
+		else if (other.gameObject.tag == "Enemy") {
 			//run enemy health minus
 			EnemyBasic enemyScript = other.GetComponent<EnemyBasic>();
-			enemyScript.takeDamage (damage);
-			Destroy(this.gameObject);
+			if(!isAoE){
+				enemyScript.takeDamage (damage);
+				Destroy(this.gameObject);
+			}
+			else{ Explode();}
 			//if enemy is not firing, look at player
 			if (!enemyScript.isFiring) {
 				Vector3 bulletDirection = this.transform.position - startPosition;
