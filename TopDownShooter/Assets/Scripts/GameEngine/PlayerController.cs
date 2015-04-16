@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		equippedtxt.text = changeGunText (equipped);
 		if (Time.timeScale <= 0)
 			return;

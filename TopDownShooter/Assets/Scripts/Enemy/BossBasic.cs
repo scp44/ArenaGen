@@ -40,6 +40,8 @@ public class BossBasic : EnemyBasic {
 		base.Start ();
 		equippedLeft = Random.Range (0, WeaponManager.numWeapons);
 		equippedRight = (equippedLeft + Random.Range (0, WeaponManager.numWeapons))%WeaponManager.numWeapons;
+		if (equippedRight == equippedLeft)
+			equippedRight = (equippedRight+1)%3;
 		equippedWeaponLeft = WeaponManager.getWeapon (equippedLeft);
 		equippedWeaponRight = WeaponManager.getWeapon (equippedRight);
 		bulletLeft = WeaponManager.getEnemyBulletPrefab (equippedLeft);

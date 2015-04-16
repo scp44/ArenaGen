@@ -4854,10 +4854,9 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1464264733}
-  - 143: {fileID: 1464264736}
   - 114: {fileID: 1464264735}
-  - 65: {fileID: 1464264734}
   - 54: {fileID: 1464264737}
+  - 135: {fileID: 1464264734}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -4879,8 +4878,8 @@ Transform:
   - {fileID: 474464050}
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!65 &1464264734
-BoxCollider:
+--- !u!135 &1464264734
+SphereCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -4889,8 +4888,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .571669042, y: .5, z: .568998516}
-  m_Center: {x: .005813241, y: 0, z: -.0104999542}
+  m_Radius: .310892016
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1464264735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4915,20 +4914,6 @@ MonoBehaviour:
   gun2: 0
   equippedtxt: {fileID: 585410184}
   gunPrefPos: {fileID: 474464050}
---- !u!143 &1464264736
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1464264732}
-  serializedVersion: 2
-  m_Height: 1
-  m_Radius: .400000006
-  m_SlopeLimit: 45
-  m_StepOffset: 0
-  m_SkinWidth: .0799999982
-  m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1464264737
 Rigidbody:
   m_ObjectHideFlags: 0

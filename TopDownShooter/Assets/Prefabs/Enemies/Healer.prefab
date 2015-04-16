@@ -187,7 +187,7 @@ MonoBehaviour:
   speed: 3
   enemyHP: 4
   maxHP: 4
-  equipped: 0
+  equipped: 3
   movementSpeed: 40
   commScale: 4
   visionScale: 10

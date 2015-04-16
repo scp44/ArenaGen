@@ -167,7 +167,6 @@ public class EnemyBasic: MonoBehaviour {
 
 		//target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 		startHasRun = true;
-		equipped = Random.Range (0, WeaponManager.numWeapons);
 		equippedWeapon = WeaponManager.getWeapon (equipped);
 		bullet = WeaponManager.getEnemyBulletPrefab (equipped);
 
