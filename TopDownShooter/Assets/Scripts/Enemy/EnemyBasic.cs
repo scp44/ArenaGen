@@ -309,7 +309,9 @@ public class EnemyBasic: MonoBehaviour {
 	public void deathCheck(){
 		if (enemyHP <= 0) {
 			if(medPack > 0){
-				dropItem();}
+				medPack = 0;
+				dropItem();
+			}
 			Destroy(this.gameObject);}
 	}
 
