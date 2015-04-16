@@ -57,6 +57,9 @@ public class EnemyBasic: MonoBehaviour {
 	//information that can be passed between enemies
 	public PassedInfo passedInfo;
 
+	//check if it is start of pathfinding
+	private int EnemyState = 0;      //0 represent need to be initial, 1 represent keep pathfinding, 2 represent means halt
+
 	//power up variables
 	public float armorBonusHP;
 	public int medPack = 0;
@@ -180,7 +183,7 @@ public class EnemyBasic: MonoBehaviour {
 		passedInfo.bossPos = new Vector3 ();
 		passedInfo.playerPos = new Vector3 ();
 		passedInfo.lastTimeSeen = -999;
-		OnEnable ();
+		//OnEnable ();
 	}
 
 	protected virtual void Update () {
@@ -508,7 +511,9 @@ public class EnemyBasic: MonoBehaviour {
 		
 		// Release current path
 		if (path != null) path.Release (this);
+
 		path = null;
+		//Debug.Log ("disable pathfinding");
 		
 		//Make sure we receive callbacks when paths complete
 		seeker.pathCallback -= OnPathComplete;
@@ -557,10 +562,48 @@ public class EnemyBasic: MonoBehaviour {
 	}
 
 	public void chase(Vector3 pos){
+
+
 		setTarget (pos);
+
+		if (EnemyState == 0) {
+			//Debug.Log("initialize");
+			//SearchPath ();
+			OnEnable();
+			EnemyState = 1;
+			canMove = true;
+		}
+
+		//OnEnable();
+		if ((transform.position - target).magnitude < 5f) {
+			//seeker = null;
+			if(EnemyState == 1){
+				OnDisable();
+				stopMove();
+			//stopMove();
+				canMove = false;
+				EnemyState = 2;
+			}
+			//Debug.Log("close");
+		} else {
+			//Debug.Log("restart?");
+			if(EnemyState == 2){
+				canMove = true;
+				EnemyState = 1;
+				OnEnable();
+			
+			}
+			//RepeatTrySearchPath();
+
+			//if (seeker != null)
+				//OnEnable();
+			//else
+			//TrySearchPath();
+		}
 
 		//Get velocity in world-space
 		Vector3 velocity;
+
 		if (canMove) {
 			
 			//Calculate desired velocity
@@ -595,8 +638,13 @@ public class EnemyBasic: MonoBehaviour {
 				Debug.LogWarning ("No NavmeshController or CharacterController attached to GameObject");
 				velocity = Vector3.zero;
 				}
+
 		}
 		else {
+			if ((transform.position - target).magnitude > 10f){
+				OnEnable();
+				canMove = true;
+			}
 			velocity = Vector3.zero;
 		}
 		
