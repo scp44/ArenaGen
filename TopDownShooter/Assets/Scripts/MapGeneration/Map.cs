@@ -167,7 +167,7 @@ public class Map: MonoBehaviour {
 
 	private void spawnBoss() {
 		IntVector2 location = new IntVector2(-1,-1);
-		while (!testCell(location, 1)) {
+		while (!testCell(location, 1) || location.distance(startLocation)<minBossPlayerDistance) {
 			location = getRandomPassableCoordinates();
 		}
 		placeEnemyAtCell(location, -1);
