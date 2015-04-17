@@ -15,3 +15,5 @@ EditorBuildSettings:
     path: Assets/GameOver.unity
   - enabled: 1
     path: Assets/WinScreen.unity
+  - enabled: 1
+    path: Assets/Credits.unity
