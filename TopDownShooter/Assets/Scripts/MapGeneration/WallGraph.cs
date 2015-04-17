@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class WallGraphNode {
 	public IntVector2 coordinates;
@@ -74,6 +75,16 @@ public class WallGraph {
 		if (nodes[i].neighbors.Contains(nodes[j]))
 			return true;
 		return false;
+	}
+
+	public float distanceToClosestNode(IntVector2 coordinates, List<IntVector2> exceptions) {
+		float min = 9999f;
+		foreach (WallGraphNode node in nodes) {
+			float distance = coordinates.distance(node.coordinates);
+			if (distance<min && !exceptions.Contains(node.coordinates))
+				min = distance;
+		}
+		return min;
 	}
 
 	public float distanceToClosestNode(IntVector2 coordinates) {

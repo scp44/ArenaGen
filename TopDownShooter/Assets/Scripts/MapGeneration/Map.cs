@@ -602,6 +602,11 @@ public class Map: MonoBehaviour {
 				return false;
 			if (cellCoordinates.distance(startLocation) < startPositionSize)
 				return false;
+			List<IntVector2> exceptionNodes = new List<IntVector2>();
+			exceptionNodes.Add (walls.getNode(wallNode1).coordinates);
+			exceptionNodes.Add (walls.getNode(wallNode2).coordinates);
+			if (walls.distanceToClosestNode(cellCoordinates, exceptionNodes)<3)
+				return false;
 			if (walls.isReachable(wallNode1, wallNode2)) {
 				return false;
 			}
