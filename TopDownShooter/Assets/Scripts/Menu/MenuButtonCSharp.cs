@@ -10,4 +10,8 @@ public class MenuButtonCSharp : MonoBehaviour {
 	public void ExitGame () {
 		Application.Quit();
 	}
+
+	public void credits(){
+		Application.LoadLevel ("Credits");
+	}
 }
