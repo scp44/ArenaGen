@@ -32,7 +32,8 @@ public class GameManager : MonoBehaviour {
 			gunSelectCSharp gunSelectScript = gunSelectInfo.GetComponent<gunSelectCSharp>();
 			difficulty = gunSelectScript.difficulty;
 		}
-		print ("difficulty is " + difficulty.ToString());
+		AudioListener.volume = difficulty;
+		//print ("difficulty is " + difficulty.ToString());
 	}
 
 	void Start () {

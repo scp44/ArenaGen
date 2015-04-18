@@ -16,7 +16,6 @@ public class Map: MonoBehaviour {
 	public MapCell waterPrefab;
 	public Transform wallPrefab;
 	public Transform wallNodePrefab;
-	public MapCell[] miscObstacleCellPrefabs;
 
 	//Powerups
 	public Transform armorPrefab;
@@ -404,10 +403,6 @@ public class Map: MonoBehaviour {
 		case MapCellType.groundCell:
 			prefab = groundCellPrefab;
 			isPassable = true;
-			break;
-		case MapCellType.miscObstacleCell:
-			prefab = miscObstacleCellPrefabs[Random.Range(0,miscObstacleCellPrefabs.Length)];
-			isPassable = false;
 			break;
 		case MapCellType.waterCell:
 			prefab = waterPrefab;

@@ -2,7 +2,4 @@
 public enum MapCellType {
 	groundCell,
 	waterCell,
-	mountainCell,
-	wallCell,
-	miscObstacleCell
 };
