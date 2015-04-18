@@ -97,12 +97,19 @@ public class PlayerController : MonoBehaviour {
 		rigidbody.velocity = movement * walkSpeed;
 		
 		//fire on click. should handle special firing such as spreads.
-		if (Input.GetMouseButtonDown (0) && Time.timeSinceLevelLoad - cdStartTime > equippedWeapon.bulletCooldown) {
-
-			cdStartTime = Time.timeSinceLevelLoad;
-			FireBullet ();
+//		if (Input.GetMouseButtonDown (0) && Time.timeSinceLevelLoad - cdStartTime > equippedWeapon.bulletCooldown) {
+//
+//			cdStartTime = Time.timeSinceLevelLoad;
+//			FireBullet ();
+//		}
+		if(Input.GetMouseButton (0)){
+			StartFiring();
 		}
-		
+
+		if(Input.GetMouseButtonUp(0)){
+			StopFiring ();
+		}
+
 		//gun switcher
 		if (Input.GetMouseButtonDown (1)) {
 			SwitchGun ();
@@ -110,6 +117,28 @@ public class PlayerController : MonoBehaviour {
 		
 		if (playerHP <= 0)
 			Application.LoadLevel ("GameOver");
+	}
+
+	private bool isFiring = false;
+	private float lastBulletTime = 0;
+
+	protected void StartFiring () {
+		if (isFiring)
+			return;
+		else {
+			isFiring = true;
+			//InvokeRepeating("FireBullet", 0, BulletCooldown());
+			float delayTime;
+			delayTime = Mathf.Max(0.001f, equippedWeapon.bulletCooldown - (Time.timeSinceLevelLoad - lastBulletTime));
+			InvokeRepeating("FireBullet", delayTime, equippedWeapon.bulletCooldown);
+		}
+	}
+	
+	protected void StopFiring () {
+		if (isFiring) {
+			isFiring = false;
+			CancelInvoke("FireBullet");
+		}
 	}
 
 	string changeGunText(int gun){
