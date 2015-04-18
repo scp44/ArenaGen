@@ -169,7 +169,7 @@ namespace Pathfinding {
 				}
 				break;
 			case STATE_FLEE:
-				int num = Random.Range(1, difficulty+1);
+				int num = Random.Range(1, (int)(100*difficulty)+1);
 				//less and less likely to go to the boss on higher difficulties
 				if(num == difficulty){
 					newTarget = this.passedInfo.bossPos;
@@ -221,7 +221,7 @@ namespace Pathfinding {
 				GameObject npc = eUs[i];
 				EnemyBasic npcScript = npc.GetComponent<EnemyBasic>();
 				//TODO: remove npsScript!=null check. Make sure it is not null.
-				if (npcScript != null && (((difficulty)^(1/2)) * (npcPos.position - transform.position).magnitude) < (commScale)) {
+				if (npcScript != null && ((Mathf.Pow (difficulty, 0.5f)) * (npcPos.position - transform.position).magnitude) < (commScale)) {
 					//pass information
 					if(this.passedInfo.bossFound){
 						npcScript.passedInfo.bossPos = this.passedInfo.bossPos;

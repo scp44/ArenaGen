@@ -1331,10 +1331,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 301436391}
   m_HandleRect: {fileID: 1541677162}
   m_Direction: 0
-  m_MinValue: 1
-  m_MaxValue: 100
-  m_WholeNumbers: 1
-  m_Value: 1
+  m_MinValue: 0
+  m_MaxValue: 1
+  m_WholeNumbers: 0
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -1676,6 +1676,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e9bfc887db898f4b9841166193c1352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selected: 
+  difficulty: 0
   StartButton: {fileID: 380281419}
   Standard: {fileID: 147446663}
   Speed: {fileID: 1539785974}
@@ -1684,6 +1686,7 @@ MonoBehaviour:
   Long: {fileID: 1767907845}
   GunDisplay1: {fileID: 160434295}
   GunDisplay2: {fileID: 906648627}
+  DifficultySlider: {fileID: 960931137}
 --- !u!4 &1366112482
 Transform:
   m_ObjectHideFlags: 0

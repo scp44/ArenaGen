@@ -10,7 +10,7 @@ public class Map: MonoBehaviour {
 	public Transform player;
 	
 	//Passable terrain
-	public MapCell[] groundCellPrefabs;
+	public MapCell groundCellPrefab;
 
 	//Impassable terrain
 	public MapCell waterPrefab;
@@ -37,13 +37,6 @@ public class Map: MonoBehaviour {
 	public int mapLength;
 	public int mapWidth;
 	
-	//Define amount of obstacles and enemies
-	[Range(0f, 0.1f)]
-	public float obstacleProbability;
-	[Range(0f, 0.1f)]
-	public float enemyProbInsideCamp;
-	[Range(0f, 0.05f)]
-	public float enemyProbOutsideCamp;
 	[Range(0f, 1f)]
 	public float wallNodeProbability;
 
@@ -61,9 +54,20 @@ public class Map: MonoBehaviour {
 	public int shortestWallLength;
 	public int minWallWaterDistance;
 	public float maxWallLength;
+
+	//Colors
+	public Color waterLow;
+	public Color waterMedium;
+	public Color waterHigh;
+
+	public Color groundLow;
+	public Color groundMedium;
+	public Color groundHigh;
 	
 	private MapCell [,] cells;
 	private WallGraph walls;
+
+	private float difficulty;
 	
 	private const float tileLength = 0.5f;
 
@@ -78,6 +82,21 @@ public class Map: MonoBehaviour {
 
 		float timestamp = Time.realtimeSinceStartup;
 
+		difficulty = GameManager.getDifficulty ();
+		//Change the water color based on difficulty
+		Color waterColor;
+		if (difficulty <= 0.5f)
+			waterColor = Color.Lerp (waterLow, waterMedium, 2*difficulty);
+		else
+			waterColor = Color.Lerp (waterMedium, waterHigh, 2*(difficulty-0.5f));
+		waterPrefab.renderer.sharedMaterial.SetColor("_Color", waterColor);
+		//Change the ground color based on difficulty
+		Color groundColor;
+		if (difficulty <= 0.5f)
+			groundColor = Color.Lerp (groundLow, groundMedium, 2*difficulty);
+		else
+			groundColor = Color.Lerp (groundMedium, groundHigh, 2*(difficulty-0.5f));
+		groundCellPrefab.renderer.sharedMaterial.SetColor("_Color", groundColor);
 		//Generate water around the map
 		if (willGenerateIsland)
 			generateIsland (20);
@@ -173,33 +192,6 @@ public class Map: MonoBehaviour {
 		placeEnemyAtCell(location, -1);
 		cells[location.x, location.z].isPassable=false;
 	}
-
-	/*
-	private void spawnEnemies() {
-		bool spawnEnemy = false;
-		for (int i=0; i<mapLength; i++) {
-			for (int j=0; j<mapWidth; j++) {
-				IntVector2 coordinates = new IntVector2(i,j);
-				//Check if we can place an enemy here
-				if (testCell(coordinates, 2) && cells[i,j].isPassable && coordinates.distance(startLocation)>startPositionSize) {
-					//Check if it is inside an enemy camp
-					if (distanceToClosestEnemyCamp(coordinates)<=enemyCampSize) {
-						spawnEnemy = Random.value < enemyProbInsideCamp;
-					}
-					else {
-						spawnEnemy = Random.value < enemyProbOutsideCamp;
-					}
-
-					//Place an enemy
-					if (spawnEnemy) {
-						placeEnemyAtCell(coordinates);
-						cells[i,j].isPassable = false;
-					}
-				}
-			}
-		}
-	}
-	*/
 
 	//Generates water inside the map to make it look like an island
 	private void generateIsland(int padding) {
@@ -410,7 +402,7 @@ public class Map: MonoBehaviour {
 		float elevation = 0f;;
 		switch(cellType) {
 		case MapCellType.groundCell:
-			prefab = groundCellPrefabs [Random.Range (0, groundCellPrefabs.Length)];
+			prefab = groundCellPrefab;
 			isPassable = true;
 			break;
 		case MapCellType.miscObstacleCell:

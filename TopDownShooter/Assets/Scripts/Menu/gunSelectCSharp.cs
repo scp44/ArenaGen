@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class gunSelectCSharp : MonoBehaviour {
 	public int [] selected;
+	public float difficulty;
 	public Button StartButton;
 	public Button Standard;
 	public Button Speed;
@@ -12,23 +13,19 @@ public class gunSelectCSharp : MonoBehaviour {
 	public Button Long;
 	public Text GunDisplay1;
 	public Text GunDisplay2;
+	public Slider DifficultySlider;
 	// Use this for initialization
 	void Start () {
-		selected = new int[3];
+		selected = new int[2];
 		selected [0] = -1;
 		selected [1] = -1;
-		selected [2] = 1;
 
 		StartButton.interactable = false;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
 	}
 
 	public void StartGame () {
 		DontDestroyOnLoad (this);
+		difficulty = DifficultySlider.value;
 		Application.LoadLevel("ArenaGen");
 	}
 	
@@ -100,10 +97,13 @@ public class gunSelectCSharp : MonoBehaviour {
 		}
 	}
 
+	/*
 	public void updateDifficulty (float difficulty) {
 		AudioListener.volume = difficulty;
-		selected [2] = (int)AudioListener.volume;
+		//selected [2] = (int)AudioListener.volume;
+		selected [2] = difficulty;
 	}
+	*/
 
 	string changeDisplay (int gun) {
 		if (gun == 0) {

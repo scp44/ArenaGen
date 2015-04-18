@@ -48,7 +48,7 @@ public class EnemyBasic: MonoBehaviour {
 	public float alertScale = 15; 
 	public float fov = 100;
 	public bool isFiring = false;
-	protected int difficulty;
+	protected float difficulty;
 	public float wanderTimeMax = 240;
 	public float wanderTimeMin = 120;
 	protected float timeLeft;
@@ -154,16 +154,9 @@ public class EnemyBasic: MonoBehaviour {
 	//The contents must be relevant to all the enemy types
 
 	protected virtual void Start () {
-		GameObject gunSelectInfo = GameObject.Find ("_Main");
-		if (gunSelectInfo == null) {
-			difficulty = 1;
-		}
-		else {
-			gunSelectCSharp gunSelectScript = gunSelectInfo.GetComponent<gunSelectCSharp>();
-			difficulty = gunSelectScript.selected[2];
-		}
+		difficulty = GameManager.getDifficulty ();
 
-		movementSpeed = movementSpeed * (difficulty^(1/2));
+		movementSpeed = movementSpeed * Mathf.Pow(difficulty, 0.5f);
 
 		//target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 		startHasRun = true;
@@ -292,7 +285,7 @@ public class EnemyBasic: MonoBehaviour {
 			GameObject npc = eUs[i];
 			EnemyBasic npcScript = npc.GetComponent<EnemyBasic>();
 			//TODO: remove npsScript!=null check. Make sure it is not null.
-			if (npcScript != null && (((difficulty)^(1/2)) * (npcPos.position - transform.position).magnitude) < (commScale)) {
+			if (npcScript != null && ((Mathf.Pow(difficulty, 0.5f)) * (npcPos.position - transform.position).magnitude) < (commScale)) {
 				//pass information
 				if(this.passedInfo.bossFound){
 					npcScript.passedInfo.bossPos = this.passedInfo.bossPos;

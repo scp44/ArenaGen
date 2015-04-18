@@ -3,7 +3,8 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
-
+	[Range(0f, 1f)]
+	public float difficulty = 0f;
 	public float minPlayerBossDistance = 30;
 	public Map map;
 	public Transform player;
@@ -24,8 +25,17 @@ public class GameManager : MonoBehaviour {
 	private static GameManager instance;
 
 	// Use this for initialization
-	void Start () {
+	void Awake() {
 		instance = this;
+		GameObject gunSelectInfo = GameObject.Find ("_Main");
+		if (gunSelectInfo != null) {
+			gunSelectCSharp gunSelectScript = gunSelectInfo.GetComponent<gunSelectCSharp>();
+			difficulty = gunSelectScript.difficulty;
+		}
+		print ("difficulty is " + difficulty.ToString());
+	}
+
+	void Start () {
 		InstructionScreen.enabled = true;
 		Time.timeScale = 0;
 		StartButton.interactable = false;
@@ -112,5 +122,9 @@ public class GameManager : MonoBehaviour {
 		instance.bossHealthBar.gameObject.SetActive (false);
 		instance.bossHealthText.enabled = false;
 		instance.BossText.enabled = false;
+	}
+
+	public static float getDifficulty() {
+		return instance.difficulty;
 	}
 }
