@@ -569,32 +569,27 @@ public class EnemyBasic: MonoBehaviour {
 		}
 
 		//OnEnable();
-		if ((transform.position - target).magnitude < 5f) {
-			//seeker = null;
-			if(EnemyState == 1){
-				OnDisable();
-				stopMove();
-			//stopMove();
-				canMove = false;
-				EnemyState = 2;
-			}
-			//Debug.Log("close");
-		} else {
-			//Debug.Log("restart?");
-			if(EnemyState == 2){
-				canMove = true;
-				EnemyState = 1;
-				OnEnable();
+		if (state == 2) {
+						if ((transform.position - target).magnitude < 5f) {
+								//seeker = null;
+								if (EnemyState == 1) {
+										OnDisable ();
+										stopMove ();
+										//stopMove();
+										canMove = false;
+										EnemyState = 2;
+								}
+								//Debug.Log("close");
+						} else {
+								//Debug.Log("restart?");
+								if (EnemyState == 2) {
+										canMove = true;
+										EnemyState = 1;
+										OnEnable ();
 			
-			}
-			//RepeatTrySearchPath();
-
-			//if (seeker != null)
-				//OnEnable();
-			//else
-			//TrySearchPath();
-		}
-
+								}
+						}
+				}
 		//Get velocity in world-space
 		Vector3 velocity;
 

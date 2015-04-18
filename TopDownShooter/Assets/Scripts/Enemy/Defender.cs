@@ -21,6 +21,7 @@ public class Defender : EnemyBasic {
 
 	
 	protected override void Start () {
+		state = STATE_IDLE;
 		base.Start ();
 	}
 	
@@ -28,25 +29,42 @@ public class Defender : EnemyBasic {
 		base.Update ();	
 		GameObject target = this.visionCheck ();//wonder if it should return a boolean 
 
-		if (target != null&&(target.gameObject.tag=="Player")) {
-			lookAt (target);
-			StartFiring ();
+		if (target != null) {
+			Debug.Log(target.gameObject.tag.ToString());
+			if (target.gameObject.tag=="Player"){
+				lookAt (target);
+				StartFiring ();
 
-			newTarget = new Vector3(target.transform.position.x, 0f, target.transform.position.z);
+				newTarget = new Vector3(target.transform.position.x, 0f, target.transform.position.z);
 		
-			state = STATE_COMBAT;
+				state = STATE_COMBAT;
 					
-			chase (newTarget);
+				chase (newTarget);
+			}
 		} else {
-			if(state == STATE_COMBAT){
+			if (state == STATE_COMBAT)
+				state = STATE_ALERT;
+			//Debug.Log("called when target is null");
+			//Debug.Log(target.gameObject.tag.ToString());
+			if(state == STATE_ALERT){
 				StopFiring();
-				if(TargetReached){
+				//if((newTarget - transform.position).magnitude < 1f){
+				if(targetReached){
+					Debug.Log("reached");
 					state = STATE_IDLE;
-					wander();
+					OnDisable ();
+					stopMove ();
+					//wander();
 				}else{
+					Debug.Log("still chasing");
+
 					chase(newTarget);
 				}
 			}
+
+			//if(state == STATE_IDLE){
+			//	wander();
+			//}
 		}
 		
 	}
