@@ -375,7 +375,7 @@ public class EnemyBasic: MonoBehaviour {
 			isFiring = true;
 			//InvokeRepeating("FireBullet", 0, BulletCooldown());
 			float delayTime;
-			delayTime = Mathf.Max(0, equippedWeapon.bulletCooldown - (Time.timeSinceLevelLoad - lastBulletTime));
+			delayTime = Mathf.Max(0.001f, equippedWeapon.bulletCooldown - (Time.timeSinceLevelLoad - lastBulletTime));
 			InvokeRepeating("FireBullet", delayTime, equippedWeapon.bulletCooldown);
 		}
 	}
