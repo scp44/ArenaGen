@@ -9,8 +9,8 @@ namespace Pathfinding {
 		private const int STATE_ALERT = 1;
 		private const int STATE_COMBAT = 2;
 		private const int STATE_GUARD = 3;
-		private const int STATE_FOLLOWING = 4;
-		private GameObject toGuard;
+		//private const int STATE_FOLLOWING = 4;
+		//private GameObject toGuard;
 		private Vector3 newTarget;
 		// Use this for initialization
 		void Start () {
@@ -21,10 +21,10 @@ namespace Pathfinding {
 		// Update is called once per frame
 		void Update () {
 			base.Update();
-			Healer healerScript = null;
+			/*Healer healerScript = null;
 			if(toGuard != null)
 				healerScript = toGuard.GetComponent <Healer>();
-
+*/
 
 			GameObject target = null;
 
@@ -47,8 +47,10 @@ namespace Pathfinding {
 			case STATE_ALERT:
 				if(target == null){
 					chase(passedInfo.playerPos);
-					timeLeft = difficulty * 4;
+					//if(TargetReached){
+					timeLeft = 0;
 					changeState(STATE_IDLE);
+					//}
 				}
 				break;
 			case STATE_COMBAT:
@@ -76,8 +78,9 @@ namespace Pathfinding {
 				break;
 				
 			}
+			deathCheck ();
 	}
-		public GameObject commCheck(){
+	/*	public GameObject commCheck(){
 			GameObject[] eUs = GameObject.FindGameObjectsWithTag ("Enemy");
 			GameObject weakest = null;
 			GameObject healer = null;
@@ -104,6 +107,6 @@ namespace Pathfinding {
 			}
 
 			return healer;
-		}
+		}*/
 	}
 }

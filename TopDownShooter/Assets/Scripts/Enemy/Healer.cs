@@ -144,7 +144,7 @@ namespace Pathfinding {
 			case STATE_ALERT:
 				if(target == null){
 					chase(passedInfo.playerPos);
-					timeLeft = difficulty * 4;
+					timeLeft = 0;
 					changeState(STATE_IDLE);
 				}
 				break;

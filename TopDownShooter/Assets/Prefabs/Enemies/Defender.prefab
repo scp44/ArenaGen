@@ -225,10 +225,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyType: 2
   speed: 3
-  enemyHP: 6
-  maxHP: 6
+  enemyHP: 4
+  maxHP: 4
   equipped: 4
-  movementSpeed: 50
+  movementSpeed: 3
   commScale: 4
   visionScale: 10
   alertScale: 15

@@ -4275,7 +4275,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponStats:
   - weaponType: 0
-    bulletDamage: 2
+    bulletDamage: 1
     aoeRadius: 0
     bulletSpeed: .100000001
     bulletCooldown: .200000003
@@ -4287,7 +4287,7 @@ MonoBehaviour:
     bulletCooldown: .0500000007
     bulletLength: 30
   - weaponType: 2
-    bulletDamage: 2
+    bulletDamage: 1
     aoeRadius: 0
     bulletSpeed: .0500000007
     bulletCooldown: 2
@@ -4299,10 +4299,10 @@ MonoBehaviour:
     bulletCooldown: 1
     bulletLength: 30
   - weaponType: 4
-    bulletDamage: 4
+    bulletDamage: 2
     aoeRadius: 0
     bulletSpeed: .200000003
-    bulletCooldown: 1
+    bulletCooldown: 2
     bulletLength: 75
   weaponPrefabs:
   - {fileID: 454506, guid: c833c6ba17e1d8a498f7f2bf6edbe71b, type: 2}

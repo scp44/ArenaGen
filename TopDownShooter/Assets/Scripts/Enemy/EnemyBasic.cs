@@ -359,7 +359,7 @@ public class EnemyBasic: MonoBehaviour {
 			Debug.LogError("Bullet start position is not specified.");
 		}
 		Rigidbody bulletClone = (Rigidbody) Instantiate(bullet, bulletStartPosition.position, transform.rotation);
-		bulletClone.velocity = transform.forward * movementSpeed * equippedWeapon.bulletSpeed;
+		bulletClone.velocity = transform.forward * equippedWeapon.bulletSpeed * 100;
 		
 		EnemyBulletBehaviors bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
 		bulletScript.lifeSpan = equippedWeapon.bulletLength;
@@ -370,7 +370,7 @@ public class EnemyBasic: MonoBehaviour {
 	
 	protected void StartFiring () {
 		if (isFiring)
-			return;
+		return;
 		else {
 			isFiring = true;
 			//InvokeRepeating("FireBullet", 0, BulletCooldown());

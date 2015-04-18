@@ -185,17 +185,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyType: 1
   speed: 3
-  enemyHP: 5
-  maxHP: 5
+  enemyHP: 6
+  maxHP: 6
   equipped: 1
-  movementSpeed: 70
+  movementSpeed: 3
   commScale: 4
   visionScale: 10
   alertScale: 15
   fov: 45
   isFiring: 0
-  wanderTimeMax: 6
-  wanderTimeMin: 2
+  wanderTimeMax: 240
+  wanderTimeMin: 120
   bulletStartPosition: {fileID: 428728}
   hands: {fileID: 428726}
   armorBonusHP: 0
