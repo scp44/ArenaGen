@@ -364,7 +364,7 @@ public class EnemyBasic: MonoBehaviour {
 		EnemyBulletBehaviors bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
 		bulletScript.lifeSpan = equippedWeapon.bulletLength;
 		bulletScript.damage = equippedWeapon.bulletDamage;
-		lastBulletTime = Time.realtimeSinceStartup;
+		lastBulletTime = Time.timeSinceLevelLoad;
 		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
 	}
 	
@@ -375,7 +375,7 @@ public class EnemyBasic: MonoBehaviour {
 			isFiring = true;
 			//InvokeRepeating("FireBullet", 0, BulletCooldown());
 			float delayTime;
-			delayTime = Mathf.Max(0, equippedWeapon.bulletCooldown - (Time.realtimeSinceStartup - lastBulletTime));
+			delayTime = Mathf.Max(0, equippedWeapon.bulletCooldown - (Time.timeSinceLevelLoad - lastBulletTime));
 			InvokeRepeating("FireBullet", delayTime, equippedWeapon.bulletCooldown);
 		}
 	}
