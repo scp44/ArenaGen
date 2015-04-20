@@ -81,8 +81,6 @@ public class Map: MonoBehaviour {
 		cellTypes = new MapCellType[mapLength, mapWidth];
 		walls = new WallGraph ();
 
-		float timestamp = Time.realtimeSinceStartup;
-
 		difficulty = GameManager.getDifficulty ();
 		//Change the water color based on difficulty
 		Color waterColor;
@@ -103,9 +101,9 @@ public class Map: MonoBehaviour {
 			generateIsland (20);
 		else
 			generateWaterBoundaries (20);
-		print ("generateIsland: " + (Time.realtimeSinceStartup-timestamp).ToString() + " seconds");
-		//timestamp = Time.realtimeSinceStartup;
 
+		//print ("generateIsland: " + (Time.realtimeSinceStartup-timestamp).ToString() + " seconds");
+	
 		generatePlayerStartLocation ();
 		generateEnemyCamps ();
 		generateGround ();
@@ -113,12 +111,11 @@ public class Map: MonoBehaviour {
 		spawnPowerups ();
 		spawnEnemies ();
 		spawnBoss ();
-		
+
 		//Put the player at the starting position
 		Vector3 startPosition3D = coordinatesFrom2D(startLocation, 0.6f);
 		player.transform.position = startPosition3D;
 		AstarPath.active.Scan();
-		print ("Map Generation: " + (Time.realtimeSinceStartup-timestamp).ToString() + " seconds");
 	}
 
 	//Pick a location for the player to start
@@ -236,24 +233,24 @@ public class Map: MonoBehaviour {
 					MapCellType neighborCellType = cellTypes[currentNeighbor.x, currentNeighbor.z];
 					if (neighborCellType != MapCellType.waterCell 
 					 	&& neighborCellType != MapCellType.unknownCell
-					    && !tempWaterCellQueue.Contains(currentNeighbor)) {
+					    && neighborCellType != MapCellType.willBeWaterCell) {
 						//Compute probability that it will be a water cell
 						float distanceToCenter = currentNeighbor.distance(mapCenter);
 						float relativeDistance = distanceToCenter/maxDistanceToCenter;
 						//The probability function should map [0,1] (rel.distance) to [0,1] (probability)
 						float waterCellProbability = Mathf.Pow((-1/(relativeDistance-2)), 2);
 
-						if (Random.value < waterCellProbability)
+						if (Random.value < waterCellProbability) {
 							//This cell will become water
+							cellTypes[currentNeighbor.x, currentNeighbor.z] = MapCellType.willBeWaterCell;
 							tempWaterCellQueue.Enqueue(currentNeighbor);
+						}
 						else
 							//This cell will become ground only if reachable
 							cellTypes[currentNeighbor.x, currentNeighbor.z] = MapCellType.unknownCell;
 					}
 			}
 		}
-
-		float timestamp = Time.realtimeSinceStartup;
 
 		//Put water instead of unreachable ground cells
 		//Starting with the map center, explore the reachable ground
@@ -262,19 +259,17 @@ public class Map: MonoBehaviour {
 		while (unexploredGround.Count > 0) {
 			IntVector2 currentCell = unexploredGround.Dequeue();
 			//Look at all the neighbors
-			foreach(IntVector2 neighbor in getOutwardNeighbors(currentCell, mapCenter)) {
+			foreach(IntVector2 neighbor in getNeighbors(currentCell)) {
 				MapCellType neighborCellType = cellTypes[neighbor.x, neighbor.z];
-				if (neighborCellType == MapCellType.groundCell || neighborCellType == MapCellType.waterCell || unexploredGround.Contains(neighbor))
+				if (neighborCellType == MapCellType.groundCell || neighborCellType == MapCellType.waterCell || neighborCellType == MapCellType.willBeGroundCell)
 					continue;
 				else {
+					cellTypes[neighbor.x, neighbor.z] = MapCellType.willBeGroundCell;
 					unexploredGround.Enqueue(neighbor);
 				}
 			}
 			cellTypes[currentCell.x, currentCell.z] = MapCellType.groundCell;
 		}
-
-		print ("marking reachable ground: " + (Time.realtimeSinceStartup-timestamp).ToString() + " seconds");
-		timestamp = Time.realtimeSinceStartup;
 
 		//Put water instead of unreachable ground cells
 		for (int i=0; i<mapLength; i++) {

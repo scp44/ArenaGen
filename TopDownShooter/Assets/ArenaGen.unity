@@ -1607,7 +1607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 652c7534ba3c84fe1a2b2985d9b02a50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  willGenerateIsland: 0
+  willGenerateIsland: 1
   player: {fileID: 1464264733}
   groundCellPrefab: {fileID: 11460476, guid: 8dbc36c31bb714b1cbecc7e0d8308e2a, type: 2}
   waterPrefab: {fileID: 11418974, guid: 9c13dabc417d14b509cacfb628debc28, type: 2}
@@ -1622,7 +1622,7 @@ MonoBehaviour:
   - {fileID: 497082, guid: c5b676322f59e457492b84f06d21888b, type: 2}
   - {fileID: 402456, guid: 62e034b8216db4e7c8e0b0bfcd9463bb, type: 2}
   - {fileID: 428732, guid: fa7e0c4ed703248669406c243f8019f8, type: 2}
-  enemyNumbers: 070000000500000003000000
+  enemyNumbers: 0a0000000800000005000000
   boss: {fileID: 776083934}
   mapLength: 100
   mapWidth: 100
