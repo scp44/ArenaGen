@@ -101,7 +101,7 @@ public class Map: MonoBehaviour {
 			generateIsland (20);
 		else
 			generateWaterBoundaries (20);
-		//print ("generateIsland: " + (Time.realtimeSinceStartup-timestamp).ToString() + " seconds");
+		print ("generateIsland: " + (Time.realtimeSinceStartup-timestamp).ToString() + " seconds");
 		timestamp = Time.realtimeSinceStartup;
 
 		generatePlayerStartLocation ();
@@ -197,6 +197,9 @@ public class Map: MonoBehaviour {
 		//Create water boundaries
 		generateWaterBoundaries (padding);
 
+		//List of potential unreachable ground cells
+		List<IntVector2> unreachableGroundCells = new List<IntVector2>();
+
 		//Initialize the list of the water cells
 		Queue<IntVector2> tempWaterCellQueue = new Queue<IntVector2> ();
 		//Add the inner layer of coordinates to the queue
@@ -206,6 +209,9 @@ public class Map: MonoBehaviour {
 				//Skip cells inside the map
 				if (!withinMap(coordinates)) {
 					tempWaterCellQueue.Enqueue(coordinates);
+				}
+				else {
+					unreachableGroundCells.Add (coordinates);
 				}
 			}
 		}
@@ -221,8 +227,10 @@ public class Map: MonoBehaviour {
 		while (tempWaterCellQueue.Count>0) {
 			//Remove a cell from the queue and add to the water cell list
 			IntVector2 currentCell = tempWaterCellQueue.Dequeue();
-			if (withinMap(currentCell))
+			if (withinMap(currentCell)) {
 				waterCellList.Add(currentCell);
+				unreachableGroundCells.Remove(currentCell);
+			}
 
 			//Iterate over all neighbors that have not been visited
 			foreach(IntVector2 currentNeighbor in getNeighbors(currentCell)) {
@@ -266,19 +274,13 @@ public class Map: MonoBehaviour {
 				}
 			}
 			exploredGround.Add (currentCell);
+			unreachableGroundCells.Remove(currentCell);
 		}
-		//Put water on the all other cells
-		for (int i=0; i<mapLength; i++) {
-			for (int j=0; j<mapWidth; j++) {
-				IntVector2 coordinates = new IntVector2(i,j);
-				if (!exploredGround.Contains(coordinates) 
-				    && !waterCellList.Contains(coordinates)) {
-					waterCellList.Add (coordinates);
-				}
-			}
-		}
-		//print ("deleting unreachable ground: " + (Time.realtimeSinceStartup-timestamp).ToString() + " seconds");
+
+		print ("marking reachable ground: " + (Time.realtimeSinceStartup-timestamp).ToString() + " seconds");
 		timestamp = Time.realtimeSinceStartup;
+		//Put water on the all other cells
+		waterCellList.AddRange (unreachableGroundCells);
 
 		//Put water cells in proper locations
 		foreach (IntVector2 waterCell in waterCellList) {
