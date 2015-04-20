@@ -41,6 +41,11 @@ public class Defender : EnemyBasic {
 					
 				chase (newTarget);
 			}
+
+			if (target.gameObject.tag == "MedPackPU"){
+				Debug.Log("hack");
+			}
+
 		} else {
 			if (state == STATE_COMBAT)
 				state = STATE_ALERT;
@@ -54,7 +59,7 @@ public class Defender : EnemyBasic {
 					state = STATE_IDLE;
 					OnDisable ();
 					stopMove ();
-					//wander();
+					wander();
 				}else{
 					Debug.Log("still chasing");
 
