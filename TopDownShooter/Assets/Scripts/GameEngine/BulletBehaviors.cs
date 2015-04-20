@@ -32,8 +32,11 @@ public class BulletBehaviors : MonoBehaviour {
 		else if (other.gameObject.tag == "Enemy") {
 			//run enemy health minus
 			EnemyBasic enemyScript = other.GetComponent<EnemyBasic>();
+			GameObject player = GameObject.FindGameObjectsWithTag ("Player") [0];
+			PlayerController playerScript = player.GetComponent<PlayerController>();
+
 			if(!isAoE){
-				enemyScript.takeDamage (damage);
+				enemyScript.takeDamage (damage+playerScript.bonusDamage);
 				Destroy(this.gameObject);
 			}
 			else{ Explode();}

@@ -299,12 +299,27 @@ public class EnemyBasic: MonoBehaviour {
 	}
 
 	public void deathCheck(){
+		player = GameObject.FindGameObjectsWithTag ("Player") [0];
+		PlayerController playerScript = player.GetComponent<PlayerController>();
+
+
 		if (enemyHP <= 0) {
 			if(medPack > 0){
 				medPack = 0;
 				dropItem();
 			}
-			Destroy(this.gameObject);}
+			switch(enemyType){
+				case ENEMY_HEALER:
+					playerScript.maxHP += .2f-(Mathf.Floor((int)difficulty*100)/1000);
+				break;
+				case ENEMY_SOLDIER:
+					playerScript.bonusDamage += .2f-(Mathf.Floor((int)difficulty*100)/1000);
+				break;
+				case ENEMY_DEFENDER:
+					playerScript.maxArmor += .2f-(Mathf.Floor((int)difficulty*100)/1000);
+				break;
+			}
+		Destroy(this.gameObject);}
 	}
 
 	public void increaseHP(float hp){
