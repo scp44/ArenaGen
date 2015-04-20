@@ -64,6 +64,7 @@ public class Map: MonoBehaviour {
 	public Color groundHigh;
 	
 	private MapCell [,] cells;
+	private MapCellType[,] cellTypes;
 	private WallGraph walls;
 
 	private float difficulty;
@@ -77,6 +78,7 @@ public class Map: MonoBehaviour {
 		}
 
 		cells = new MapCell[mapLength, mapWidth];
+		cellTypes = new MapCellType[mapLength, mapWidth];
 		walls = new WallGraph ();
 
 		float timestamp = Time.realtimeSinceStartup;
@@ -102,7 +104,7 @@ public class Map: MonoBehaviour {
 		else
 			generateWaterBoundaries (20);
 		print ("generateIsland: " + (Time.realtimeSinceStartup-timestamp).ToString() + " seconds");
-		timestamp = Time.realtimeSinceStartup;
+		//timestamp = Time.realtimeSinceStartup;
 
 		generatePlayerStartLocation ();
 		generateEnemyCamps ();
@@ -116,6 +118,7 @@ public class Map: MonoBehaviour {
 		Vector3 startPosition3D = coordinatesFrom2D(startLocation, 0.6f);
 		player.transform.position = startPosition3D;
 		AstarPath.active.Scan();
+		print ("Map Generation: " + (Time.realtimeSinceStartup-timestamp).ToString() + " seconds");
 	}
 
 	//Pick a location for the player to start
@@ -197,9 +200,6 @@ public class Map: MonoBehaviour {
 		//Create water boundaries
 		generateWaterBoundaries (padding);
 
-		//List of potential unreachable ground cells
-		List<IntVector2> unreachableGroundCells = new List<IntVector2>();
-
 		//Initialize the list of the water cells
 		Queue<IntVector2> tempWaterCellQueue = new Queue<IntVector2> ();
 		//Add the inner layer of coordinates to the queue
@@ -211,15 +211,13 @@ public class Map: MonoBehaviour {
 					tempWaterCellQueue.Enqueue(coordinates);
 				}
 				else {
-					unreachableGroundCells.Add (coordinates);
+					cellTypes[i,j]=MapCellType.defaultCellType;
 				}
 			}
 		}
 
 		//List of water cells
 		List<IntVector2> waterCellList = new List<IntVector2> ();
-		//List of non-water cells that are neighbors of water cells
-		List<IntVector2> notWaterCellList = new List<IntVector2> ();
 		//length of the half diagonal of the map
 		IntVector2 mapCenter = new IntVector2 ((int)(mapLength / 2), (int)(mapWidth / 2));
 		float maxDistanceToCenter = mapCenter.distance (new IntVector2(mapLength, mapWidth));
@@ -229,14 +227,15 @@ public class Map: MonoBehaviour {
 			IntVector2 currentCell = tempWaterCellQueue.Dequeue();
 			if (withinMap(currentCell)) {
 				waterCellList.Add(currentCell);
-				unreachableGroundCells.Remove(currentCell);
+				cellTypes[currentCell.x, currentCell.z] = MapCellType.waterCell;
 			}
 
 			//Iterate over all neighbors that have not been visited
 			foreach(IntVector2 currentNeighbor in getNeighbors(currentCell)) {
 					//We only care about the cells that have not been visited yet
-					if (!waterCellList.Contains(currentNeighbor) 
-					    && !notWaterCellList.Contains(currentNeighbor)
+					MapCellType neighborCellType = cellTypes[currentNeighbor.x, currentNeighbor.z];
+					if (neighborCellType != MapCellType.waterCell 
+					 	&& neighborCellType != MapCellType.unknownCell
 					    && !tempWaterCellQueue.Contains(currentNeighbor)) {
 						//Compute probability that it will be a water cell
 						float distanceToCenter = currentNeighbor.distance(mapCenter);
@@ -244,11 +243,12 @@ public class Map: MonoBehaviour {
 						//The probability function should map [0,1] (rel.distance) to [0,1] (probability)
 						float waterCellProbability = Mathf.Pow((-1/(relativeDistance-2)), 2);
 
-						//Add the cell to the appropriate list
 						if (Random.value < waterCellProbability)
+							//This cell will become water
 							tempWaterCellQueue.Enqueue(currentNeighbor);
 						else
-							notWaterCellList.Add (currentNeighbor);
+							//This cell will become ground only if reachable
+							cellTypes[currentNeighbor.x, currentNeighbor.z] = MapCellType.unknownCell;
 					}
 			}
 		}
@@ -257,30 +257,35 @@ public class Map: MonoBehaviour {
 
 		//Put water instead of unreachable ground cells
 		//Starting with the map center, explore the reachable ground
-		List<IntVector2> exploredGround = new List<IntVector2>();
 		Queue<IntVector2> unexploredGround = new Queue<IntVector2>();
 		unexploredGround.Enqueue (mapCenter);
 		while (unexploredGround.Count > 0) {
 			IntVector2 currentCell = unexploredGround.Dequeue();
 			//Look at all the neighbors
-			foreach(IntVector2 neighbor in getNeighbors(currentCell)) {
-				if (exploredGround.Contains(neighbor) || unexploredGround.Contains(neighbor))
+			foreach(IntVector2 neighbor in getOutwardNeighbors(currentCell, mapCenter)) {
+				MapCellType neighborCellType = cellTypes[neighbor.x, neighbor.z];
+				if (neighborCellType == MapCellType.groundCell || neighborCellType == MapCellType.waterCell || unexploredGround.Contains(neighbor))
 					continue;
-				if (waterCellList.Contains(neighbor)) {
-					exploredGround.Add (neighbor);
-				}
 				else {
 					unexploredGround.Enqueue(neighbor);
 				}
 			}
-			exploredGround.Add (currentCell);
-			unreachableGroundCells.Remove(currentCell);
+			cellTypes[currentCell.x, currentCell.z] = MapCellType.groundCell;
 		}
 
 		print ("marking reachable ground: " + (Time.realtimeSinceStartup-timestamp).ToString() + " seconds");
 		timestamp = Time.realtimeSinceStartup;
-		//Put water on the all other cells
-		waterCellList.AddRange (unreachableGroundCells);
+
+		//Put water instead of unreachable ground cells
+		for (int i=0; i<mapLength; i++) {
+			for (int j=0; j<mapWidth; j++) {
+				IntVector2 coordinates = new IntVector2(i,j);
+				//Skip cells inside the map
+				if (withinMap(coordinates) && cellTypes[i,j]!=MapCellType.groundCell && cellTypes[i,j]!=MapCellType.waterCell) {
+					waterCellList.Add (coordinates);
+				}
+			}
+		}
 
 		//Put water cells in proper locations
 		foreach (IntVector2 waterCell in waterCellList) {
@@ -494,6 +499,7 @@ public class Map: MonoBehaviour {
 		return coordinatesFrom2D(getRandomPassableCoordinates(), 0.5f);
 	}
 
+	//get all 2-4 neighbors of a cell
 	private List<IntVector2> getNeighbors (IntVector2 currentCell) {
 		List<IntVector2> result = new List<IntVector2>();
 		for (int i=currentCell.x-1; i<=currentCell.x+1; i++) {
@@ -503,6 +509,20 @@ public class Map: MonoBehaviour {
 				    result.Add (cell);
 			}
 		}
+		return result;
+	}
+
+	//get neighbors that are further from the center
+	private List<IntVector2> getOutwardNeighbors(IntVector2 currentCell, IntVector2 center) {
+		List<IntVector2> result = new List<IntVector2> ();
+		if (currentCell.x >= center.x && withinMap(new IntVector2(currentCell.x+1, currentCell.z)))
+			result.Add (new IntVector2(currentCell.x+1, currentCell.z));
+		if (currentCell.x <= center.x && withinMap(new IntVector2(currentCell.x-1, currentCell.z)))
+			result.Add (new IntVector2(currentCell.x-1, currentCell.z));
+		if (currentCell.z >= center.z && withinMap(new IntVector2(currentCell.x, currentCell.z+1)))
+			result.Add (new IntVector2(currentCell.x, currentCell.z+1));
+		if (currentCell.z <= center.z && withinMap(new IntVector2(currentCell.x, currentCell.z-1)))
+			result.Add (new IntVector2(currentCell.x, currentCell.z-1));
 		return result;
 	}
 

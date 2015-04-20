@@ -2,4 +2,6 @@
 public enum MapCellType {
 	groundCell,
 	waterCell,
+	unknownCell,
+	defaultCellType
 };
