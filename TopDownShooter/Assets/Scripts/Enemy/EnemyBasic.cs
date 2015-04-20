@@ -63,7 +63,7 @@ public class EnemyBasic: MonoBehaviour {
 	//power up variables
 	public float armorBonusHP;
 	public int medPack = 0;
-	public Rigidbody MedPack;
+	public GameObject MedPack;
 
 	//AI parameters
 	protected float timeSinceStateChange = 0;
@@ -329,7 +329,7 @@ public class EnemyBasic: MonoBehaviour {
 	}
 	
 	public void dropItem(){
-		Rigidbody medPackClone = (Rigidbody) Instantiate(MedPack, transform.position, transform.rotation);
+		GameObject medPackClone = (GameObject) Instantiate(MedPack, transform.position, transform.rotation);
 	}
 
 	public void activateHealthPack(){

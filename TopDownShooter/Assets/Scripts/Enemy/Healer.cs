@@ -128,7 +128,7 @@ namespace Pathfinding {
 					}
 				}
 				else if(medPack < 1 && target != null && target.tag.Equals ("MedPackPU")){
-					moveTo (target.transform.position);
+					moveTo(target.transform.position);
 				}
 				else if(medPack > 0 && weakEnemy != null &&
 				   (weakEnemyScript.enemyHP < weakEnemyScript.maxHP || weakEnemy.tag == "BossEnemy")){
@@ -173,11 +173,11 @@ namespace Pathfinding {
 				//less and less likely to go to the boss on higher difficulties
 				if(num == difficulty){
 					newTarget = this.passedInfo.bossPos;
-					goTo(newTarget);
+					chase(newTarget);
 				}
 				else{
 					newTarget = mapScript.getRandomPassableDestination();
-					goTo(newTarget);
+					chase(newTarget);
 				}
 				changeState(STATE_IS_FLEEING);
 				break;

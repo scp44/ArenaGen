@@ -1674,7 +1674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 652c7534ba3c84fe1a2b2985d9b02a50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  willGenerateIsland: 1
+  willGenerateIsland: 0
   player: {fileID: 1464264733}
   groundCellPrefab: {fileID: 11460476, guid: 8dbc36c31bb714b1cbecc7e0d8308e2a, type: 2}
   waterPrefab: {fileID: 11418974, guid: 9c13dabc417d14b509cacfb628debc28, type: 2}
