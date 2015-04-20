@@ -160,7 +160,7 @@ public class PlayerController : MonoBehaviour {
 	//Transfers bullet stats to bullets
 	void FireBullet () {
 		var inFront = new Vector3 (0, 1, 0);
-
+		lastBulletTime = Time.timeSinceLevelLoad;
 		//not sprayer, don't need to fire multiple bullets
 		if (equippedWeapon.weaponType != 3) {
 			Rigidbody bulletClone = (Rigidbody)Instantiate (bullet, transform.position, transform.rotation);
@@ -197,7 +197,8 @@ public class PlayerController : MonoBehaviour {
 				startAngle = Quaternion.AngleAxis (WeaponManager.getAngleBetween(), Vector3.up) * startAngle;
 			}
 		}
-		
+
+
 
 		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
 	}
