@@ -383,7 +383,7 @@ public class Map: MonoBehaviour {
 				break;
 			IntVector2 coordinates = coordinatesArray[p];
 
-			if (distanceToClosestPowerup(coordinates)>powerupDistance && testCell (coordinates, 1) && !testCell(coordinates, 3)) {
+			if (distanceToClosestPowerup(coordinates)>powerupDistance && testCell (coordinates, 2) && !testCell(coordinates, 4)) {
 				//spawn a medpack or powerup
 				if (medpacks.Count < numMedpacks)
 					placeMedpackAtCell(coordinates);
