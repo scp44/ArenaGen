@@ -6,6 +6,7 @@ public class PauseMenu : MonoBehaviour {
 	public GameObject PauseBackground;
 	public GameObject MainMenuButton;
 	public GameObject ReturnButton;
+	public Text difficultyTxt;
 
 
 	// Use this for initialization
@@ -24,6 +25,7 @@ public class PauseMenu : MonoBehaviour {
 		PauseBackground.SetActive(true);
 		MainMenuButton.SetActive(true);
 		ReturnButton.SetActive(true);
+		difficultyTxt.text = "Difficulty: " + (Mathf.Floor((GameManager.getDifficulty () * 100))).ToString ();
 	}
 
 	public void mainMenu(){
