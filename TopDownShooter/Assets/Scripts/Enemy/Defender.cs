@@ -18,6 +18,8 @@ public class Defender : EnemyBasic {
 
 	private Vector3 newTarget;
 
+	private GameObject p1;
+
 
 	
 	protected override void Start () {
@@ -28,14 +30,17 @@ public class Defender : EnemyBasic {
 	protected override void Update() {
 		base.Update ();	
 		GameObject target = this.visionCheck ();//wonder if it should return a boolean 
+		int counter = 0;
 
 		if (target != null) {
-			Debug.Log(target.gameObject.tag.ToString());
+			stopMove();
+			//Debug.Log(target.gameObject.tag.ToString());
 			if (target.gameObject.tag=="Player"){
 				lookAt (target);
 				StartFiring ();
 
 				newTarget = new Vector3(target.transform.position.x, 0f, target.transform.position.z);
+				p1 = target.gameObject;
 		
 				state = STATE_COMBAT;
 					
@@ -43,28 +48,86 @@ public class Defender : EnemyBasic {
 			}
 
 			if (target.gameObject.tag == "MedPackPU"){
-				Debug.Log("hack");
+				if (state == STATE_COMBAT)
+					state = STATE_ALERT;
+
+				if (state != STATE_ALERT){
+
+					if(enemyHP!=5){
+						Debug.Log("should go to medpack");
+						lookAt(target);
+						newTarget = new Vector3(target.transform.position.x, 0f, target.transform.position.z);
+						chase(newTarget);
+					}
+					else{
+						Debug.Log("find medpack, but hp is full,wander");
+						wander();
+						/*
+						if(targetReached){					
+							state = STATE_IDLE;
+							OnDisable ();
+							stopMove ();
+							wander();
+							Debug.Log("wander(medpack)-");
+						}else{
+							Debug.Log("still chasing(Medpack");
+							
+							chase(newTarget);
+						}
+						*/
+					}
+				}else{
+
+
+					if(targetReached){					
+						state = STATE_IDLE;
+						OnDisable ();
+						stopMove ();
+						wander();
+						Debug.Log("wander(medpack)");
+					}else{
+						Debug.Log("still chasing(Medpack");
+					
+						chase(newTarget);
+					}
+				}
+
+
+				//chase (newTarget);
+
 			}
 
 		} else {
-			if (state == STATE_COMBAT)
+			if (state == STATE_COMBAT){
 				state = STATE_ALERT;
+				counter = 0;
+				
+			}
 			//Debug.Log("called when target is null");
 			//Debug.Log(target.gameObject.tag.ToString());
 			if(state == STATE_ALERT){
+				//counter = counter + 1;
 				StopFiring();
 				//if((newTarget - transform.position).magnitude < 1f){
-				if(targetReached){
-					Debug.Log("reached");
-					state = STATE_IDLE;
-					OnDisable ();
-					stopMove ();
-					wander();
-				}else{
-					Debug.Log("still chasing");
+				//if (counter <= 180){
+			//chase (p1.transform.position);
+			//
+			//else{
+			//counter = 0;
+				//	chase(newTarget);
+					if(targetReached){
 
-					chase(newTarget);
-				}
+						state = STATE_IDLE;
+						OnDisable ();
+						stopMove ();
+						wander();
+						Debug.Log("wander");
+					}else{
+						Debug.Log("still chasing");
+
+						chase(newTarget);
+					}
+				//}
 			}
 
 			//if(state == STATE_IDLE){
