@@ -4344,25 +4344,25 @@ MonoBehaviour:
     bulletDamage: 1
     aoeRadius: 0
     bulletSpeed: .100000001
-    bulletCooldown: .200000003
+    bulletCooldown: .75
     bulletLength: 45
   - weaponType: 1
     bulletDamage: .5
     aoeRadius: 0
     bulletSpeed: .100000001
-    bulletCooldown: .0500000007
+    bulletCooldown: .330000013
     bulletLength: 30
   - weaponType: 2
     bulletDamage: 1
     aoeRadius: 0
-    bulletSpeed: .0500000007
+    bulletSpeed: .075000003
     bulletCooldown: 2
     bulletLength: 45
   - weaponType: 3
     bulletDamage: 1
     aoeRadius: 0
-    bulletSpeed: .075000003
-    bulletCooldown: 1
+    bulletSpeed: .100000001
+    bulletCooldown: .75
     bulletLength: 30
   - weaponType: 4
     bulletDamage: 2
