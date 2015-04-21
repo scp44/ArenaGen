@@ -3,8 +3,8 @@ using System.Collections;
 
 public class BossBasic : EnemyBasic {
 	//A boss has two weapons instead of one
-	public int equippedLeft;
-	public int equippedRight;
+	public int equippedLeft = 3;
+	public int equippedRight = 3;
 	public Transform bulletStartLeft;
 	public Transform bulletStartRight;
 	public Vector3 initialPosition;
@@ -38,13 +38,6 @@ public class BossBasic : EnemyBasic {
 
 	protected override void Start() {
 		base.Start ();
-		while (equippedLeft == 2)
-			equippedLeft = Random.Range (0, WeaponManager.numWeapons);
-		while (equippedRight == 2) {
-			equippedRight = (equippedLeft + Random.Range (0, WeaponManager.numWeapons))%WeaponManager.numWeapons;
-			if (equippedRight == equippedLeft)
-				equippedRight = (equippedRight+1)%3;
-		}
 		equippedWeaponLeft = WeaponManager.getWeapon (equippedLeft);
 		equippedWeaponRight = WeaponManager.getWeapon (equippedRight);
 		bulletLeft = WeaponManager.getEnemyBulletPrefab (equippedLeft);

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour {
 	[Range(0f, 1f)]
 	public float difficulty = 0f;
+	public bool godMode = false;
 	public float minPlayerBossDistance = 30;
 	public Map map;
 	public Transform player;
@@ -179,5 +180,9 @@ public class GameManager : MonoBehaviour {
 
 	public static float getDifficulty() {
 		return instance.difficulty;
+	}
+
+	public static bool godmode() {
+		return instance.godMode;
 	}
 }

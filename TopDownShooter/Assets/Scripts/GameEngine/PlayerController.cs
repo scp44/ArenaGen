@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
 		GameObject gunSelectInfo = GameObject.Find ("_Main");
 		if (gunSelectInfo == null) {
-			gun1 = 0;
+			gun1 = 2;
 			gun2 = 3;
 		}
 		else {
@@ -229,8 +229,10 @@ public class PlayerController : MonoBehaviour {
 	public void takeDamage(float damage) {
 		float armorDamage = Mathf.Min (damage, armorBonusHP);
 		float hpDamage = damage - armorDamage;
-		armorBonusHP -= armorDamage;
-		playerHP -= hpDamage;
+		if (!GameManager.godmode()) {
+			armorBonusHP -= armorDamage;
+			playerHP -= hpDamage;
+		}
 	}
 
 	public void activateArmor(){
