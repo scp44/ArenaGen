@@ -39,7 +39,10 @@ public class BulletBehaviors : MonoBehaviour {
 				enemyScript.takeDamage (damage+playerScript.bonusDamage);
 				Destroy(this.gameObject);
 			}
-			else{ Explode(); Destroy(this.gameObject);}
+			else{
+				Explode();
+				Destroy(this.gameObject);
+			}
 			//if enemy is not firing, look at player
 			if (!enemyScript.isFiring) {
 				Vector3 bulletDirection = this.transform.position - startPosition;

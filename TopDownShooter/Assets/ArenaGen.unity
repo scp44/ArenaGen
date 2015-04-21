@@ -4587,7 +4587,7 @@ MonoBehaviour:
     bulletCooldown: .300000012
     bulletLength: 25
   - weaponType: 2
-    bulletDamage: 1
+    bulletDamage: 1.5
     aoeRadius: 0
     bulletSpeed: .075000003
     bulletCooldown: 2
