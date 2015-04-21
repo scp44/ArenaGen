@@ -4409,13 +4409,13 @@ MonoBehaviour:
   enemyBulletPrefabs:
   - {fileID: 11499168, guid: 0629369d5a99a468c8092415c2b02ded, type: 2}
   - {fileID: 11499168, guid: 963f5a3e8cd7745aa9df857465f0db95, type: 2}
-  - {fileID: 11453792, guid: 418d894d287c2f04e82b243a88c4583f, type: 2}
+  - {fileID: 11465138, guid: 76f9b520f0ca44bbead4d4f7df57990b, type: 2}
   - {fileID: 11426738, guid: 4fa3689234e9eae4ebacea8707559d5b, type: 2}
   - {fileID: 11468218, guid: 1e57bbfca0b1b694ca34e82389a1893c, type: 2}
   playerBulletPrefabs:
   - {fileID: 11476018, guid: 65d38e8071bb4464983b36120c177f8b, type: 2}
   - {fileID: 11459158, guid: da09c74bec16e487d9b693371793a637, type: 2}
-  - {fileID: 11492332, guid: c97fd5a98c88b46f98c86a9060edc521, type: 2}
+  - {fileID: 11476018, guid: 93434c1435fcd4234944363c6e6baa98, type: 2}
   - {fileID: 11492332, guid: 00ee74bc7f30049c8a602466a21bb515, type: 2}
   - {fileID: 11492332, guid: 952b59e5f375c4b6cbbe7174487a8fe2, type: 2}
   angle: 90

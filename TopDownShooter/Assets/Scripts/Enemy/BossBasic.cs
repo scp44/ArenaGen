@@ -38,10 +38,13 @@ public class BossBasic : EnemyBasic {
 
 	protected override void Start() {
 		base.Start ();
-		equippedLeft = Random.Range (0, WeaponManager.numWeapons);
-		equippedRight = (equippedLeft + Random.Range (0, WeaponManager.numWeapons))%WeaponManager.numWeapons;
-		if (equippedRight == equippedLeft)
-			equippedRight = (equippedRight+1)%3;
+		while (equippedLeft == 2)
+			equippedLeft = Random.Range (0, WeaponManager.numWeapons);
+		while (equippedRight == 2) {
+			equippedRight = (equippedLeft + Random.Range (0, WeaponManager.numWeapons))%WeaponManager.numWeapons;
+			if (equippedRight == equippedLeft)
+				equippedRight = (equippedRight+1)%3;
+		}
 		equippedWeaponLeft = WeaponManager.getWeapon (equippedLeft);
 		equippedWeaponRight = WeaponManager.getWeapon (equippedRight);
 		bulletLeft = WeaponManager.getEnemyBulletPrefab (equippedLeft);
