@@ -235,7 +235,7 @@ public class PlayerController : MonoBehaviour {
 
 	public void activateArmor(){
 		armorOn = true;
-		armorBonusHP = ARMOR_AMOUNT;
+		armorBonusHP = Mathf.Min (maxArmor, armorBonusHP + ARMOR_AMOUNT);
 	}
 
 	public void activateHealthPack(){

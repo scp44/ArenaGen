@@ -149,6 +149,9 @@ public class EnemyBasic: MonoBehaviour {
 	protected Vector3 lastFoundWaypointPosition;
 	protected float lastFoundWaypointTime = -9999;
 
+	private float timer;
+	private float timerStart;
+
 	//The Start() and Update() functions will probably be overriden
 	//However, base.Start() and base.Update() should be called
 	//The contents must be relevant to all the enemy types
@@ -175,6 +178,8 @@ public class EnemyBasic: MonoBehaviour {
 		passedInfo.bossPos = new Vector3 ();
 		passedInfo.playerPos = new Vector3 ();
 		passedInfo.lastTimeSeen = -999;
+
+		timer = -1f;
 		//OnEnable ();
 	}
 
@@ -201,7 +206,8 @@ public class EnemyBasic: MonoBehaviour {
 			//target = armor;
 		}
 		commCheck();
-		
+
+
 		deathCheck ();
 	}
 
@@ -301,7 +307,7 @@ public class EnemyBasic: MonoBehaviour {
 	public void deathCheck(){
 		player = GameObject.FindGameObjectsWithTag ("Player") [0];
 		PlayerController playerScript = player.GetComponent<PlayerController>();
-
+		float scale = .2f - (Mathf.Floor ((int)difficulty * 100) / 1000);
 
 		if (enemyHP <= 0) {
 			if(medPack > 0){
@@ -310,15 +316,19 @@ public class EnemyBasic: MonoBehaviour {
 			}
 			switch(enemyType){
 				case ENEMY_HEALER:
-					playerScript.maxHP += .2f-(Mathf.Floor((int)difficulty*100)/1000);
+					playerScript.maxHP += scale;
+					GameManager.displayHealthBonus(scale);
 				break;
 				case ENEMY_SOLDIER:
-					playerScript.bonusDamage += .2f-(Mathf.Floor((int)difficulty*100)/1000);
+					playerScript.bonusDamage += scale;
+					GameManager.displayDamageBonus(scale);
 				break;
 				case ENEMY_DEFENDER:
-					playerScript.maxArmor += .2f-(Mathf.Floor((int)difficulty*100)/1000);
+					playerScript.maxArmor += scale;
+					GameManager.displayArmorBonus(scale);
 				break;
 			}
+
 		Destroy(this.gameObject);}
 	}
 

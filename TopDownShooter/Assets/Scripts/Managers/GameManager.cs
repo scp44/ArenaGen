@@ -21,6 +21,12 @@ public class GameManager : MonoBehaviour {
 	public Text bossHealthText;
 	public Canvas InstructionScreen;
 	public Button StartButton;
+	public Text armorBonusText;
+	public Text healthBonusText;
+	public Text damageBonusText;
+
+	private float timer;
+	private float timerStart;
 
 	private static GameManager instance;
 
@@ -32,7 +38,9 @@ public class GameManager : MonoBehaviour {
 			gunSelectCSharp gunSelectScript = gunSelectInfo.GetComponent<gunSelectCSharp>();
 			difficulty = gunSelectScript.difficulty;
 		}
+
 		AudioListener.volume = difficulty;
+
 		//print ("difficulty is " + difficulty.ToString());
 	}
 
@@ -44,6 +52,11 @@ public class GameManager : MonoBehaviour {
 		map.generate ();
 		fullHealthText.enabled = false;
 		fullArmorText.enabled = false;
+		armorBonusText.enabled = false;
+		healthBonusText.enabled = false;
+		damageBonusText.enabled = false;
+
+
 		armorBar.gameObject.SetActive (false);
 		hideBossUI ();
 	}
@@ -67,6 +80,13 @@ public class GameManager : MonoBehaviour {
 		else {
 			hideBossUI();
 		}
+		//Debug.Log ("Message set " + timerStart.ToString ()+" "+Time.timeSinceLevelLoad.ToString ());
+		if (timer > 0 && Time.timeSinceLevelLoad - timerStart > timer) {
+			GameManager.hideBonus();
+			Debug.Log ("Message gone");
+			timer = -1f;
+		}
+
 	}
 
 	public void StartGame () {
@@ -112,6 +132,38 @@ public class GameManager : MonoBehaviour {
 	public static void hideArmorMessage () {
 		instance.fullArmorText.enabled = false;
 	}
+
+
+	public static void displayArmorBonus (float amt) {
+		//instance.armorBonusText.text = "Max Armor increased by " + amt.ToString("F1") + "!";
+		instance.armorBonusText.enabled = true;
+		instance.timerStart = Time.timeSinceLevelLoad;
+		//Debug.Log ("Message set " + timerStart.ToString ()+" "+Time.timeSinceLevelLoad.ToString ());
+		instance.timer = 2;
+	}
+
+	public static void displayHealthBonus (float amt) {
+		//instance.healthBonusText.text = "Max Health increased by " + amt.ToString("F1") + "!";
+		instance.healthBonusText.enabled = true;
+		instance.timerStart = Time.timeSinceLevelLoad;
+		///Debug.Log ("Message set " + timerStart.ToString ()+" "+Time.timeSinceLevelLoad.ToString ());
+		instance.timer = 2;
+	}
+
+	public static void displayDamageBonus(float amt) {
+		//instance.damageBonusText.text = "Damage increased by " + amt.ToString("F1") + "!";
+		instance.damageBonusText.enabled = true;
+		instance.timerStart = Time.timeSinceLevelLoad;
+		//Debug.Log ("Message set " + timerStart.ToString ()+" "+Time.timeSinceLevelLoad.ToString ());
+		instance.timer = 2;
+	}
+
+	public static void hideBonus () {
+		instance.armorBonusText.enabled = false;
+		instance.healthBonusText.enabled = false;
+		instance.damageBonusText.enabled = false;
+	}
+
 
 	public static void showBossUI() {
 		instance.bossHealthBar.gameObject.SetActive (true);

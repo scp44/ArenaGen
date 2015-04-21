@@ -54,13 +54,13 @@ public class Defender : EnemyBasic {
 				if (state != STATE_ALERT){
 
 					if(enemyHP!=5){
-						Debug.Log("should go to medpack");
+						//Debug.Log("should go to medpack");
 						lookAt(target);
 						newTarget = new Vector3(target.transform.position.x, 0f, target.transform.position.z);
 						chase(newTarget);
 					}
 					else{
-						Debug.Log("find medpack, but hp is full,wander");
+						//Debug.Log("find medpack, but hp is full,wander");
 						wander();
 						/*
 						if(targetReached){					
@@ -84,9 +84,9 @@ public class Defender : EnemyBasic {
 						OnDisable ();
 						stopMove ();
 						wander();
-						Debug.Log("wander(medpack)");
+						//Debug.Log("wander(medpack)");
 					}else{
-						Debug.Log("still chasing(Medpack");
+						//Debug.Log("still chasing(Medpack");
 					
 						chase(newTarget);
 					}
@@ -121,9 +121,9 @@ public class Defender : EnemyBasic {
 						OnDisable ();
 						stopMove ();
 						wander();
-						Debug.Log("wander");
+						//Debug.Log("wander");
 					}else{
-						Debug.Log("still chasing");
+						//Debug.Log("still chasing");
 
 						chase(newTarget);
 					}
