@@ -127,7 +127,7 @@ public class BossBasic : EnemyBasic {
 			bulletStartPosition = bulletStartLeft.position;
 			lastBulletTimeLeft = Time.realtimeSinceStartup;
 			bulletClone = (Rigidbody) Instantiate(bulletLeft, bulletStartPosition, transform.rotation);
-			bulletClone.velocity = transform.forward * movementSpeed * equippedWeaponLeft.bulletSpeed;
+			bulletClone.velocity = transform.forward * 100* equippedWeaponLeft.bulletSpeed;
 			bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
 			bulletScript.lifeSpan = equippedWeaponLeft.bulletLength;
 			bulletScript.damage = equippedWeaponLeft.bulletDamage;
@@ -136,7 +136,7 @@ public class BossBasic : EnemyBasic {
 			bulletStartPosition = bulletStartRight.position;
 			lastBulletTimeRight = Time.realtimeSinceStartup;
 			bulletClone = (Rigidbody) Instantiate(bulletRight, bulletStartPosition, transform.rotation);
-			bulletClone.velocity = transform.forward * movementSpeed * equippedWeaponRight.bulletSpeed;
+			bulletClone.velocity = transform.forward * 100 * equippedWeaponRight.bulletSpeed;
 			bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
 			bulletScript.lifeSpan = equippedWeaponRight.bulletLength;
 			bulletScript.damage = equippedWeaponRight.bulletDamage;

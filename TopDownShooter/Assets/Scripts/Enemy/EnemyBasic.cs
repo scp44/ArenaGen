@@ -585,7 +585,7 @@ public class EnemyBasic: MonoBehaviour {
 
 		//OnEnable();
 		if (state == 2) {
-						if ((transform.position - target).magnitude < 5f) {
+						if ((transform.position - target).magnitude < 4f) {
 								//seeker = null;
 								if (EnemyState == 1) {
 										OnDisable ();

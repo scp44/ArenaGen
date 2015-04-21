@@ -1543,7 +1543,7 @@ MonoBehaviour:
   enemyHP: 15
   maxHP: 15
   equipped: 0
-  movementSpeed: 100
+  movementSpeed: 3
   commScale: 4
   visionScale: 10
   alertScale: 15
@@ -4377,22 +4377,22 @@ MonoBehaviour:
     bulletCooldown: .75
     bulletLength: 45
   - weaponType: 1
-    bulletDamage: .5
+    bulletDamage: .200000003
     aoeRadius: 0
     bulletSpeed: .100000001
-    bulletCooldown: .330000013
-    bulletLength: 30
+    bulletCooldown: .300000012
+    bulletLength: 25
   - weaponType: 2
     bulletDamage: 1
     aoeRadius: 0
     bulletSpeed: .075000003
     bulletCooldown: 2
-    bulletLength: 45
+    bulletLength: 40
   - weaponType: 3
     bulletDamage: 1
     aoeRadius: 0
     bulletSpeed: .100000001
-    bulletCooldown: .75
+    bulletCooldown: 1
     bulletLength: 30
   - weaponType: 4
     bulletDamage: 2

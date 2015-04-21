@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	void Update () {
 		equippedtxt.text = changeGunText (equipped);
 		if (Time.timeScale <= 0)
 			return;
@@ -114,9 +114,10 @@ public class PlayerController : MonoBehaviour {
 
 		//gun switcher
 		if (Input.GetMouseButtonDown (1)) {
+			StopFiring ();
 			SwitchGun ();
 		}
-		
+
 		if (playerHP <= 0)
 			Application.LoadLevel ("GameOver");
 	}
