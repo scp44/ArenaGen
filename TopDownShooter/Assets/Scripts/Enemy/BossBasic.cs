@@ -124,25 +124,64 @@ public class BossBasic : EnemyBasic {
 			Debug.LogError("Right bullet start position is not specified.");
 		}
 		Vector3 bulletStartPosition;
-		Rigidbody bulletClone;
 		EnemyBulletBehaviors bulletScript;
 		if (weapon == BossWeapon.left) {
-			bulletStartPosition = bulletStartLeft.position;
-			lastBulletTimeLeft = Time.realtimeSinceStartup;
-			bulletClone = (Rigidbody) Instantiate(bulletLeft, bulletStartPosition, transform.rotation);
-			bulletClone.velocity = transform.forward * 100* equippedWeaponLeft.bulletSpeed;
-			bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
-			bulletScript.lifeSpan = equippedWeaponLeft.bulletLength;
-			bulletScript.damage = equippedWeaponLeft.bulletDamage;
+			if (equippedWeaponLeft.weaponType != 3) {
+				bulletStartPosition = bulletStartLeft.position;
+				lastBulletTimeLeft = Time.realtimeSinceStartup;
+				Rigidbody bulletClone = (Rigidbody) Instantiate(bulletLeft, bulletStartPosition, transform.rotation);
+				bulletClone.velocity = transform.forward * 100* equippedWeaponLeft.bulletSpeed;
+				bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
+				bulletScript.lifeSpan = equippedWeaponLeft.bulletLength;
+				bulletScript.damage = equippedWeaponLeft.bulletDamage;
+			}
+			else{
+				int numBullets = WeaponManager.getnumBullets();
+				Vector3 startAngle = Quaternion.AngleAxis (-(WeaponManager.getAngle()/2), Vector3.up) * transform.forward;
+
+				bulletStartPosition = bulletStartLeft.position;
+				lastBulletTimeLeft = Time.realtimeSinceStartup;
+
+				for(int i = 0; i < numBullets; i++){
+					Rigidbody bulletClone = (Rigidbody) Instantiate(bulletLeft, bulletStartPosition, transform.rotation);
+					bulletClone.velocity = startAngle * 100* equippedWeaponLeft.bulletSpeed;
+					bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
+					bulletScript.lifeSpan = equippedWeaponLeft.bulletLength;
+					bulletScript.damage = equippedWeaponLeft.bulletDamage;
+					
+					startAngle = Quaternion.AngleAxis (WeaponManager.getAngleBetween(), Vector3.up) * startAngle;
+				}
+
+			}
 		}
 		else {
-			bulletStartPosition = bulletStartRight.position;
-			lastBulletTimeRight = Time.realtimeSinceStartup;
-			bulletClone = (Rigidbody) Instantiate(bulletRight, bulletStartPosition, transform.rotation);
-			bulletClone.velocity = transform.forward * 100 * equippedWeaponRight.bulletSpeed;
-			bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
-			bulletScript.lifeSpan = equippedWeaponRight.bulletLength;
-			bulletScript.damage = equippedWeaponRight.bulletDamage;
+			if (equippedWeaponRight.weaponType != 3) {
+				bulletStartPosition = bulletStartRight.position;
+				lastBulletTimeRight = Time.realtimeSinceStartup;
+				Rigidbody bulletClone = (Rigidbody) Instantiate(bulletRight, bulletStartPosition, transform.rotation);
+				bulletClone.velocity = transform.forward * 100* equippedWeaponRight.bulletSpeed;
+				bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
+				bulletScript.lifeSpan = equippedWeaponRight.bulletLength;
+				bulletScript.damage = equippedWeaponRight.bulletDamage;
+			}
+			else{
+				int numBullets = WeaponManager.getnumBullets();
+				Vector3 startAngle = Quaternion.AngleAxis (-(WeaponManager.getAngle()/2), Vector3.up) * transform.forward;
+				
+				bulletStartPosition = bulletStartRight.position;
+				lastBulletTimeRight = Time.realtimeSinceStartup;
+				
+				for(int i = 0; i < numBullets; i++){
+					Rigidbody bulletClone = (Rigidbody) Instantiate(bulletRight, bulletStartPosition, transform.rotation);
+					bulletClone.velocity = startAngle * 100* equippedWeaponRight.bulletSpeed;
+					bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
+					bulletScript.lifeSpan = equippedWeaponRight.bulletLength;
+					bulletScript.damage = equippedWeaponRight.bulletDamage;
+					
+					startAngle = Quaternion.AngleAxis (WeaponManager.getAngleBetween(), Vector3.up) * startAngle;
+				}
+				
+			}
 		}
 	}
 
