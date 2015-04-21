@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour {
 	public Text equippedtxt;
 
 	public Transform gunPrefPos;
+	public Transform bulletPos;
 	Transform gun1prefab;
 	Transform gun2prefab;
 
@@ -163,7 +164,7 @@ public class PlayerController : MonoBehaviour {
 		lastBulletTime = Time.timeSinceLevelLoad;
 		//not sprayer, don't need to fire multiple bullets
 		if (equippedWeapon.weaponType != 3) {
-			Rigidbody bulletClone = (Rigidbody)Instantiate (bullet, transform.position, transform.rotation);
+			Rigidbody bulletClone = (Rigidbody)Instantiate (bullet, bulletPos.position, transform.rotation);
 			//TODO: figure out why player bullets are 10 times slower
 			bulletClone.velocity = 10 * transform.forward * speed * equippedWeapon.bulletSpeed;
 			BulletBehaviors bulletScript = bulletClone.GetComponent<BulletBehaviors> ();
@@ -184,7 +185,7 @@ public class PlayerController : MonoBehaviour {
 			Vector3 startAngle = Quaternion.AngleAxis (-(WeaponManager.getAngle()/2), Vector3.up) * transform.forward;
 
 			for(int i = 0; i < numBullets; i++){
-				Rigidbody bulletClone = (Rigidbody) Instantiate(bullet, transform.position, transform.rotation);
+				Rigidbody bulletClone = (Rigidbody) Instantiate(bullet, bulletPos.position, transform.rotation);
 				//TODO: figure out why player bullets are 10 times slower
 				bulletClone.velocity = 10*startAngle * speed * equippedWeapon.bulletSpeed;
 				BulletBehaviors bulletScript = bulletClone.GetComponent<BulletBehaviors>();
