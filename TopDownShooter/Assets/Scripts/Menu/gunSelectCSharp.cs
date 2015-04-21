@@ -14,6 +14,10 @@ public class gunSelectCSharp : MonoBehaviour {
 	public Text GunDisplay1;
 	public Text GunDisplay2;
 	public Slider DifficultySlider;
+	public Texture [] GunImage;
+	public RawImage GunDisplayImage1;
+	public RawImage GunDisplayImage2;
+
 	// Use this for initialization
 	void Start () {
 		selected = new int[2];
@@ -21,6 +25,8 @@ public class gunSelectCSharp : MonoBehaviour {
 		selected [1] = -1;
 
 		StartButton.interactable = false;
+		GunDisplayImage1.enabled = false;
+		GunDisplayImage2.enabled = false;
 	}
 
 	public void StartGame () {
@@ -38,12 +44,14 @@ public class gunSelectCSharp : MonoBehaviour {
 		{
 			selected[0] = -1;
 			GunDisplay1.text = changeDisplay(-1);
+			GunDisplayImage1.enabled = false;
 		}
 		
 		else if(gun == selected[1])
 		{
 			selected[1] = -1;
 			GunDisplay2.text = changeDisplay(-1);
+			GunDisplayImage2.enabled = false;
 		}
 		
 		else
@@ -52,12 +60,16 @@ public class gunSelectCSharp : MonoBehaviour {
 			{
 				selected[0] = gun;
 				GunDisplay1.text = changeDisplay(gun);
+				GunDisplayImage1.enabled = true;
+				GunDisplayImage1.texture = changeImage (gun);
 			}
 			
 			else if(selected[1] == -1)
 			{
 				selected[1] = gun;
 				GunDisplay2.text = changeDisplay(gun);
+				GunDisplayImage2.enabled = true;
+				GunDisplayImage2.texture = changeImage (gun);
 			}
 		}
 
@@ -89,12 +101,23 @@ public class gunSelectCSharp : MonoBehaviour {
 		if(selected[0] == -1)
 		{
 			GunDisplay1.text = changeDisplay(gun);
+			GunDisplayImage1.enabled = true;
+			GunDisplayImage1.texture = changeImage (gun);
 		}
 		
 		else if(selected[1] == -1 && gun != selected[0])
 		{
 			GunDisplay2.text = changeDisplay(gun);
+			GunDisplayImage2.enabled = true;
+			GunDisplayImage2.texture = changeImage (gun);
 		}
+	}
+
+	Texture changeImage (int gun){
+		if (gun >= 0)
+			return GunImage [gun];
+		else
+			return null;
 	}
 
 	/*
