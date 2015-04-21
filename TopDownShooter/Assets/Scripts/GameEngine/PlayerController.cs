@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour {
 		GameObject gunSelectInfo = GameObject.Find ("_Main");
 		if (gunSelectInfo == null) {
 			gun1 = 0;
-			gun2 = 1;
+			gun2 = 3;
 		}
 		else {
 			gunSelectCSharp gunSelectScript = gunSelectInfo.GetComponent <gunSelectCSharp> ();
@@ -57,9 +57,9 @@ public class PlayerController : MonoBehaviour {
 		//instantiate the guns we need
 		gun1prefab = (Transform)Instantiate (WeaponManager.getWeaponPrefab(gun1), gunPrefPos.position, transform.rotation);
 		gun2prefab = (Transform)Instantiate (WeaponManager.getWeaponPrefab(gun2), gunPrefPos.position, transform.rotation);
-		gun1prefab.GetChild(0).renderer.enabled = true;
+		gun1prefab.gameObject.SetActive (true);
+		gun2prefab.gameObject.SetActive (false);
 		gun1prefab.parent = this.transform;
-		gun2prefab.GetChild(0).renderer.enabled = false;
 		gun2prefab.parent = this.transform;
 
 		equipped = gun1;
@@ -210,14 +210,14 @@ public class PlayerController : MonoBehaviour {
 			equipped = gun2;
 			equippedWeapon = WeaponManager.getWeapon(gun2);
 			bullet = WeaponManager.getPlayerBulletPrefab(gun2);
-			gun1prefab.GetChild(0).renderer.enabled = false;
-			gun2prefab.GetChild(0).renderer.enabled = true;
+			gun1prefab.gameObject.SetActive(false);
+			gun2prefab.gameObject.SetActive(true);
 		} else {
 			equipped = gun1;
 			equippedWeapon = WeaponManager.getWeapon(gun1);
 			bullet = WeaponManager.getPlayerBulletPrefab(gun1);
-			gun1prefab.GetChild(0).renderer.enabled = true;
-			gun2prefab.GetChild(0).renderer.enabled = false;
+			gun1prefab.gameObject.SetActive(true);
+			gun2prefab.gameObject.SetActive(false);
 		}
 		equippedtxt.text = changeGunText (equipped);
 	}
