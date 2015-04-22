@@ -66,6 +66,8 @@ public class BossBasic : EnemyBasic {
 	protected override void Update() {
 		base.Update ();
 		if (this.enemyHP <= 0) {
+			GameObject gunSelectInfo = GameObject.Find ("_Main");
+			Destroy(gunSelectInfo);
 			Application.LoadLevel ("WinScreen");
 		}
 

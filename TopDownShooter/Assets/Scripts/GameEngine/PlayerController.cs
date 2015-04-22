@@ -118,8 +118,11 @@ public class PlayerController : MonoBehaviour {
 			SwitchGun ();
 		}
 
-		if (playerHP <= 0)
+		if (playerHP <= 0) {
+			GameObject gunSelectInfo = GameObject.Find ("_Main");
+			Destroy(gunSelectInfo);
 			Application.LoadLevel ("GameOver");
+		}
 	}
 
 	private bool isFiring = false;
