@@ -209,6 +209,7 @@ public class EnemyBasic: MonoBehaviour {
 
 
 		deathCheck ();
+		timeSinceStateChange += Time.deltaTime;
 	}
 
 	/*public void wander(){

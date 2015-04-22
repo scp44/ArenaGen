@@ -1569,11 +1569,15 @@ MonoBehaviour:
   endReachedDistance: .200000003
   closestOnPathCheck: 1
   equippedLeft: 3
-  equippedRight: 3
+  equippedRight: 1
   bulletStartLeft: {fileID: 2090965824}
   bulletStartRight: {fileID: 1214251500}
   initialPosition: {x: 0, y: 0, z: 0}
-  idleAmount: 0
+  alertTime: 5
+  firePrefab: {fileID: 11477646, guid: e28c18705119b47a982643b99d1a6208, type: 2}
+  fireCooldown: 1.20000005
+  firePlayerInitDistance: 5
+  newFireStep: 1.20000005
   rightHand: {fileID: 1563209895}
   leftHand: {fileID: 205680341}
 --- !u!65 &776083936

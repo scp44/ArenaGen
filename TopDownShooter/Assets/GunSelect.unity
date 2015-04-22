@@ -1753,8 +1753,8 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 8571bbfea02cb48afb60c5b8a421895a, type: 3}
   - {fileID: 2800000, guid: 89d892f8204034f9487aef47ee32dca6, type: 3}
   - {fileID: 2800000, guid: e207e3e79abe44eafba4e8b79da751ee, type: 3}
-  - {fileID: 2800000, guid: 8571bbfea02cb48afb60c5b8a421895a, type: 3}
-  - {fileID: 2800000, guid: 8571bbfea02cb48afb60c5b8a421895a, type: 3}
+  - {fileID: 2800000, guid: 88b207c8915024a219fd90f85c51f8b3, type: 3}
+  - {fileID: 2800000, guid: bba8deeb37e1442a6bafd0b8e7005518, type: 3}
   GunDisplayImage1: {fileID: 1446992712}
   GunDisplayImage2: {fileID: 1101598655}
 --- !u!4 &1366112482

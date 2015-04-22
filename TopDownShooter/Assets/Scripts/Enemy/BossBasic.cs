@@ -8,8 +8,11 @@ public class BossBasic : EnemyBasic {
 	public Transform bulletStartLeft;
 	public Transform bulletStartRight;
 	public Vector3 initialPosition;
-	[Range(0f, 1f)]
-	public float idleAmount;
+	public float alertTime = 5;
+	public Fire firePrefab;
+	public float fireCooldown;
+	public float firePlayerInitDistance;
+	public float newFireStep;
 
 	//States of the boss AI
 	private const int STATE_IDLE = 0;
@@ -30,6 +33,13 @@ public class BossBasic : EnemyBasic {
 	public Transform leftHand;
 	Transform gunRprefab;
 	Transform gunLprefab;
+	private bool canSeePlayer = false;
+	private Vector3 playerPosition;
+
+	//fire
+	private float lastFireGenerated = 0f;
+	private Vector3 lastFirePosition = new Vector3(-1,-1,-1);
+	private bool isPlacingFire = false;
 
 	protected enum BossWeapon {
 		left,
@@ -61,28 +71,15 @@ public class BossBasic : EnemyBasic {
 
 		GameManager.updateBossHealthBar (enemyHP, maxHP);
 
-		GameObject target = this.visionCheck ();//wonder if it should return a boolean 
-		if (target != null) {
+		GameObject target = this.visionCheck ();
+		if (target != null && target.gameObject.tag == "Player") {
+			canSeePlayer = true;
 			lookAt (target);
-			float x = target.transform.position.x; //use to make enemy silly
-			float z = target.transform.position.z;
-			
-			Vector3 newTarget = new Vector3(x,0f,z);
-			
-			chase (newTarget);
-			if (target.gameObject.tag == "Player") {
-				StartFiring (BossWeapon.left);
-				StartFiring (BossWeapon.right);
-			}
-			else {
-				StopFiring (BossWeapon.left);
-				StopFiring (BossWeapon.right);
-			}
+			playerPosition = target.transform.position;
+			changeState(STATE_COMBAT);
 		}
-		else {
-			StopFiring (BossWeapon.left);
-			StopFiring (BossWeapon.right);
-		}
+		else
+			canSeePlayer = false;
 
 		switch (state) {
 		case STATE_IDLE:
@@ -90,22 +87,67 @@ public class BossBasic : EnemyBasic {
 			 * In the idle state the boss stands still and sometimes
 			 * wanders around in a small area
 			 */
+			StopFiring (BossWeapon.left);
+			StopFiring (BossWeapon.right);
+			lastFirePosition = new Vector3(-1,-1,-1);
 			break;
 		case STATE_ALERT:
 			/*
 			 * In the alert state the boss fires a few more rounds at the
 			 * last seen player position, then stays facing this position
 			 */
+			StopPlacingFire();
+			if (timeSinceStateChange > alertTime)
+				changeState(STATE_IDLE);
 			break;
 		case STATE_COMBAT:
 			/*
 			 * In the combat state the boss fires everything he has at the player
 			 */
+			if (!canSeePlayer)
+				changeState(STATE_ALERT);
+			StartFiring (BossWeapon.left);
+			StartFiring (BossWeapon.right);
+			StartPlacingFire();
 			break;
 		default:
 			Debug.Log ("The boss has unknown state (" + state.ToString() + ")");
 			break;
 		}
+	}
+
+	protected void StartPlacingFire () {
+		if (!isPlacingFire) {
+			isPlacingFire = true;
+			float delayTime;
+			delayTime = Mathf.Max(0, fireCooldown - (Time.realtimeSinceStartup - lastFireGenerated));
+			InvokeRepeating("PlaceFire", delayTime, fireCooldown);
+	
+		}
+	}
+
+	protected void StopPlacingFire () {
+		if (isPlacingFire) {
+			isPlacingFire = false;
+			CancelInvoke("PlaceFire");
+		}
+	}
+
+	private void PlaceFire() {
+		//Determine the position of the new fire
+		Vector3 firePosition;
+		if (lastFirePosition.y == -1) {
+			Vector2 newPosition = Random.insideUnitCircle * firePlayerInitDistance;
+			firePosition = new Vector3(playerPosition.x + newPosition.x, 0.5f, playerPosition.z + newPosition.y);
+		}
+		else {
+			Vector3 direction = (playerPosition - lastFirePosition).normalized;
+			float step = newFireStep;
+			firePosition = lastFirePosition + direction*step;
+		}
+		//Put the new fire on the map
+		Fire newFire = (Fire)Instantiate (firePrefab, firePosition, transform.rotation);
+		lastFirePosition = newFire.transform.position;
 	}
 
 	//Transfers bullet stats to bullets
