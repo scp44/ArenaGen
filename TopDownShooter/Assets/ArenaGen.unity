@@ -2206,7 +2206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   difficulty: 1
-  godMode: 1
+  godMode: 0
   minPlayerBossDistance: 10
   map: {fileID: 790864280}
   player: {fileID: 1464264733}
@@ -4552,31 +4552,31 @@ MonoBehaviour:
     aoeRadius: 0
     bulletSpeed: .100000001
     bulletCooldown: .75
-    bulletLength: 45
+    bulletLength: .75
   - weaponType: 1
     bulletDamage: .200000003
     aoeRadius: 0
     bulletSpeed: .100000001
     bulletCooldown: .300000012
-    bulletLength: 25
+    bulletLength: .5
   - weaponType: 2
     bulletDamage: 1.5
     aoeRadius: 0
     bulletSpeed: .075000003
     bulletCooldown: 2
-    bulletLength: 40
+    bulletLength: .699999988
   - weaponType: 3
-    bulletDamage: 1
+    bulletDamage: .800000012
     aoeRadius: 0
     bulletSpeed: .100000001
     bulletCooldown: 1
-    bulletLength: 30
+    bulletLength: .5
   - weaponType: 4
     bulletDamage: 2
     aoeRadius: 0
-    bulletSpeed: .200000003
+    bulletSpeed: .25
     bulletCooldown: 1
-    bulletLength: 75
+    bulletLength: 1.25
   weaponPrefabs:
   - {fileID: 454506, guid: c833c6ba17e1d8a498f7f2bf6edbe71b, type: 2}
   - {fileID: 425136, guid: deb295ed3a93e3d488f897c47f99dd7a, type: 2}

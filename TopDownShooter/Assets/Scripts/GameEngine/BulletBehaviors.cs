@@ -12,9 +12,17 @@ public class BulletBehaviors : MonoBehaviour {
 	private float count = 0;
 	public GameObject explosion;
 
+	private float timer;
+	private float timeStart;
+
+	void Start(){
+		timeStart = Time.timeSinceLevelLoad;
+	}
+
 	void Update(){
-		count++;
-		if (count >= lifeSpan) {
+		timer = Time.timeSinceLevelLoad - timeStart;
+		//count++;
+		if (timer >= lifeSpan) {
 			if(isAoE){
 				Explode ();
 			}

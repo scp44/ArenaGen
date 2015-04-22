@@ -8,10 +8,16 @@ public class EnemyBulletBehaviors : MonoBehaviour {
 	public float lifeSpan = 10;
 	public float damage = 1;
 	private float count = 0;
+	private float timer;
+	private float timeStart;
+	
+	void Start(){
+		timeStart = Time.timeSinceLevelLoad;
+	}
 
 	void Update(){
-		count++;
-		if (count >= lifeSpan) {
+		timer = Time.timeSinceLevelLoad - timeStart;
+		if (timer >= lifeSpan) {
 			Destroy (this.gameObject);
 		}
 	}
