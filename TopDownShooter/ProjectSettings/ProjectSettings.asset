@@ -14,8 +14,8 @@ PlayerSettings:
   productName: Catnapped
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
-  defaultScreenWidth: 1102
-  defaultScreenHeight: 529
+  defaultScreenWidth: 1200
+  defaultScreenHeight: 600
   defaultScreenWidthWeb: 960
   defaultScreenHeightWeb: 600
   m_RenderingPath: 1
