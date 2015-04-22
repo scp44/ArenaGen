@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
 		GameObject gunSelectInfo = GameObject.Find ("_Main");
 		if (gunSelectInfo == null) {
-			gun1 = 2;
+			gun1 = 4;
 			gun2 = 3;
 		}
 		else {

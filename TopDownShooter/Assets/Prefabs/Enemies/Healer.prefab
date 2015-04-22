@@ -74,7 +74,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 197076}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: .514999986}
+  m_LocalPosition: {x: 0, y: 0, z: .421000004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 497082}
@@ -203,7 +203,7 @@ MonoBehaviour:
   MedPack: {fileID: 150078, guid: 3fbfe2312732abe4b9c35bfa8be579f8, type: 2}
   canSearch: 1
   canMove: 1
-  bullet: {fileID: 5437702, guid: b6ad801921a065c49967cb295720b9a4, type: 2}
+  bullet: {fileID: 0}
   sleepVelocity: .400000006
   isWander: 0
   repathRate: .5
