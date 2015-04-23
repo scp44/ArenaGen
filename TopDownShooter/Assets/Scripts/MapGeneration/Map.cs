@@ -185,7 +185,7 @@ public class Map: MonoBehaviour {
 
 	private void spawnBoss() {
 		IntVector2 location = new IntVector2(-1,-1);
-		while (!testCell(location, 1) || location.distance(startLocation)<minBossPlayerDistance) {
+		while (!testCell(location, 4) || location.distance(startLocation)<minBossPlayerDistance) {
 			location = getRandomPassableCoordinates();
 		}
 		placeEnemyAtCell(location, -1);
@@ -596,6 +596,19 @@ public class Map: MonoBehaviour {
 		return true;
 	}
 
+	//test for water objects nearby
+	private bool testForWater(IntVector2 coordinates, int radius) {
+		for (int i=coordinates.x-radius; i<coordinates.x+radius; i++) {
+			for (int j=coordinates.z-radius; j<coordinates.z+radius; j++) {
+				IntVector2 currentCell = new IntVector2(i,j);
+				if (!currentCell.isEqual(coordinates) && (!withinMap(currentCell) || (cells[i,j]!=null && cells[i,j].cellType == MapCellType.waterCell))) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	//Check if we can place a wall
 	private bool wallAllowed(int wallNode1, int wallNode2) {
 		List<IntVector2> nodesInBetween = cellsCoveredByWall (walls.getNode (wallNode1).coordinates, walls.getNode (wallNode2).coordinates);
@@ -611,6 +624,8 @@ public class Map: MonoBehaviour {
 			exceptionNodes.Add (walls.getNode(wallNode2).coordinates);
 			if (walls.distanceToClosestNode(cellCoordinates, exceptionNodes)<3)
 				return false;
+			if (!testForWater(cellCoordinates, 5))
+			    return false;
 			if (walls.isReachable(wallNode1, wallNode2)) {
 				return false;
 			}
