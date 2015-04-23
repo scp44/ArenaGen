@@ -7,6 +7,7 @@ public class PauseMenu : MonoBehaviour {
 	public GameObject MainMenuButton;
 	public GameObject ReturnButton;
 	public Text difficultyTxt;
+	public Text statTxt;
 
 
 	// Use this for initialization
@@ -26,6 +27,13 @@ public class PauseMenu : MonoBehaviour {
 		MainMenuButton.SetActive(true);
 		ReturnButton.SetActive(true);
 		difficultyTxt.text = "Difficulty: " + (Mathf.Floor((GameManager.getDifficulty () * 100))).ToString ();
+
+		Transform player = GameManager.getPlayer ();
+		PlayerController playerScript = player.GetComponent<PlayerController> ();
+		statTxt.text = 	"Player Stats\n" +
+						"HP Upgrade: " + (playerScript.maxHP - 10).ToString("N1") +"\n" +
+						"Damage Upgrade: " + (playerScript.bonusDamage).ToString("N1") + "\n" +
+						"Armor Upgrade: " + (playerScript.maxArmor - 5).ToString("N1");
 	}
 
 	public void mainMenu(){

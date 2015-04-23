@@ -137,7 +137,7 @@ namespace Pathfinding {
 					moveTo(target.transform.position);
 				}
 				else if(medPack > 0 && weakEnemy != null &&
-				   (weakEnemyScript.enemyHP < weakEnemyScript.maxHP || weakEnemy.tag == "BossEnemy")){
+				   (weakEnemyScript.enemyHP < weakEnemyScript.maxHP || weakEnemy.tag == "Boss")){
 					useMedPack(weakEnemy);
 				}
 				else{
