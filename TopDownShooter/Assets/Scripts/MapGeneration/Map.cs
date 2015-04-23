@@ -108,9 +108,9 @@ public class Map: MonoBehaviour {
 		generateEnemyCamps ();
 		generateGround ();
 		generateWalls ();
+		spawnBoss ();
 		spawnPowerups ();
 		spawnEnemies ();
-		spawnBoss ();
 
 		//Put the player at the starting position
 		Vector3 startPosition3D = coordinatesFrom2D(startLocation, 0.6f);
@@ -139,6 +139,7 @@ public class Map: MonoBehaviour {
 
 	//Spawn enemies
 	private void spawnEnemies() {
+		int max_iterations = 10000;
 		//put all the enemies in one array instead of N
 		List<int> enemiesToSpawn = new List<int>();
 		for (int enemyType=0; enemyType<enemyTypes.Length; enemyType++) {
@@ -175,8 +176,13 @@ public class Map: MonoBehaviour {
 		//spawn enemies outside camps
 		foreach (int enemyType in enemiesToSpawn) {
 			IntVector2 location = new IntVector2(-1,-1);
+			int i=0;
 			while (!testCell(location, 1) || location.distance(startLocation)<minEnemyPlayerDistance) {
 				location = getRandomPassableCoordinates();
+				i++;
+				if (i>max_iterations) {
+					print ("Could not find a good location for an enemy. Did not place some enemies.");
+				}
 			}
 			placeEnemyAtCell(location, enemyType);
 			cells[location.x, location.z].isPassable=false;
