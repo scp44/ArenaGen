@@ -261,6 +261,8 @@ public class EnemyBasic: MonoBehaviour {
 		
 		if ((playerLocPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
 			toReturn = player;
+			this.passedInfo.playerPos = playerLocPos.position;
+			this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
 			toUse = 2;
 		}
 		
@@ -283,7 +285,7 @@ public class EnemyBasic: MonoBehaviour {
 		return toReturn;
 	}
 	
-	public void commCheck(){
+	public bool commCheck(){
 		GameObject[] eUs = GameObject.FindGameObjectsWithTag ("Enemy");
 		
 		int i;
@@ -291,6 +293,7 @@ public class EnemyBasic: MonoBehaviour {
 			Transform npcPos = eUs[i].transform;
 			GameObject npc = eUs[i];
 			EnemyBasic npcScript = npc.GetComponent<EnemyBasic>();
+
 			//TODO: remove npsScript!=null check. Make sure it is not null.
 			if (npcScript != null && ((Mathf.Pow(difficulty, 0.5f)) * (npcPos.position - transform.position).magnitude) < (commScale)) {
 				//pass information
@@ -300,9 +303,11 @@ public class EnemyBasic: MonoBehaviour {
 				if(npcScript.passedInfo.lastTimeSeen < this.passedInfo.lastTimeSeen){
 					npcScript.passedInfo.lastTimeSeen = this.passedInfo.lastTimeSeen;
 					npcScript.passedInfo.playerPos = this.passedInfo.playerPos;
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 
 	public void deathCheck(){
