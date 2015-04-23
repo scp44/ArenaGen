@@ -185,4 +185,8 @@ public class GameManager : MonoBehaviour {
 	public static bool godmode() {
 		return instance.godMode;
 	}
+
+	public static Transform getPlayer() {
+		return instance.player;
+	}
 }
