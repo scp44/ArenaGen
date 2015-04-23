@@ -48,6 +48,12 @@ public class Defender : EnemyBasic {
 			}
 
 			if (target.gameObject.tag == "MedPackPU"){
+				if (state == STATE_IDLE&&enemyHP==5){
+					Debug.Log("wander");
+					wander();
+					return;
+				}
+
 				if (state == STATE_COMBAT)
 					state = STATE_ALERT;
 
@@ -57,7 +63,7 @@ public class Defender : EnemyBasic {
 						//Debug.Log("should go to medpack");
 						lookAt(target);
 						newTarget = new Vector3(target.transform.position.x, 0f, target.transform.position.z);
-						chase(newTarget);
+						goTo(newTarget);
 					}
 					else{
 						//Debug.Log("find medpack, but hp is full,wander");
@@ -98,6 +104,9 @@ public class Defender : EnemyBasic {
 			}
 
 		} else {
+
+
+
 			if (state == STATE_COMBAT){
 				state = STATE_ALERT;
 				counter = 0;
@@ -130,6 +139,8 @@ public class Defender : EnemyBasic {
 				//}
 			}
 
+			if (state == STATE_IDLE)
+				wander();
 			//if(state == STATE_IDLE){
 			//	wander();
 			//}
