@@ -102,14 +102,20 @@ public class gunSelectCSharp : MonoBehaviour {
 		{
 			GunDisplay1.text = changeDisplay(gun);
 			GunDisplayImage1.enabled = true;
-			GunDisplayImage1.texture = changeImage (gun);
+			if(gun >=0)
+				GunDisplayImage1.texture = changeImage (gun);
+			else
+				GunDisplayImage1.enabled = false;
 		}
 		
 		else if(selected[1] == -1 && gun != selected[0])
 		{
 			GunDisplay2.text = changeDisplay(gun);
 			GunDisplayImage2.enabled = true;
-			GunDisplayImage2.texture = changeImage (gun);
+			if(gun >= 0)
+				GunDisplayImage2.texture = changeImage (gun);
+			else
+				GunDisplayImage2.enabled = false;
 		}
 	}
 

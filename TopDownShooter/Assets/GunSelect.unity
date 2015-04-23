@@ -1676,8 +1676,8 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: -153, y: 93}
-  m_SizeDelta: {x: 130, y: 24}
+  m_AnchoredPosition: {x: -28.2000008, y: 93}
+  m_SizeDelta: {x: 379.600006, y: 24}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1354465757
 MonoBehaviour:
@@ -1704,7 +1704,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: You must pick 2
+  m_Text: You must pick 2 (Deselect by clicking the button)
 --- !u!222 &1354465758
 CanvasRenderer:
   m_ObjectHideFlags: 0
