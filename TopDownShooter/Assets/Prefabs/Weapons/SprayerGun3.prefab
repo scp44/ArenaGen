@@ -11,7 +11,7 @@ GameObject:
   - 33: {fileID: 3319100}
   - 64: {fileID: 6419100}
   - 23: {fileID: 2319100}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SprayerGun3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 419102}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SprayerGun3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 436504}
   - 108: {fileID: 10836504}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}

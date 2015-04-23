@@ -37,7 +37,7 @@ public class BulletBehaviors : MonoBehaviour {
 			}
 			Destroy(this.gameObject);
 		}
-		else if (other.gameObject.tag == "Enemy") {
+		else if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "Boss") {
 			//run enemy health minus
 			EnemyBasic enemyScript = other.GetComponent<EnemyBasic>();
 			GameObject player = GameObject.FindGameObjectsWithTag ("Player") [0];

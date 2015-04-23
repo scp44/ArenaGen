@@ -9,9 +9,11 @@ namespace Pathfinding {
 		private const int STATE_ALERT = 1;
 		private const int STATE_COMBAT = 2;
 		private const int STATE_GUARD = 3;
+		private bool ccd = false;
 		//private const int STATE_FOLLOWING = 4;
 		//private GameObject toGuard;
 		private Vector3 newTarget;
+		private Vector3 commTarget;
 		// Use this for initialization
 		void Start () {
 			state = STATE_IDLE;
@@ -29,11 +31,17 @@ namespace Pathfinding {
 			GameObject target = null;
 
 			target = visionCheck ();
+			if (commCheck() == true){
+				ccd = commCheck();
+				commTarget = this.passedInfo.playerPos;
+			}
 			Vector3 targetPos;
 
 			switch (state) {
 			case STATE_IDLE:
-				if (target != null && target.gameObject.tag == "Player") {
+
+
+				if ((target != null && target.gameObject.tag == "Player")||ccd) {
 						state = STATE_COMBAT;
 						break;
 				}
@@ -64,9 +72,20 @@ namespace Pathfinding {
 					StartFiring();
 					
 					if (player != null)
-						this.passedInfo.playerPos = player.transform.position;
+					this.passedInfo.playerPos = player.transform.position;
 					this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
 					//target = null;
+				}else if(ccd){
+					float x = commTarget.x; //use to make enemy silly
+					float z = commTarget.z;
+
+					newTarget = new Vector3(x,0.5f,z);
+					chase (newTarget);
+					StartFiring();
+					
+					if (player != null)
+						this.passedInfo.playerPos = player.transform.position;
+					this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
 				}
 				else {
 					StopFiring();

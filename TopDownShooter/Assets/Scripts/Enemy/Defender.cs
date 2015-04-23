@@ -15,6 +15,8 @@ public class Defender : EnemyBasic {
 	private const int STATE_COMBAT = 2;
 	private const int STATE_FLEE = 3;
 	private const int STATE_IS_FLEEING = 4;
+	private bool ccd = false;
+	private Vector3 commTarget;
 
 	private Vector3 newTarget;
 
@@ -31,23 +33,37 @@ public class Defender : EnemyBasic {
 		base.Update ();	
 		GameObject target = this.visionCheck ();//wonder if it should return a boolean 
 		int counter = 0;
-
-		if (target != null) {
+		if (commCheck() ==true){
+			ccd = commCheck();
+			commTarget = this.passedInfo.playerPos;
+			Debug.Log("Meow");
+		}
+		if (target != null||ccd) {
 			stopMove();
 			//Debug.Log(target.gameObject.tag.ToString());
-			if (target.gameObject.tag=="Player"){
+			if (target.gameObject.tag != null && target.gameObject.tag=="Player"){
 				lookAt (target);
 				StartFiring ();
 
-				newTarget = new Vector3(target.transform.position.x, 0f, target.transform.position.z);
+				newTarget = new Vector3(target.transform.position.x, 0.5f, target.transform.position.z);
 				p1 = target.gameObject;
 		
 				state = STATE_COMBAT;
 					
 				chase (newTarget);
+			}else if(ccd){
+				float x = commTarget.x; //use to make enemy silly
+				float z = commTarget.z;
+				
+				newTarget = new Vector3(x,0.5f,z);
+				chase (newTarget);
+				StartFiring();
+				
+				if (player != null)
+					this.passedInfo.playerPos = player.transform.position;
+				this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
 			}
-
-			if (target.gameObject.tag == "MedPackPU"){
+			else if (target.gameObject.tag == "MedPackPU"){
 				if (state == STATE_COMBAT)
 					state = STATE_ALERT;
 
@@ -56,7 +72,7 @@ public class Defender : EnemyBasic {
 					if(enemyHP!=5){
 						//Debug.Log("should go to medpack");
 						lookAt(target);
-						newTarget = new Vector3(target.transform.position.x, 0f, target.transform.position.z);
+						newTarget = new Vector3(target.transform.position.x, 0.5f, target.transform.position.z);
 						chase(newTarget);
 					}
 					else{

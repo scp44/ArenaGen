@@ -12,7 +12,7 @@ GameObject:
   - 136: {fileID: 13670428}
   - 23: {fileID: 2370428}
   - 114: {fileID: 11486936}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}

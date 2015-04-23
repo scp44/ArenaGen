@@ -56,6 +56,8 @@ public class EnemyBasic: MonoBehaviour {
 	public Transform hands;
 	//information that can be passed between enemies
 	public PassedInfo passedInfo;
+	//comm check true?
+
 
 	//check if it is start of pathfinding
 	private int EnemyState = 0;      //0 represent need to be initial, 1 represent keep pathfinding, 2 represent means halt
@@ -293,10 +295,12 @@ public class EnemyBasic: MonoBehaviour {
 			Transform npcPos = eUs[i].transform;
 			GameObject npc = eUs[i];
 			EnemyBasic npcScript = npc.GetComponent<EnemyBasic>();
-
+			if(npcScript == null)
+			
 			//TODO: remove npsScript!=null check. Make sure it is not null.
 			if (npcScript != null && ((Mathf.Pow(difficulty, 0.5f)) * (npcPos.position - transform.position).magnitude) < (commScale)) {
 				//pass information
+
 				if(this.passedInfo.bossFound){
 					npcScript.passedInfo.bossPos = this.passedInfo.bossPos;
 				}
@@ -323,14 +327,18 @@ public class EnemyBasic: MonoBehaviour {
 			switch(enemyType){
 				case ENEMY_HEALER:
 					playerScript.maxHP += scale;
+					playerScript.playerHP += scale;
 					GameManager.displayHealthBonus(scale);
 				break;
 				case ENEMY_SOLDIER:
 					playerScript.bonusDamage += scale;
+					
 					GameManager.displayDamageBonus(scale);
 				break;
 				case ENEMY_DEFENDER:
 					playerScript.maxArmor += scale;
+					playerScript.armorBonusHP += scale;
+					playerScript.armorOn = true;
 					GameManager.displayArmorBonus(scale);
 				break;
 			}

@@ -30,6 +30,8 @@ namespace Pathfinding {
 		private const int STATE_COMBAT = 2;
 		private const int STATE_FLEE = 3;
 		private const int STATE_IS_FLEEING = 4;
+		private bool ccd = false;
+		private Vector3 commTarget;
 
 		//use to make enemy can follow
 		private bool awake = false;
@@ -65,6 +67,7 @@ namespace Pathfinding {
 			GameObject target = null;
 
 			target = this.visionCheck ();//wonder if it should return a boolean 
+
 			//Test:just pick medpack
 			/*
 			if (target.tag.Equals ("MedPackPU")) {//get error: null referenceException
@@ -114,10 +117,13 @@ namespace Pathfinding {
 				this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
 				//target = null;*/
 			//}
-
+			if (commCheck() != null){
+				ccd = commCheck();
+				commTarget = this.passedInfo.playerPos;
+			}
 			switch (state) {
 			case STATE_IDLE:
-				if (target != null && target.gameObject.tag == "Player") {
+				if ((target != null && target.gameObject.tag == "Player")||ccd ) {
 					if (this.passedInfo.bossFound){
 						state = STATE_FLEE;
 						break;
@@ -162,6 +168,17 @@ namespace Pathfinding {
 						this.passedInfo.playerPos = player.transform.position;
 					this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
 					//target = null;
+				}else if(ccd){
+					float x = commTarget.x; //use to make enemy silly
+					float z = commTarget.z;
+					
+					newTarget = new Vector3(x,0.5f,z);
+					chase (newTarget);
+					StartFiring();
+					
+					if (player != null)
+						this.passedInfo.playerPos = player.transform.position;
+					this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
 				}
 				else {
 					StopFiring();
