@@ -102,7 +102,7 @@ public class PlayerController : MonoBehaviour {
 		float moveHorizontal = Input.GetAxis ("Horizontal");
 		float moveVertical = Input.GetAxis ("Vertical");
 		
-		movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
+		movement = new Vector3 (moveHorizontal, 0.5f, moveVertical);
 		rigidbody.velocity = movement * walkSpeed;
 		
 		//fire on click. should handle special firing such as spreads.
@@ -112,9 +112,10 @@ public class PlayerController : MonoBehaviour {
 //			FireBullet ();
 //		}
 
-		if(Input.GetMouseButton (0)){
+		if(Input.GetMouseButton (0)&& Time.timeSinceLevelLoad - lastBulletTime > equippedWeapon.bulletCooldown){
 			print ("transform.rotation angle = " + angle.ToString());
-			StartFiring();
+			FireBullet();
+			//StartFiring();
 		}
 		else {
 			lineRenderer.SetPosition (0, transform.position);
@@ -139,7 +140,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private bool isFiring = false;
-	private float lastBulletTime = 0;
+	private float lastBulletTime = -5;
 
 	protected void StartFiring () {
 		if (isFiring)
@@ -179,12 +180,13 @@ public class PlayerController : MonoBehaviour {
 	void FireBullet () {
 		//var inFront = new Vector3 (0, 1, 0);
 		lastBulletTime = Time.timeSinceLevelLoad;
+		lineRenderer.SetPosition (0, transform.position);
+		lineRenderer.SetPosition (1, transform.position + 4*transform.forward);
 		//not sprayer, don't need to fire multiple bullets
 		if (equippedWeapon.weaponType != 3) {
 			Rigidbody bulletClone = (Rigidbody)Instantiate (bullet, bulletPos.position, transform.rotation);
 			//TODO: figure out why player bullets are 10 times slower
-			lineRenderer.SetPosition (0, transform.position);
-			lineRenderer.SetPosition (1, transform.position + 4*transform.forward);
+
 			bulletClone.velocity = 10 * transform.forward * speed * equippedWeapon.bulletSpeed;
 			BulletBehaviors bulletScript = bulletClone.GetComponent<BulletBehaviors> ();
 			bulletScript.lifeSpan = equippedWeapon.bulletLength;
