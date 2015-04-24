@@ -198,6 +198,7 @@ public class BossBasic : EnemyBasic {
 		}
 		Vector3 bulletStartPosition;
 		EnemyBulletBehaviors bulletScript;
+		//Depending on left/right weapon and gun (sprayer vs. not), perform appropriate action
 		if (weapon == BossWeapon.left) {
 			if (equippedWeaponLeft.weaponType != 3) {
 				bulletStartPosition = bulletStartLeft.position;

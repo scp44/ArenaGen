@@ -98,12 +98,10 @@ public class Map: MonoBehaviour {
 		groundCellPrefab.renderer.sharedMaterial.SetColor("_Color", groundColor);
 		//Generate water around the map
 		if (willGenerateIsland)
-			generateIsland (20);
+			generateIsland (30);
 		else
-			generateWaterBoundaries (20);
-
-		//print ("generateIsland: " + (Time.realtimeSinceStartup-timestamp).ToString() + " seconds");
-	
+			generateWaterBoundaries (30);
+			
 		generatePlayerStartLocation ();
 		generateEnemyCamps ();
 		generateGround ();
@@ -123,7 +121,6 @@ public class Map: MonoBehaviour {
 		do {
 			startLocation = getRandomCoordinates (mapLength, mapWidth); 
 		} while (!testCell(startLocation, startPositionSize));
-		//print ("The start location is " + startLocation.toString());
 	}
 
 	//Pick enemy camps
@@ -133,7 +130,6 @@ public class Map: MonoBehaviour {
 			do {
 				enemyCamps[i] = getRandomCoordinates (mapLength, mapWidth); 
 			} while (!testCell(enemyCamps[i], enemyCampSize, checkCamps:true, checkStart:true));
-			//print("An enemy camp is chosen to be at " + enemyCamps[i].toString());
 		}
 	}
 
@@ -299,13 +295,11 @@ public class Map: MonoBehaviour {
 		//Iterate over extended map
 		for (int i=-padding; i<mapLength+padding; i++) {
 			for (int j=-padding; j<mapWidth+padding; j++) {
-				//print ("Looking at cell " + i.ToString() + ", " + j.ToString());
 				//Skip map cells
 				if (withinMap(new IntVector2(i,j))) {
 					//print ("Skipping this cell");
 					j += mapWidth;
 				}
-				//print ("Putting water in this cell");
 				//Otherwise create water cells
 				IntVector2 coordinates = new IntVector2(i,j);
 				createCell(MapCellType.waterCell, coordinates);
@@ -328,8 +322,6 @@ public class Map: MonoBehaviour {
 	private void generateWalls() {
 		//generate the graph nodes
 		//iterate over the map
-		//for (int i=0; i<mapLength; i++) {
-		//	for (int j=0; j<mapWidth; j++) {
 		IntVector2[] coordinatesArray = IntVector2.randomizeCoordinates (mapLength, mapWidth);
 		for (int p=0; p<coordinatesArray.Length; p++) {
 			IntVector2 coordinates = coordinatesArray[p];
@@ -359,7 +351,6 @@ public class Map: MonoBehaviour {
 			//Otherwise put it down
 			if (cells[i,j] != null) {
 				cells[i,j].isPassable = false;
-				//placeWallNodeCell(coordinates);
 				walls.addNode(coordinates);
 			}
 		}
