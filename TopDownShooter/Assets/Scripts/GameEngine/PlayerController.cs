@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour {
 	//bullet speed scale
 	public float speed = 10;
 
+	public LineRenderer lineRenderer;
 
 	//gun and cooldown tracker
 	public int gun1;
@@ -43,6 +44,12 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		//line renderer stuff
+		lineRenderer = GetComponent<LineRenderer> ();
+		lineRenderer.SetVertexCount (2);
+		lineRenderer.SetWidth (0.01f, 0.01f);
+		lineRenderer.SetColors (Color.yellow, Color.yellow);
+
 		GameObject gunSelectInfo = GameObject.Find ("_Main");
 		if (gunSelectInfo == null) {
 			gun1 = 4;
@@ -84,13 +91,13 @@ public class PlayerController : MonoBehaviour {
 		GameManager.updateHealthBar (playerHP, maxHP);
 		
 		Vector3 movement = new Vector3 (0, 0, 0);
-		
+
 		var mouse = Input.mousePosition;
 		var screenPoint = Camera.main.WorldToScreenPoint(transform.localPosition);
 		var offset = new Vector2(mouse.x - screenPoint.x, mouse.y - screenPoint.y);
 		var angle = Mathf.Atan2(offset.x, offset.y) * Mathf.Rad2Deg;
-		transform.rotation = Quaternion.Euler(0, angle, 0);
-		
+		transform.rotation = Quaternion.Euler (0, angle, 0);
+
 		//Vector3 input = new Vector3 (Input.GetAxisRaw ("Horizontal"), 0, Input.GetAxisRaw ("Vertical"));
 		float moveHorizontal = Input.GetAxis ("Horizontal");
 		float moveVertical = Input.GetAxis ("Vertical");
@@ -104,10 +111,16 @@ public class PlayerController : MonoBehaviour {
 //			cdStartTime = Time.timeSinceLevelLoad;
 //			FireBullet ();
 //		}
+
 		if(Input.GetMouseButton (0)){
+			print ("transform.rotation angle = " + angle.ToString());
 			StartFiring();
 		}
-
+		else {
+			lineRenderer.SetPosition (0, transform.position);
+			lineRenderer.SetPosition (1, transform.position + 4*transform.forward);
+		}
+		
 		if(Input.GetMouseButtonUp(0)){
 			StopFiring ();
 		}
@@ -164,12 +177,14 @@ public class PlayerController : MonoBehaviour {
 
 	//Transfers bullet stats to bullets
 	void FireBullet () {
-		var inFront = new Vector3 (0, 1, 0);
+		//var inFront = new Vector3 (0, 1, 0);
 		lastBulletTime = Time.timeSinceLevelLoad;
 		//not sprayer, don't need to fire multiple bullets
 		if (equippedWeapon.weaponType != 3) {
 			Rigidbody bulletClone = (Rigidbody)Instantiate (bullet, bulletPos.position, transform.rotation);
 			//TODO: figure out why player bullets are 10 times slower
+			lineRenderer.SetPosition (0, transform.position);
+			lineRenderer.SetPosition (1, transform.position + 4*transform.forward);
 			bulletClone.velocity = 10 * transform.forward * speed * equippedWeapon.bulletSpeed;
 			BulletBehaviors bulletScript = bulletClone.GetComponent<BulletBehaviors> ();
 			bulletScript.lifeSpan = equippedWeapon.bulletLength;
