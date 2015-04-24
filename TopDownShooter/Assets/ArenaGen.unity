@@ -1855,7 +1855,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2279,7 +2279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   difficulty: 1
-  godMode: 0
+  godMode: 1
   minPlayerBossDistance: 10
   map: {fileID: 790864280}
   player: {fileID: 1464264733}
@@ -4654,7 +4654,7 @@ MonoBehaviour:
   - weaponType: 5
     bulletDamage: 1
     aoeRadius: 0
-    bulletSpeed: .0299999993
+    bulletSpeed: .0500000007
     bulletCooldown: 2
     bulletLength: 4
   weaponPrefabs:

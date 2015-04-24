@@ -19,7 +19,7 @@ public class BossBasic : EnemyBasic {
 	public float phase2start;
 	[Range(0f, 1f)]
 	public float phase3start;
-	private int phase;
+	private int phase=0;
 
 	//States of the boss AI
 	private const int STATE_IDLE = 0;
@@ -75,7 +75,7 @@ public class BossBasic : EnemyBasic {
 		//boss has different sprayer gun stats
 		equippedWeaponLeft.bulletLength = 8f;
 		equippedWeaponLeft.bulletDamage = 1f;
-		equippedWeaponLeft.bulletSpeed = 0.02f;
+		equippedWeaponLeft.bulletSpeed = 0.03f;
 		equippedWeaponLeft.bulletCooldown = 2;
 
 		changeState (STATE_IDLE);
@@ -91,12 +91,12 @@ public class BossBasic : EnemyBasic {
 
 		//update phase depending on health
 		float healthRatio = enemyHP / maxHP;
-		if (phase == 1 && healthRatio < phase2start && healthRatio > phase3start)
+		if (phase == 0)
+			phase = 1;
+		else if (phase == 1 && healthRatio < phase2start && healthRatio > phase3start)
 			phase = 2;
 		else if (phase == 2 && healthRatio < phase3start)
 			phase = 3;
-		else
-			phase = 1;
 
 		GameManager.updateBossHealthBar (enemyHP, maxHP);
 
