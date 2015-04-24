@@ -113,7 +113,6 @@ public class PlayerController : MonoBehaviour {
 //		}
 
 		if(Input.GetMouseButton (0)&& Time.timeSinceLevelLoad - lastBulletTime > equippedWeapon.bulletCooldown){
-			print ("transform.rotation angle = " + angle.ToString());
 			FireBullet();
 			//StartFiring();
 		}

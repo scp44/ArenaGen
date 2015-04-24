@@ -89,7 +89,6 @@ public class EnemyBasic: MonoBehaviour {
 	private float lastBulletTime = 0;
 
 	public float sleepVelocity = 0.4F;
-
 	public bool isWander = false;
 	protected GameObject curTarget;
 	//The rest of the variables are related to Pathfinding
@@ -357,6 +356,10 @@ public class EnemyBasic: MonoBehaviour {
 		float hpDamage = damage - armorDamage;
 		armorBonusHP -= armorDamage;
 		enemyHP -= hpDamage;
+
+		//Change the color depending on hp
+		float hpRatio = enemyHP / maxHP;
+		this.transform.GetChild (0).gameObject.renderer.material.SetColor ("_Color", Color.Lerp(Color.black, Color.white, hpRatio));
 	}
 	
 	public void activateArmor(){
