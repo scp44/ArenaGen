@@ -13,14 +13,6 @@ using Pathfinding.RVO;
 //StartFiring()
 //StopFiring()
 
-
-
-
-
-
-
-
-
 //This class defines the basic enemy operations including AI
 //It is used as base class for specific enemy classes
 [RequireComponent(typeof(Seeker))]
@@ -116,13 +108,6 @@ public class EnemyBasic: MonoBehaviour {
 	 * When this has been reached, the AI will not move anymore until the target changes and OnTargetReached will be called.
 	 */
 	public float endReachedDistance = 0.2F;
-	/** Do a closest point on path check when receiving path callback.
-	 * Usually the AI has moved a bit between requesting the path, and getting it back, and there is usually a small gap between the AI
-	 * and the closest node.
-	 * If this option is enabled, it will simulate, when the path callback is received, movement between the closest node and the current
-	 * AI position. This helps to reduce the moments when the AI just get a new path back, and thinks it ought to move backwards to the start of the new path
-	 * even though it really should just proceed forward.
-	 */
 	public bool closestOnPathCheck = true;
 	protected float minMoveScale = 0.05F;
 	/** Cached Seeker component */
@@ -212,19 +197,6 @@ public class EnemyBasic: MonoBehaviour {
 		deathCheck ();
 		timeSinceStateChange += Time.deltaTime;
 	}
-
-	/*public void wander(){
-		Vector3 fwd = transform.TransformDirection(Vector3.forward);
-		RaycastHit hitinfo = new RaycastHit ();
-			
-
-
-		if (Physics.Raycast (transform.position, fwd, 10)) {
-			if (hitinfo.transform.tag == "Wall"){
-			}
-		}
-	
-	}*/
 
 	public GameObject visionCheck(){
 		GameObject toReturn = null;
@@ -596,7 +568,11 @@ public class EnemyBasic: MonoBehaviour {
 
 		seeker.StartPath (GetFeetPosition(), targetPosition);
 	}
-
+	/**
+	 * tries to find the path from the current position to target position
+	 * If the enemy is too close to player, enemy will stop at his current position and shoot bullet
+	 * @parm pos the target position
+	 */
 	public void chase(Vector3 pos){
 
 
@@ -697,11 +673,7 @@ public class EnemyBasic: MonoBehaviour {
 		//This is where we should search to
 		
 		canSearchAgain = false;
-		
-		//Alternative way of requesting the path
-		//ABPath p = ABPath.Construct (GetFeetPosition(),targetPoint,null);
-		//seeker.StartPath (p);
-		
+
 		//We should search from the current position
 		seeker.StartPath (GetFeetPosition(), targetPos);
 		//Debug.Log ("should work");
@@ -713,11 +685,6 @@ public class EnemyBasic: MonoBehaviour {
 	}
 	
 	public virtual void OnTargetReached () {
-		//End of path has been reached
-		//If you want custom logic for when the AI has reached it's destination
-		//add it here
-		//You can also create a new script which inherits from this one
-		//and override the function in that script
 	}
 	
 	/** Called when a requested path has finished calculation.
@@ -749,12 +716,7 @@ public class EnemyBasic: MonoBehaviour {
 		//Reset some variables
 		currentWaypointIndex = 0;
 		targetReached = false;
-		
-		//The next row can be used to find out if the path could be found or not
-		//If it couldn't (error == true), then a message has probably been logged to the console
-		//however it can also be got using p.errorLog
-		//if (p.error)
-		
+
 		if (closestOnPathCheck) {
 			Vector3 p1 = Time.time - lastFoundWaypointTime < 0.3f ? lastFoundWaypointPosition : p.originalStartPoint;
 			Vector3 p2 = GetFeetPosition ();
@@ -800,13 +762,6 @@ public class EnemyBasic: MonoBehaviour {
 	 * Finds the target path segment and returns the forward direction, scaled with speed.
 	 * A whole bunch of restrictions on the velocity is applied to make sure it doesn't overshoot, does not look too far ahead,
 	 * and slows down when close to the target.
-	 * /see speed
-	 * /see endReachedDistance
-	 * /see slowdownDistance
-	 * /see CalculateTargetPoint
-	 * /see targetPoint
-	 * /see targetDirection
-	 * /see currentWaypointIndex
 	 */
 	protected Vector3 CalculateVelocity (Vector3 currentPosition) {
 		if (path == null || path.vectorPath == null || path.vectorPath.Count == 0) return Vector3.zero; 
