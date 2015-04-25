@@ -202,29 +202,13 @@ public class EnemyBasic: MonoBehaviour {
 		}
 
 		GameObject target = null;
-		if(armorBonusHP == 0 /*&& armor in line of sight*/){
-			//interrupt module
-			//target = armor;
-		}
+
 		commCheck();
 
 
 		deathCheck ();
 		timeSinceStateChange += Time.deltaTime;
 	}
-
-	/*public void wander(){
-		Vector3 fwd = transform.TransformDirection(Vector3.forward);
-		RaycastHit hitinfo = new RaycastHit ();
-			
-
-
-		if (Physics.Raycast (transform.position, fwd, 10)) {
-			if (hitinfo.transform.tag == "Wall"){
-			}
-		}
-	
-	}*/
 
 	public GameObject visionCheck(){
 		GameObject toReturn = null;
@@ -407,7 +391,6 @@ public class EnemyBasic: MonoBehaviour {
 		bulletScript.lifeSpan = equippedWeapon.bulletLength;
 		bulletScript.damage = equippedWeapon.bulletDamage;
 		lastBulletTime = Time.timeSinceLevelLoad;
-		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
 	}
 	
 	protected void StartFiring () {
@@ -415,7 +398,6 @@ public class EnemyBasic: MonoBehaviour {
 		return;
 		else {
 			isFiring = true;
-			//InvokeRepeating("FireBullet", 0, BulletCooldown());
 			float delayTime;
 			delayTime = Mathf.Max(0.001f, equippedWeapon.bulletCooldown - (Time.timeSinceLevelLoad - lastBulletTime));
 			InvokeRepeating("FireBullet", delayTime, equippedWeapon.bulletCooldown);
@@ -466,7 +448,6 @@ public class EnemyBasic: MonoBehaviour {
 		float rand = Random.Range(-45,46);
 		RaycastHit hit;
 		Collider other;
-		//Debug.Log (transform.position.y.ToString());
 
 		var rotation = Quaternion.AngleAxis(rand,Vector3.up);
 
@@ -584,10 +565,7 @@ public class EnemyBasic: MonoBehaviour {
 	
 	/** Requests a path to the target */
 	public virtual void SearchPath () {
-		//target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 
-		//if (target == null) throw new System.InvalidOperationException ("Target is null");
-		//Debug.Log ("here is the bug?");
 		lastRepath = Time.time;
 		//This is where we should search to
 		Vector3 targetPosition = target;
@@ -603,8 +581,6 @@ public class EnemyBasic: MonoBehaviour {
 		setTarget (pos);
 
 		if (EnemyState == 0) {
-			//Debug.Log("initialize");
-			//SearchPath ();
 			OnEnable();
 			EnemyState = 1;
 			canMove = true;
@@ -613,17 +589,13 @@ public class EnemyBasic: MonoBehaviour {
 		//OnEnable();
 		if (state == 2) {
 						if ((transform.position - target).magnitude < 4f) {
-								//seeker = null;
 								if (EnemyState == 1) {
 										OnDisable ();
 										stopMove ();
-										//stopMove();
 										canMove = false;
 										EnemyState = 2;
 								}
-								//Debug.Log("close");
 						} else {
-								//Debug.Log("restart?");
 								if (EnemyState == 2) {
 										canMove = true;
 										EnemyState = 1;
@@ -662,8 +634,6 @@ public class EnemyBasic: MonoBehaviour {
 				else if (rigidbody != null) {
 				//here is how to make enemy move, we can use force or velocity, I prefer use velocity
 				rigidbody.velocity = dir; 
-				//no game experience difference...maybe
-				//rigidbody.AddForce(dir * 5f);
 				velocity = rigidbody.velocity;
 				} else {
 				Debug.LogWarning ("No NavmeshController or CharacterController attached to GameObject");
@@ -698,13 +668,8 @@ public class EnemyBasic: MonoBehaviour {
 		
 		canSearchAgain = false;
 		
-		//Alternative way of requesting the path
-		//ABPath p = ABPath.Construct (GetFeetPosition(),targetPoint,null);
-		//seeker.StartPath (p);
-		
 		//We should search from the current position
 		seeker.StartPath (GetFeetPosition(), targetPos);
-		//Debug.Log ("should work");
 
 	}
 
@@ -826,7 +791,6 @@ public class EnemyBasic: MonoBehaviour {
 			if (currentWaypointIndex < vPath.Count-1) {
 				//There is a "next path segment"
 				float dist = XZSqrMagnitude (vPath[currentWaypointIndex], currentPosition);
-					//Mathfx.DistancePointSegmentStrict (vPath[currentWaypointIndex+1],vPath[currentWaypointIndex+2],currentPosition);
 				if (dist < pickNextWaypointDist*pickNextWaypointDist) {
 					lastFoundWaypointPosition = currentPosition;
 					lastFoundWaypointTime = Time.time;
@@ -841,8 +805,6 @@ public class EnemyBasic: MonoBehaviour {
 		
 		Vector3 dir = vPath[currentWaypointIndex] - vPath[currentWaypointIndex-1];
 		Vector3 targetPosition = CalculateTargetPoint (currentPosition,vPath[currentWaypointIndex-1] , vPath[currentWaypointIndex]);
-			//vPath[currentWaypointIndex] + Vector3.ClampMagnitude (dir,forwardLook);
-		
 		
 		
 		dir = targetPosition-currentPosition;

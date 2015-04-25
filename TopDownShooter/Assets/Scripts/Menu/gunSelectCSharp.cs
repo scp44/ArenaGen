@@ -126,14 +126,6 @@ public class gunSelectCSharp : MonoBehaviour {
 			return null;
 	}
 
-	/*
-	public void updateDifficulty (float difficulty) {
-		AudioListener.volume = difficulty;
-		//selected [2] = (int)AudioListener.volume;
-		selected [2] = difficulty;
-	}
-	*/
-
 	string changeDisplay (int gun) {
 		if (gun == 0) {
 			return "Damage: Fair\nSpeed: Fair\nRange: Medium";

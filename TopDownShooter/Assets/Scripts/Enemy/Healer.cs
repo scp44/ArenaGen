@@ -19,7 +19,6 @@ namespace Pathfinding {
 		public int maxFollow;
 		public int followers;
 		public GameObject endOfPathEffect;
-		//private GameObject tar = new GameObject(); //save the last position of player
 		private Vector3 newTarget;
 
 		public Map mapScript;
@@ -37,18 +36,6 @@ namespace Pathfinding {
 		private bool awake = false;
 		
 		public new void Start () {
-			//target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
-			//Prioritize the walking animation
-			//anim["forward"].layer = 10;
-			
-			//Play all animations
-			//anim.Play ("awake");
-			//anim.Play ("forward");
-			
-			//Setup awake animations properties
-			//anim["awake"].wrapMode = WrapMode.Clamp;
-			//anim["awake"].speed = 0;
-			//anim["awake"].normalizedTime = 1F;
 
 			state = STATE_IDLE;
 			maxFollow = Mathf.FloorToInt(difficulty / 30);
@@ -66,57 +53,8 @@ namespace Pathfinding {
 
 			GameObject target = null;
 
-			target = this.visionCheck ();//wonder if it should return a boolean 
+			target = this.visionCheck ();
 
-			//Test:just pick medpack
-			/*
-			if (target.tag.Equals ("MedPackPU")) {//get error: null referenceException
-				lookAt(target);
-				chase(target);
-			}
-			*/
-	
-//			if (target != null) {
-//				lookAt (target);
-//				float x = target.transform.position.x; //use to make enemy silly
-//				float z = target.transform.position.z;
-//
-//				newTarget = new Vector3(x,0f,z);
-//
-//				awake = true; //this awake is set the enemy in "searching player" model, when it faile, it will turn of to idle (not implemented yet)
-//				chase (newTarget);
-//				if (target.gameObject.tag == "Player")
-//					StartFiring ();
-//				else
-//					StopFiring ();
-//			} else {
-//				if (awake == true) { //if target is null, but enemy is awake, it will go to the last position player at
-//						//Debug.Log(tar.ToString());
-//					StopFiring ();
-//						//Debug.Log("targeet is null");
-//						//Debug.Log(newTarget.ToString());
-//					chase (newTarget);
-//				}
-//			}
-//
-//			if(enemyHP < 5 && target != null && target.tag.Equals ("MedPackPU")){
-//				//Debug.Log("why not move");
-//				lookAt(target);
-//				chase (target.transform.position);
-//			}
-
-			/*
-				StartFiring();
-				lookAt(target);
-				//setTarget(target.transform);
-				//SearchPath();
-				chase(target);
-
-				if (player != null)
-					this.passedInfo.playerPos = player.transform.position;
-				this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
-				//target = null;*/
-			//}
 			if (commCheck() != null){
 				ccd = commCheck();
 				commTarget = this.passedInfo.playerPos;
@@ -167,7 +105,6 @@ namespace Pathfinding {
 					if (player != null)
 						this.passedInfo.playerPos = player.transform.position;
 					this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
-					//target = null;
 				}else if(ccd){
 					float x = commTarget.x; //use to make enemy silly
 					float z = commTarget.z;
