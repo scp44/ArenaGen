@@ -16,6 +16,7 @@ public class Defender : EnemyBasic {
 	private const int STATE_FLEE = 3;
 	private const int STATE_IS_FLEEING = 4;
 	private bool ccd = false;
+	private bool wad = false;
 	private Vector3 commTarget;
 
 	private Vector3 newTarget;
@@ -38,10 +39,14 @@ public class Defender : EnemyBasic {
 			commTarget = this.passedInfo.playerPos;
 			Debug.Log("Meow");
 		}
+
+
+
 		if (target != null||ccd) {
-			stopMove();
+
 			//Debug.Log(target.gameObject.tag.ToString());
 			if (target.gameObject.tag != null && target.gameObject.tag=="Player"){
+				//stopMove();
 				lookAt (target);
 				StartFiring ();
 
@@ -51,7 +56,9 @@ public class Defender : EnemyBasic {
 				state = STATE_COMBAT;
 					
 				chase (newTarget);
+				//break;
 			}else if(ccd){
+			
 				float x = commTarget.x; //use to make enemy silly
 				float z = commTarget.z;
 				
@@ -62,16 +69,11 @@ public class Defender : EnemyBasic {
 				if (player != null)
 					this.passedInfo.playerPos = player.transform.position;
 				this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
+
+				//break;
 			}
 	
 			if (target.gameObject.tag == "MedPackPU"){
-				if (state == STATE_IDLE&&enemyHP==5){
-					Debug.Log("wander");
-					wander();
-					return;
-				}
-					if (state == STATE_COMBAT)
-					state = STATE_ALERT;
 
 				if (state != STATE_ALERT){
 
@@ -82,21 +84,7 @@ public class Defender : EnemyBasic {
 						chase(newTarget);
 					}
 					else{
-						//Debug.Log("find medpack, but hp is full,wander");
-						wander();
-						/*
-						if(targetReached){					
-							state = STATE_IDLE;
-							OnDisable ();
-							stopMove ();
-							wander();
-							Debug.Log("wander(medpack)-");
-						}else{
-							Debug.Log("still chasing(Medpack");
-							
-							chase(newTarget);
-						}
-						*/
+						Debug.Log("find medpack, but hp is full,wander");
 					}
 				}else{
 
@@ -105,18 +93,11 @@ public class Defender : EnemyBasic {
 						state = STATE_IDLE;
 						OnDisable ();
 						stopMove ();
-						wander();
-						//Debug.Log("wander(medpack)");
 					}else{
-						//Debug.Log("still chasing(Medpack");
-					
+	
 						chase(newTarget);
 					}
 				}
-
-
-				//chase (newTarget);
-
 			}
 
 		} else {
@@ -125,41 +106,32 @@ public class Defender : EnemyBasic {
 
 			if (state == STATE_COMBAT){
 				state = STATE_ALERT;
-				counter = 0;
+				//counter = 0;
 				
 			}
-			//Debug.Log("called when target is null");
-			//Debug.Log(target.gameObject.tag.ToString());
 			if(state == STATE_ALERT){
 				//counter = counter + 1;
 				StopFiring();
-				//if((newTarget - transform.position).magnitude < 1f){
-				//if (counter <= 180){
-			//chase (p1.transform.position);
-			//
-			//else{
-			//counter = 0;
 				//	chase(newTarget);
 					if(targetReached){
 
 						state = STATE_IDLE;
 						OnDisable ();
-						stopMove ();
-						wander();
-						//Debug.Log("wander");
 					}else{
 						//Debug.Log("still chasing");
 
 						chase(newTarget);
 					}
-				//}
 			}
 
-			if (state == STATE_IDLE)
-				wander();
-			//if(state == STATE_IDLE){
-			//	wander();
-			//}
+		}
+
+		if (state == STATE_IDLE && timeLeft<= 0){
+			wad = true;
+			Debug.Log("wander (no target asd;fl)");
+			//stopMove();
+			wander();
+			
 		}
 		
 	}

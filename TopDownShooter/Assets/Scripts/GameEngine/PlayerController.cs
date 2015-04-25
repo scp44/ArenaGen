@@ -105,29 +105,21 @@ public class PlayerController : MonoBehaviour {
 		movement = new Vector3 (moveHorizontal, 0.5f, moveVertical);
 		rigidbody.velocity = movement * walkSpeed;
 		
-		//fire on click. should handle special firing such as spreads.
-//		if (Input.GetMouseButtonDown (0) && Time.timeSinceLevelLoad - cdStartTime > equippedWeapon.bulletCooldown) {
-//
-//			cdStartTime = Time.timeSinceLevelLoad;
-//			FireBullet ();
-//		}
-
+	
+		//When the player holds down the mouse button and cooldown is ready, shoot!
 		if(Input.GetMouseButton (0)&& Time.timeSinceLevelLoad - lastBulletTime > equippedWeapon.bulletCooldown){
 			FireBullet();
-			//StartFiring();
+
 		}
 		else {
+			//debug
 			lineRenderer.SetPosition (0, transform.position);
 			lineRenderer.SetPosition (1, transform.position + 4*transform.forward);
 		}
 		
-		if(Input.GetMouseButtonUp(0)){
-			StopFiring ();
-		}
 
 		//gun switcher
 		if (Input.GetMouseButtonDown (1)) {
-			StopFiring ();
 			SwitchGun ();
 		}
 
@@ -138,27 +130,9 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	private bool isFiring = false;
+
 	private float lastBulletTime = -5;
 
-	protected void StartFiring () {
-		if (isFiring)
-			return;
-		else {
-			isFiring = true;
-			//InvokeRepeating("FireBullet", 0, BulletCooldown());
-			float delayTime;
-			delayTime = Mathf.Max(0.001f, equippedWeapon.bulletCooldown - (Time.timeSinceLevelLoad - lastBulletTime));
-			InvokeRepeating("FireBullet", delayTime, equippedWeapon.bulletCooldown);
-		}
-	}
-	
-	protected void StopFiring () {
-		if (isFiring) {
-			isFiring = false;
-			CancelInvoke("FireBullet");
-		}
-	}
 
 	string changeGunText(int gun){
 		if (gun == 0) {

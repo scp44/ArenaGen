@@ -29,9 +29,6 @@ public class WallGraph {
 	}
 
 	public void addEdge(int i, int j) {
-		//Debug.Log ("Adding a new edge " + i.ToString() + " " + j.ToString());
-		//Debug.Log ("Before the new edge nodeA had " + nodes[i].reachableNodes.Count.ToString() + " reachable nodes");
-		//Debug.Log ("Before the new edge nodeB had " + nodes[j].reachableNodes.Count.ToString() + " reachable nodes");
 		if (!edgeExists(i,j)) {
 			//Add the edge
 			nodes[i].neighbors.Add (nodes[j]);
@@ -50,8 +47,6 @@ public class WallGraph {
 			nodes[i].reachableNodes.Add (nodes[j]);
 			nodes[j].reachableNodes.Add (nodes[i]);
 		}
-		//Debug.Log ("After the new edge nodeA had " + nodes[i].reachableNodes.Count.ToString() + " reachable nodes");
-		//Debug.Log ("After the new edge nodeB had " + nodes[j].reachableNodes.Count.ToString() + " reachable nodes");
 	}
 
 	public bool isReachable(int i, int j) {
