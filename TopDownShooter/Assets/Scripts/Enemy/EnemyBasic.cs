@@ -624,6 +624,7 @@ public class EnemyBasic: MonoBehaviour {
 						if ((transform.position - target).magnitude < 4f) {
 								if (EnemyState == 1) {//keep path finding state
 										OnDisable ();
+										//reenable = true;
 										stopMove ();
 										canMove = false;
 										EnemyState = 2;//halt state
@@ -680,7 +681,7 @@ public class EnemyBasic: MonoBehaviour {
 			if ((transform.position - target).magnitude > 10f){
 				//OnEnable();
 				canMove = true;
-				Debug.Log("this part is running?");
+				//Debug.Log("this part is running?");
 			}
 			velocity = Vector3.zero;
 		}
@@ -694,11 +695,12 @@ public class EnemyBasic: MonoBehaviour {
 		
 		float speed = relVelocity.z;
 
-		if(targetReached&&(state != 2)){					
+		if(targetReached&&state == 1){
+			//Debug.Log("targetreached");
 			state = 0; //STATE_IDLE
 			OnDisable ();
 			stopMove ();
-			reenable = true;
+			//reenable = true;
 		}
 
 	}

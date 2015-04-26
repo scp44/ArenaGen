@@ -49,7 +49,7 @@ public class Defender : EnemyBasic {
 			//Debug.Log(target.gameObject.tag.ToString());
 			if (target.gameObject.tag != null && target.gameObject.tag=="Player"){
 				//stopMove();
-				if(state==STATE_IDLE){
+				if(state!=STATE_COMBAT){
 					//Debug.Log("Change state");
 					stopMove();
 					state = STATE_COMBAT;
@@ -82,10 +82,10 @@ public class Defender : EnemyBasic {
 			}
 		
 			if (target.gameObject.tag == "MedPackPU"){
-
+				StopFiring();
 				if (state == STATE_IDLE){
 
-					if(enemyHP!=4){
+					if(enemyHP!=maxHP){
 						//Debug.Log("should go to medpack, hp is low");
 						//Debug.Log(enemyHP.ToString());
 						lookAt(target);
@@ -102,21 +102,20 @@ public class Defender : EnemyBasic {
 			}
 
 		} else {
-
-
-
+			StopFiring();
 			if (state == STATE_COMBAT){
+				//Debug.Log("no target, should keep alert until reach target");
 				state = STATE_ALERT;
 			}
-			if(state == STATE_ALERT){
-				//counter = counter + 1;
-				StopFiring();
+			if (state == STATE_ALERT){
+				stopMove();
+				//StopFiring();
 				chase(newTarget);
 			}
 
 		}
 
-		if (state == STATE_IDLE && timeLeft<= 0&&(enemyHP == 4||(enemyHP!=4 &&target == null))){
+		if (state == STATE_IDLE && timeLeft<= 0&&(enemyHP == maxHP||(enemyHP!=maxHP &&target == null))){
 			//Debug.Log(state.ToString());
 			wad = true;
 			//Debug.Log("wander (no target)");
