@@ -194,6 +194,7 @@ MonoBehaviour:
   alertScale: 15
   fov: 45
   isFiring: 0
+  wanderSpeed: 1
   wanderTimeMax: 240
   wanderTimeMin: 120
   bulletStartPosition: {fileID: 497078}

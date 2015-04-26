@@ -31,7 +31,6 @@ public class EnemyBasic: MonoBehaviour {
 	//basic enemy parameters
 	public int enemyType;
 	public float speed = 3;
-	public float wanderSpeed = 1;
 	public float enemyHP = 5;
 	public float maxHP = 5;	
 	public int equipped = 0;	//weapon type equipped
@@ -42,6 +41,7 @@ public class EnemyBasic: MonoBehaviour {
 	public float fov = 100;
 	public bool isFiring = false;
 	protected float difficulty;
+	public float wanderSpeed = 1;
 	public float wanderTimeMax = 240;
 	public float wanderTimeMin = 120;
 	protected float timeLeft;
@@ -188,30 +188,12 @@ public class EnemyBasic: MonoBehaviour {
 			timeLeft = 0;
 		}
 
-		GameObject target = null;
-
 		commCheck();
-
-
+		hearCheck ();
 		deathCheck ();
-		timeSinceStateChange += Time.deltaTime;
+		wanderWallCheck ();
 
-		if (isWander) {
-			RaycastHit hit;
-			Collider other;
-			Physics.Raycast (transform.position, transform.forward, out hit, 2f);
-			Debug.DrawRay(transform.position, transform.forward, Color.blue, 5);
-			other = hit.collider;
-			if (other != null) {
-				if (other.gameObject != null) {
-					if (other.gameObject.tag == "Wall" || other.gameObject.tag == "Enemy" || other.gameObject.tag == "Boss") {
-						float angle = Random.Range(-150f, 150f);
-						transform.rotation = Quaternion.AngleAxis(angle,Vector3.up);
-						rigidbody.velocity = transform.forward*wanderSpeed;
-					}
-				}
-			}
-		}
+		timeSinceStateChange += Time.deltaTime;
 	}
 
 	public GameObject visionCheck(){
@@ -272,6 +254,39 @@ public class EnemyBasic: MonoBehaviour {
 		}
 		
 		return toReturn;
+	}
+
+	public void hearCheck() {
+		Transform player = GameManager.getPlayer ();
+		RaycastHit hit;
+		Collider other;
+		//Debug.Log (transform.position.y.ToString());
+		if (Vector3.Distance (transform.position, player.position) < commScale) {
+			Physics.Raycast (transform.position, player.transform.position, out hit, visionScale);
+			other = hit.collider;
+			if(other != null && other.gameObject != null && other.gameObject.tag != "Wall"){
+				transform.LookAt(player.position);	
+			}
+		}
+	}
+
+	public void wanderWallCheck() {
+		if (isWander) {
+			RaycastHit hit;
+			Collider other;
+			Physics.Raycast (transform.position, transform.forward, out hit, 2f);
+			Debug.DrawRay(transform.position, transform.forward, Color.blue, 5);
+			other = hit.collider;
+			if (other != null) {
+				if (other.gameObject != null) {
+					if (other.gameObject.tag == "Wall" || other.gameObject.tag == "Enemy" || other.gameObject.tag == "Boss") {
+						float angle = Random.Range(-150f, 150f);
+						transform.rotation = Quaternion.AngleAxis(angle,Vector3.up);
+						rigidbody.velocity = transform.forward*wanderSpeed;
+					}
+				}
+			}
+		}
 	}
 	
 	public bool commCheck(){
@@ -585,6 +600,9 @@ public class EnemyBasic: MonoBehaviour {
 	 */
 	public void chase(Vector3 pos){
 
+		if (enemyType == ENEMY_BOSS)
+			return;
+
 		stopMove ();
 		setTarget (pos);
 
@@ -609,14 +627,14 @@ public class EnemyBasic: MonoBehaviour {
 										stopMove ();
 										canMove = false;
 										EnemyState = 2;//halt state
-										Debug.Log("should hault");
+										//Debug.Log("should hault");
 								}
 						} else {
 								if (EnemyState == 2) {
 										canMove = true;
 										EnemyState = 1;
 										//OnEnable ();
-										Debug.Log("re-chase player");
+										//Debug.Log("re-chase player");
 			
 								}
 						}

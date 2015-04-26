@@ -185,8 +185,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyType: 1
   speed: 3
-  enemyHP: 6
-  maxHP: 6
+  enemyHP: 5.5
+  maxHP: 5.5
   equipped: 1
   movementSpeed: 3
   commScale: 4
@@ -194,6 +194,7 @@ MonoBehaviour:
   alertScale: 15
   fov: 45
   isFiring: 0
+  wanderSpeed: 1
   wanderTimeMax: 240
   wanderTimeMin: 120
   bulletStartPosition: {fileID: 428728}

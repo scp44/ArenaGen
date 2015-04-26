@@ -73,7 +73,6 @@ public class WeaponManager : MonoBehaviour {
 public struct WeaponInfo {
 	public int weaponType;
 	public float bulletDamage;
-	public float aoeRadius;
 	public float bulletSpeed;
 	public float bulletCooldown;
 	public float bulletLength;

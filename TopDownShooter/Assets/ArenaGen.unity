@@ -2780,9 +2780,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyType: 3
   speed: 3
-  wanderSpeed: 1
-  enemyHP: 50
-  maxHP: 50
+  enemyHP: 100
+  maxHP: 100
   equipped: 0
   movementSpeed: 3
   commScale: 4
@@ -2790,6 +2789,7 @@ MonoBehaviour:
   alertScale: 15
   fov: 100
   isFiring: 0
+  wanderSpeed: 1
   wanderTimeMax: 240
   wanderTimeMin: 120
   bulletStartPosition: {fileID: 0}
@@ -8103,37 +8103,31 @@ MonoBehaviour:
   weaponStats:
   - weaponType: 0
     bulletDamage: 1
-    aoeRadius: 0
     bulletSpeed: .100000001
     bulletCooldown: .75
     bulletLength: .75
   - weaponType: 1
     bulletDamage: .200000003
-    aoeRadius: 0
     bulletSpeed: .100000001
     bulletCooldown: .300000012
     bulletLength: .5
   - weaponType: 2
     bulletDamage: 1.5
-    aoeRadius: 0
     bulletSpeed: .075000003
     bulletCooldown: 2
     bulletLength: .699999988
   - weaponType: 3
     bulletDamage: .800000012
-    aoeRadius: 0
     bulletSpeed: .100000001
     bulletCooldown: 1
     bulletLength: .5
   - weaponType: 4
-    bulletDamage: 2
-    aoeRadius: 0
+    bulletDamage: 1.5
     bulletSpeed: .25
     bulletCooldown: 1
     bulletLength: 1.25
   - weaponType: 5
     bulletDamage: 1
-    aoeRadius: 0
     bulletSpeed: .0500000007
     bulletCooldown: 2
     bulletLength: 4
