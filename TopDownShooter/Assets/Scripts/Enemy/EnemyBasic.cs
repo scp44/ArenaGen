@@ -24,7 +24,7 @@ public class EnemyBasic: MonoBehaviour {
 	private const int ENEMY_SOLDIER = 1;
 	private const int ENEMY_DEFENDER = 2;
 	private const int ENEMY_BOSS = 3;
-	private bool reenable = false;                //check if need to reenable pathsearch, see onEnable(), onDisenable()
+	private bool reenable = true;                //check if need to reenable pathsearch, see onEnable(), onDisenable()
 	private const float ARMOR_AMOUNT = 5;
 	private const float MEDPACK_HEALTH = 5;
 
@@ -581,15 +581,17 @@ public class EnemyBasic: MonoBehaviour {
 
 		setTarget (pos);
 
+		/*
 		if (EnemyState == 0) {
 			OnEnable();
 			EnemyState = 1;
 			canMove = true;
-		}
+		}*/
 
 		if (reenable) {
 			reenable = false;
 			OnEnable();
+			canMove = true;
 		}
 
 		//OnEnable();
@@ -663,6 +665,13 @@ public class EnemyBasic: MonoBehaviour {
 		relVelocity.y = 0;
 		
 		float speed = relVelocity.z;
+
+		if(targetReached&&(state != 2)){					
+			state = 0; //STATE_IDLE
+			OnDisable ();
+			stopMove ();
+			reenable = true;
+		}
 
 	}
 

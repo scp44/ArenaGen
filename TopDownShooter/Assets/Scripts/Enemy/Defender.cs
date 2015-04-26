@@ -34,6 +34,7 @@ public class Defender : EnemyBasic {
 		base.Update ();	
 		GameObject target = this.visionCheck ();//wonder if it should return a boolean 
 		int counter = 0;
+	
 
 		if (commCheck() ==true){
 			ccd = commCheck();
@@ -60,11 +61,6 @@ public class Defender : EnemyBasic {
 				newTarget = new Vector3(target.transform.position.x, 0.5f, target.transform.position.z);
 				p1 = target.gameObject;
 
-				//if(reenable){
-				//	reenable = false;
-				//	OnEnable();
-				//}
-				//Debug.Log(newTarget.ToString());	
 				chase (newTarget);
 
 				//break;
@@ -74,11 +70,6 @@ public class Defender : EnemyBasic {
 				float z = commTarget.z;
 				
 				newTarget = new Vector3(x,0.5f,z);
-
-				//if(reenable){
-				//	reenable = false;
-				//	OnEnable();
-				//}
 
 				chase (newTarget);
 				StartFiring();
@@ -99,13 +90,6 @@ public class Defender : EnemyBasic {
 						//Debug.Log(enemyHP.ToString());
 						lookAt(target);
 						newTarget = new Vector3(target.transform.position.x, 0.5f, target.transform.position.z);
-						//Debug.Log(newTarget.ToString());
-						//Debug.Log(transform.position.ToString());
-
-						//if(reenable){
-						//	reenable = false;
-						//	OnEnable();
-						//}
 
 						chase(newTarget);
 					}
@@ -113,20 +97,7 @@ public class Defender : EnemyBasic {
 						Debug.Log("find medpack, but hp is full,keep wander");
 					}
 				}else{
-
-
-					if(targetReached){					
-						state = STATE_IDLE;
-						OnDisable ();
-						stopMove ();
-						//reenable = true;
-					}else{
-						//if(reenable){
-						//	reenable = false;
-						//	OnEnable();
-						//}
-						chase(newTarget);
-					}
+					chase(newTarget);
 				}
 			}
 
@@ -136,26 +107,11 @@ public class Defender : EnemyBasic {
 
 			if (state == STATE_COMBAT){
 				state = STATE_ALERT;
-				//counter = 0;
-				
 			}
 			if(state == STATE_ALERT){
 				//counter = counter + 1;
 				StopFiring();
-				//	chase(newTarget);
-					if(targetReached){
-
-						state = STATE_IDLE;
-						OnDisable ();
-						//reenable = true;
-					}else{
-						//Debug.Log("still chasing");
-						//if(reenable){
-						//	reenable = false;
-						//	OnEnable();
-						//}
-						chase(newTarget);
-					}
+				chase(newTarget);
 			}
 
 		}
@@ -168,6 +124,8 @@ public class Defender : EnemyBasic {
 			wander();
 			
 		}
+
+
 		
 	}
 	
