@@ -34,6 +34,7 @@ public class Defender : EnemyBasic {
 		base.Update ();	
 		GameObject target = this.visionCheck ();//wonder if it should return a boolean 
 		int counter = 0;
+
 		if (commCheck() ==true){
 			ccd = commCheck();
 			commTarget = this.passedInfo.playerPos;
@@ -47,15 +48,25 @@ public class Defender : EnemyBasic {
 			//Debug.Log(target.gameObject.tag.ToString());
 			if (target.gameObject.tag != null && target.gameObject.tag=="Player"){
 				//stopMove();
+				if(state==STATE_IDLE){
+					Debug.Log("Change state");
+					stopMove();
+					state = STATE_COMBAT;
+					//OnEnable();
+				}
 				lookAt (target);
 				StartFiring ();
 
 				newTarget = new Vector3(target.transform.position.x, 0.5f, target.transform.position.z);
 				p1 = target.gameObject;
-		
-				state = STATE_COMBAT;
-					
+
+				//if(reenable){
+				//	reenable = false;
+				//	OnEnable();
+				//}
+				//Debug.Log(newTarget.ToString());	
 				chase (newTarget);
+
 				//break;
 			}else if(ccd){
 			
@@ -63,6 +74,12 @@ public class Defender : EnemyBasic {
 				float z = commTarget.z;
 				
 				newTarget = new Vector3(x,0.5f,z);
+
+				//if(reenable){
+				//	reenable = false;
+				//	OnEnable();
+				//}
+
 				chase (newTarget);
 				StartFiring();
 				
@@ -72,19 +89,28 @@ public class Defender : EnemyBasic {
 
 				//break;
 			}
-	
+		
 			if (target.gameObject.tag == "MedPackPU"){
 
-				if (state != STATE_ALERT){
+				if (state == STATE_IDLE){
 
-					if(enemyHP!=5){
-						//Debug.Log("should go to medpack");
+					if(enemyHP!=4){
+						Debug.Log("should go to medpack, hp is low");
+						//Debug.Log(enemyHP.ToString());
 						lookAt(target);
 						newTarget = new Vector3(target.transform.position.x, 0.5f, target.transform.position.z);
+						//Debug.Log(newTarget.ToString());
+						//Debug.Log(transform.position.ToString());
+
+						//if(reenable){
+						//	reenable = false;
+						//	OnEnable();
+						//}
+
 						chase(newTarget);
 					}
 					else{
-						Debug.Log("find medpack, but hp is full,wander");
+						Debug.Log("find medpack, but hp is full,keep wander");
 					}
 				}else{
 
@@ -93,8 +119,12 @@ public class Defender : EnemyBasic {
 						state = STATE_IDLE;
 						OnDisable ();
 						stopMove ();
+						//reenable = true;
 					}else{
-	
+						//if(reenable){
+						//	reenable = false;
+						//	OnEnable();
+						//}
 						chase(newTarget);
 					}
 				}
@@ -117,18 +147,23 @@ public class Defender : EnemyBasic {
 
 						state = STATE_IDLE;
 						OnDisable ();
+						//reenable = true;
 					}else{
 						//Debug.Log("still chasing");
-
+						//if(reenable){
+						//	reenable = false;
+						//	OnEnable();
+						//}
 						chase(newTarget);
 					}
 			}
 
 		}
 
-		if (state == STATE_IDLE && timeLeft<= 0){
+		if (state == STATE_IDLE && timeLeft<= 0&&(enemyHP == 4||(enemyHP!=4 &&target == null))){
+			//Debug.Log(state.ToString());
 			wad = true;
-			//Debug.Log("wander (no target asd;fl)");
+			Debug.Log("wander (no target)");
 			//stopMove();
 			wander();
 			

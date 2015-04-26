@@ -24,7 +24,7 @@ public class EnemyBasic: MonoBehaviour {
 	private const int ENEMY_SOLDIER = 1;
 	private const int ENEMY_DEFENDER = 2;
 	private const int ENEMY_BOSS = 3;
-
+	private bool reenable = false;                //check if need to reenable pathsearch, see onEnable(), onDisenable()
 	private const float ARMOR_AMOUNT = 5;
 	private const float MEDPACK_HEALTH = 5;
 
@@ -525,7 +525,7 @@ public class EnemyBasic: MonoBehaviour {
 		
 		// Release current path
 		if (path != null) path.Release (this);
-
+		reenable = true;
 		path = null;
 		//Debug.Log ("disable pathfinding");
 		
@@ -585,6 +585,11 @@ public class EnemyBasic: MonoBehaviour {
 			OnEnable();
 			EnemyState = 1;
 			canMove = true;
+		}
+
+		if (reenable) {
+			reenable = false;
+			OnEnable();
 		}
 
 		//OnEnable();
