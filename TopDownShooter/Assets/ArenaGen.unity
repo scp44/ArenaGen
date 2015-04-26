@@ -2780,6 +2780,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyType: 3
   speed: 3
+  wanderSpeed: 1
   enemyHP: 50
   maxHP: 50
   equipped: 0

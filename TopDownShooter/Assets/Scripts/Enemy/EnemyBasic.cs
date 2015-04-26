@@ -31,6 +31,7 @@ public class EnemyBasic: MonoBehaviour {
 	//basic enemy parameters
 	public int enemyType;
 	public float speed = 3;
+	public float wanderSpeed = 1;
 	public float enemyHP = 5;
 	public float maxHP = 5;	
 	public int equipped = 0;	//weapon type equipped
@@ -206,7 +207,7 @@ public class EnemyBasic: MonoBehaviour {
 					if (other.gameObject.tag == "Wall" || other.gameObject.tag == "Enemy" || other.gameObject.tag == "Boss") {
 						float angle = Random.Range(-150f, 150f);
 						transform.rotation = Quaternion.AngleAxis(angle,Vector3.up);
-						rigidbody.velocity = transform.forward*speed;
+						rigidbody.velocity = transform.forward*wanderSpeed;
 					}
 				}
 			}
@@ -465,22 +466,10 @@ public class EnemyBasic: MonoBehaviour {
 		Collider other;
 
 		var rotation = Quaternion.AngleAxis(rand,Vector3.up);
-		/*
-		Physics.Raycast (transform.position, transform.forward, out hit, visionScale);
-		Debug.DrawRay(transform.position, transform.forward, Color.blue, 5);
-		other = hit.collider;
-		if (other != null) {
-			if (other.gameObject != null) {
-				if (other.gameObject.tag == "Wall") {
-					rotation = Quaternion.AngleAxis (180, Vector3.up);
-				}
-			}
-		}
-		*/
 		timeLeft = Random.Range(wanderTimeMin, wanderTimeMax);
 		isWander = true;
 		transform.rotation = rotation;
-		rigidbody.velocity = transform.forward * speed;
+		rigidbody.velocity = transform.forward * wanderSpeed;
 	}
 
 	protected void stopMove(){
@@ -596,7 +585,7 @@ public class EnemyBasic: MonoBehaviour {
 	 */
 	public void chase(Vector3 pos){
 
-
+		stopMove ();
 		setTarget (pos);
 
 
