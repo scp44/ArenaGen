@@ -50,7 +50,7 @@ public class Defender : EnemyBasic {
 			if (target.gameObject.tag != null && target.gameObject.tag=="Player"){
 				//stopMove();
 				if(state==STATE_IDLE){
-					Debug.Log("Change state");
+					//Debug.Log("Change state");
 					stopMove();
 					state = STATE_COMBAT;
 					//OnEnable();
@@ -86,7 +86,7 @@ public class Defender : EnemyBasic {
 				if (state == STATE_IDLE){
 
 					if(enemyHP!=4){
-						Debug.Log("should go to medpack, hp is low");
+						//Debug.Log("should go to medpack, hp is low");
 						//Debug.Log(enemyHP.ToString());
 						lookAt(target);
 						newTarget = new Vector3(target.transform.position.x, 0.5f, target.transform.position.z);
@@ -94,7 +94,7 @@ public class Defender : EnemyBasic {
 						chase(newTarget);
 					}
 					else{
-						Debug.Log("find medpack, but hp is full,keep wander");
+						//Debug.Log("find medpack, but hp is full,keep wander");
 					}
 				}else{
 					chase(newTarget);
@@ -119,7 +119,7 @@ public class Defender : EnemyBasic {
 		if (state == STATE_IDLE && timeLeft<= 0&&(enemyHP == 4||(enemyHP!=4 &&target == null))){
 			//Debug.Log(state.ToString());
 			wad = true;
-			Debug.Log("wander (no target)");
+			//Debug.Log("wander (no target)");
 			//stopMove();
 			wander();
 			

@@ -581,33 +581,35 @@ public class EnemyBasic: MonoBehaviour {
 
 		setTarget (pos);
 
-		/*
+
 		if (EnemyState == 0) {
-			OnEnable();
+			//OnEnable();
 			EnemyState = 1;
 			canMove = true;
-		}*/
+		}
 
-		if (reenable) {
+		if (reenable&&EnemyState == 1) {
 			reenable = false;
 			OnEnable();
 			canMove = true;
 		}
 
-		//OnEnable();
+		//state == 2 combat
 		if (state == 2) {
 						if ((transform.position - target).magnitude < 4f) {
-								if (EnemyState == 1) {
+								if (EnemyState == 1) {//keep path finding state
 										OnDisable ();
 										stopMove ();
 										canMove = false;
-										EnemyState = 2;
+										EnemyState = 2;//halt state
+										Debug.Log("should hault");
 								}
 						} else {
 								if (EnemyState == 2) {
 										canMove = true;
 										EnemyState = 1;
-										OnEnable ();
+										//OnEnable ();
+										Debug.Log("re-chase player");
 			
 								}
 						}
@@ -651,8 +653,9 @@ public class EnemyBasic: MonoBehaviour {
 		}
 		else {
 			if ((transform.position - target).magnitude > 10f){
-				OnEnable();
+				//OnEnable();
 				canMove = true;
+				Debug.Log("this part is running?");
 			}
 			velocity = Vector3.zero;
 		}
