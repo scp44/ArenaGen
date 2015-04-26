@@ -18,7 +18,7 @@ public class Fire: MonoBehaviour {
 	}
 
 	void Update(){
-		if (Time.realtimeSinceStartup - timeCreated > life) {
+		if (Time.realtimeSinceStartup - timeCreated > life && life !=-1) {
 			Destroy(this.gameObject);
 		}
 	}

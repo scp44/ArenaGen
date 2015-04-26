@@ -318,6 +318,11 @@ public class EnemyBasic: MonoBehaviour {
 		enemyHP += hp;
 		if (enemyHP > maxHP)
 			enemyHP = maxHP;
+		//Change the color depending on hp
+		if (this.enemyType != 3){
+			float hpRatio = enemyHP / maxHP;
+			this.transform.GetChild (0).gameObject.renderer.material.SetColor ("_Color", Color.Lerp(Color.black, Color.white, hpRatio));
+		}	
 	}
 
 	public void takeDamage(float damage) {
@@ -347,6 +352,11 @@ public class EnemyBasic: MonoBehaviour {
 
 	public void activateHealthPack(){
 		enemyHP = Mathf.Min (maxHP, enemyHP + MEDPACK_HEALTH);
+		//Change the color depending on hp
+		if (this.enemyType != 3){
+			float hpRatio = enemyHP / maxHP;
+			this.transform.GetChild (0).gameObject.renderer.material.SetColor ("_Color", Color.Lerp(Color.black, Color.white, hpRatio));
+		}	
 	}
 	
 	public void useMedPack(GameObject enemy){

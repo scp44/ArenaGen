@@ -65,6 +65,7 @@ public class BossBasic : EnemyBasic {
 	public float maxFireRotTime = 10;
 	private float rotatingDirectionChangeTime = 0;
 	private float lastRotatingDirectionChangeTime = 0;
+	private float direction = 1;
 	
 
 	protected enum BossWeapon {
@@ -145,7 +146,7 @@ public class BossBasic : EnemyBasic {
 			//rotate periodically
 			if (Time.timeSinceLevelLoad - lastRotationTime > currIdleTime) {
 				currIdleTime = Random.Range (minIdleTime, maxIdleTime);
-				this.transform.LookAt(transform.position + new Vector3(Random.Range (-1f, 1f), 0.5f, Random.Range (-1f,1f)));
+				this.transform.LookAt(transform.position + new Vector3(Random.Range (-1f, 1f), 0f, Random.Range (-1f,1f)));
 				lastRotationTime = Time.timeSinceLevelLoad;
 			}
 			break;
@@ -177,10 +178,11 @@ public class BossBasic : EnemyBasic {
 				StartPlacingFire();
 			}
 			else if (phase == 3) {
+				rotatingFire.transform.RotateAround(rotatingFire.transform.position, rotatingFire.transform.forward, direction*rotFireSpeed*Time.deltaTime);
 				if (Time.timeSinceLevelLoad - lastRotatingDirectionChangeTime > rotatingDirectionChangeTime) {
 					rotatingDirectionChangeTime = Random.Range (minFireRotTime, maxFireRotTime);
-					rotatingFire.transform.RotateAround(rotatingFire.transform.position, rotatingFire.transform.forward, rotFireSpeed*Time.deltaTime);
-					lastRotationTime = Time.timeSinceLevelLoad;
+					lastRotatingDirectionChangeTime = Time.timeSinceLevelLoad;
+					direction = -direction;
 				}
 			}
 			break;
@@ -218,9 +220,9 @@ public class BossBasic : EnemyBasic {
 		rotatingFire.transform.position = bossArena.transform.position;
 		//rotatingFire.transform.LookAt (player.transform.position);
 		//The fireball gun is more powerful
-		equippedWeaponRight.bulletSpeed = 0.007f;
+		equippedWeaponRight.bulletSpeed = 0.014f;
 		equippedWeaponRight.bulletCooldown = -0.7f * difficulty + 1.2f;
-		equippedWeaponRight.bulletLength = 120f;
+		equippedWeaponRight.bulletLength = 300f;
 		StopFiring (BossWeapon.right);
 		StartFiring(BossWeapon.left);
 		StartFiring(BossWeapon.right);
@@ -307,7 +309,7 @@ public class BossBasic : EnemyBasic {
 				lastBulletTimeRight = Time.realtimeSinceStartup;
 				Vector3 direction = transform.forward;
 				if (phase == 3)
-					direction = Quaternion.AngleAxis(Random.Range(-60f, 60f), Vector3.up) * transform.forward;
+					direction = Quaternion.AngleAxis(Random.Range(-80f, 80f), Vector3.up) * transform.forward;
 				Rigidbody bulletClone = (Rigidbody) Instantiate(bulletRight, bulletStartPosition, Quaternion.LookRotation(direction));
 				bulletClone.velocity = direction * 100* equippedWeaponRight.bulletSpeed;
 				bulletScript = bulletClone.GetComponent<EnemyBulletBehaviors> ();
