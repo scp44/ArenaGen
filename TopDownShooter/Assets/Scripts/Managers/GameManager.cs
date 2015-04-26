@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour {
 	public float minPlayerBossDistance = 30;
 	public Map map;
 	public Transform player;
-	public Transform boss;
+	public BossBasic boss;
 	public PauseMenu pauseScript;
 	public Slider healthBar;
 	public Slider armorBar;
@@ -75,16 +75,16 @@ public class GameManager : MonoBehaviour {
 		}
 
 		//enable boss UI if player and boss are close enough
-		if (player != null && boss != null && Vector3.Distance (player.position, boss.position) <= minPlayerBossDistance) {
+		if (player != null && boss != null && Vector3.Distance (player.position, boss.transform.position) <= minPlayerBossDistance) {
 			showBossUI();
 		}
-		else {
+		else if (boss.phase != 3) {
 			hideBossUI();
 		}
 		//Debug.Log ("Message set " + timerStart.ToString ()+" "+Time.timeSinceLevelLoad.ToString ());
 		if (timer > 0 && Time.timeSinceLevelLoad - timerStart > timer) {
 			GameManager.hideBonus();
-			Debug.Log ("Message gone");
+			//Debug.Log ("Message gone");
 			timer = -1f;
 		}
 

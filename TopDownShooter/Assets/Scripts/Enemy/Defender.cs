@@ -128,7 +128,7 @@ public class Defender : EnemyBasic {
 
 		if (state == STATE_IDLE && timeLeft<= 0){
 			wad = true;
-			Debug.Log("wander (no target asd;fl)");
+			//Debug.Log("wander (no target asd;fl)");
 			//stopMove();
 			wander();
 			

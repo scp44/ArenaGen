@@ -327,8 +327,10 @@ public class EnemyBasic: MonoBehaviour {
 		enemyHP -= hpDamage;
 
 		//Change the color depending on hp
-		float hpRatio = enemyHP / maxHP;
-		this.transform.GetChild (0).gameObject.renderer.material.SetColor ("_Color", Color.Lerp(Color.black, Color.white, hpRatio));
+		if (this.enemyType != 3){
+			float hpRatio = enemyHP / maxHP;
+			this.transform.GetChild (0).gameObject.renderer.material.SetColor ("_Color", Color.Lerp(Color.black, Color.white, hpRatio));
+		}	
 	}
 	
 	public void activateArmor(){
