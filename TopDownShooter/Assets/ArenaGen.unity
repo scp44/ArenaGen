@@ -2946,8 +2946,8 @@ MonoBehaviour:
   - {fileID: 428732, guid: fa7e0c4ed703248669406c243f8019f8, type: 2}
   enemyNumbers: 0a0000000800000006000000
   boss: {fileID: 776083934}
-  mapLength: 125
-  mapWidth: 125
+  mapLength: 150
+  mapWidth: 150
   wallNodeProbability: .128000006
   numberOfEnemyCamps: 3
   enemyCampSize: 10

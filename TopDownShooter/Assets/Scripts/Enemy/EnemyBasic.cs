@@ -146,6 +146,7 @@ public class EnemyBasic: MonoBehaviour {
 		difficulty = GameManager.getDifficulty ();
 
 		movementSpeed = movementSpeed * Mathf.Pow(difficulty, 0.5f);
+		visionScale = 5*difficulty + 10;
 
 		//target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 		startHasRun = true;
@@ -193,6 +194,23 @@ public class EnemyBasic: MonoBehaviour {
 
 		deathCheck ();
 		timeSinceStateChange += Time.deltaTime;
+
+		if (isWander) {
+			RaycastHit hit;
+			Collider other;
+			Physics.Raycast (transform.position, transform.forward, out hit, 2f);
+			Debug.DrawRay(transform.position, transform.forward, Color.blue, 5);
+			other = hit.collider;
+			if (other != null) {
+				if (other.gameObject != null) {
+					if (other.gameObject.tag == "Wall" || other.gameObject.tag == "Enemy" || other.gameObject.tag == "Boss") {
+						float angle = Random.Range(-150f, 150f);
+						transform.rotation = Quaternion.AngleAxis(angle,Vector3.up);
+						rigidbody.velocity = transform.forward*speed;
+					}
+				}
+			}
+		}
 	}
 
 	public GameObject visionCheck(){
@@ -442,12 +460,12 @@ public class EnemyBasic: MonoBehaviour {
 	}
 
 	protected void wander(){
-		float rand = Random.Range(-45,46);
+		float rand = Random.Range(-180,180);
 		RaycastHit hit;
 		Collider other;
 
 		var rotation = Quaternion.AngleAxis(rand,Vector3.up);
-
+		/*
 		Physics.Raycast (transform.position, transform.forward, out hit, visionScale);
 		Debug.DrawRay(transform.position, transform.forward, Color.blue, 5);
 		other = hit.collider;
@@ -455,12 +473,13 @@ public class EnemyBasic: MonoBehaviour {
 			if (other.gameObject != null) {
 				if (other.gameObject.tag == "Wall") {
 					rotation = Quaternion.AngleAxis (180, Vector3.up);
-
 				}
 			}
 		}
+		*/
 		timeLeft = Random.Range(wanderTimeMin, wanderTimeMax);
 		isWander = true;
+		transform.rotation = rotation;
 		rigidbody.velocity = transform.forward * speed;
 	}
 
@@ -468,7 +487,6 @@ public class EnemyBasic: MonoBehaviour {
 		isWander = false;
 		rigidbody.velocity = Vector3.zero;
 	}
-
 
 	//The rest of the functions are related to Pathfinding
 

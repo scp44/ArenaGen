@@ -55,6 +55,7 @@ public class BulletBehaviors : MonoBehaviour {
 			if (!enemyScript.isFiring) {
 				Vector3 bulletDirection = this.transform.position - startPosition;
 				other.transform.rotation = Quaternion.LookRotation(-bulletDirection);
+				enemyScript.chase(player.transform.position);
 			}
 		}
 	}

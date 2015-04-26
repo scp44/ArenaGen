@@ -90,6 +90,7 @@ public class BossBasic : EnemyBasic {
 		//use difficulty to determine some parameters
 		fireCooldown = -2*difficulty+3; //3s to 1s
 		firePlayerInitDistance = -4 * difficulty + 8; //8 to 4
+		rotFireSpeed = 10*difficulty + 5;
 
 		//boss has different sprayer gun stats
 		equippedWeaponLeft.bulletLength = 8f;
