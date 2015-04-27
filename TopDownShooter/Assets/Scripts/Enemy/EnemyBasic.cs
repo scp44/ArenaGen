@@ -24,7 +24,7 @@ public class EnemyBasic: MonoBehaviour {
 	private const int ENEMY_SOLDIER = 1;
 	private const int ENEMY_DEFENDER = 2;
 	private const int ENEMY_BOSS = 3;
-	private bool reenable = true;                //check if need to reenable pathsearch, see onEnable(), onDisenable()
+	protected bool reenable = true;                //check if need to reenable pathsearch, see onEnable(), onDisenable()
 	private const float ARMOR_AMOUNT = 5;
 	private const float MEDPACK_HEALTH = 5;
 
@@ -51,6 +51,7 @@ public class EnemyBasic: MonoBehaviour {
 	public PassedInfo passedInfo;
 	//comm check true?
 
+	protected bool protect = false;
 
 	//check if it is start of pathfinding
 	private int EnemyState = 0;      //0 represent need to be initial, 1 represent keep pathfinding, 2 represent means halt
@@ -163,6 +164,8 @@ public class EnemyBasic: MonoBehaviour {
 
 		passedInfo = new PassedInfo ();
 		passedInfo.bossFound = false;
+		passedInfo.playerFound = false;
+
 		passedInfo.bossPos = new Vector3 ();
 		passedInfo.playerPos = new Vector3 ();
 		passedInfo.lastTimeSeen = -999;
@@ -188,7 +191,8 @@ public class EnemyBasic: MonoBehaviour {
 			timeLeft = 0;
 		}
 
-		commCheck();
+		//commCheck();
+		passinfo ();
 		hearCheck ();
 		deathCheck ();
 		wanderWallCheck ();
@@ -232,6 +236,8 @@ public class EnemyBasic: MonoBehaviour {
 		
 		if ((playerLocPos.position - transform.position).magnitude < (visionScale) && angle <= fov) {
 			toReturn = player;
+			//represent player has been founde;
+			this.passedInfo.playerFound = true;
 			this.passedInfo.playerPos = playerLocPos.position;
 			this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
 			toUse = 2;
@@ -288,7 +294,41 @@ public class EnemyBasic: MonoBehaviour {
 			}
 		}
 	}
+
+	public void passinfo(){
+		GameObject[] eUs = GameObject.FindGameObjectsWithTag ("Enemy");
+		GameObject bos = GameObject.FindGameObjectWithTag ("Boss");		
+		
+		if (bos != null&&(this.passedInfo.bossFound!=true)&&((bos.transform.position - transform.position).magnitude < (commScale * difficulty))) {
+			//Debug.Log("boss found!");
+			this.passedInfo.bossFound = true;
+			this.passedInfo.bossPos = bos.transform.position;
+			//if (this.passedInfo.playerFound) 
+				//this.transform.GetChild (0).gameObject.renderer.material.SetColor ("_Color", Color.Lerp(Color.black, Color.white, 0.1f));
+		}
 	
+		int i;
+		for (i = 0; i < eUs.Length; i++) {
+			Transform npcPos = eUs [i].transform;
+			GameObject npc = eUs [i];
+			EnemyBasic npcScript = npc.GetComponent<EnemyBasic> ();
+
+			if (npcScript != null && ((npcPos.position - transform.position).magnitude < (commScale * difficulty))) {
+				//pass information
+				//Debug.Log("information should be shared");
+				if (this.passedInfo.bossFound&&(npcScript.passedInfo.bossFound!=true)) {
+					npcScript.passedInfo.bossPos = this.passedInfo.bossPos;
+				}
+
+				if (npcScript.passedInfo.lastTimeSeen < this.passedInfo.lastTimeSeen && this.passedInfo.playerFound) {
+					npcScript.passedInfo.lastTimeSeen = this.passedInfo.lastTimeSeen;
+					npcScript.passedInfo.playerPos = this.passedInfo.playerPos;
+				}
+			}
+		}
+	
+	}
+
 	public bool commCheck(){
 		GameObject[] eUs = GameObject.FindGameObjectsWithTag ("Enemy");
 		
@@ -298,11 +338,11 @@ public class EnemyBasic: MonoBehaviour {
 			GameObject npc = eUs[i];
 			EnemyBasic npcScript = npc.GetComponent<EnemyBasic>();
 			if(npcScript == null)
-			
-			//TODO: remove npsScript!=null check. Make sure it is not null.
+				
+				//TODO: remove npsScript!=null check. Make sure it is not null.
 			if (npcScript != null && ((Mathf.Pow(difficulty, 0.5f)) * (npcPos.position - transform.position).magnitude) < (commScale)) {
 				//pass information
-
+				
 				if(this.passedInfo.bossFound){
 					npcScript.passedInfo.bossPos = this.passedInfo.bossPos;
 				}
@@ -613,11 +653,12 @@ public class EnemyBasic: MonoBehaviour {
 			canMove = true;
 		}
 
-		if (reenable&&EnemyState == 1) {
+		if (reenable&&EnemyState == 1&&(state != 5)) {
 			reenable = false;
 			OnEnable();
 			canMove = true;
 		}
+		
 
 		//state == 2 combat
 		if (state == 2) {
@@ -640,6 +681,20 @@ public class EnemyBasic: MonoBehaviour {
 								}
 						}
 				}
+
+		if (state == 5){
+			if ((transform.position - target).magnitude < 4f) {
+				//Debug.Log("here?");
+				OnDisable ();
+					//reenable = true;
+				stopMove ();
+				canMove = false;
+				protect = true;
+				state = 0;//halt state
+					//Debug.Log("should hault");
+
+			} 
+		}
 		//Get velocity in world-space
 		Vector3 velocity;
 

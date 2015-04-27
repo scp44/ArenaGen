@@ -15,11 +15,15 @@ public class Defender : EnemyBasic {
 	private const int STATE_COMBAT = 2;
 	private const int STATE_FLEE = 3;
 	private const int STATE_IS_FLEEING = 4;
+	private const int STATE_PROTECT_BOSS = 5;
+
 	private bool ccd = false;
 	private bool wad = false;
 	private Vector3 commTarget;
 
 	private Vector3 newTarget;
+
+	private bool getpos = false;
 
 	private GameObject p1;
 
@@ -31,30 +35,37 @@ public class Defender : EnemyBasic {
 	}
 	
 	protected override void Update() {
+
+
+
 		base.Update ();	
 		GameObject target = this.visionCheck ();//wonder if it should return a boolean 
 		int counter = 0;
-	
-
+	 
+		/*
 		if (commCheck() ==true){
 			ccd = commCheck();
 			commTarget = this.passedInfo.playerPos;
 			Debug.Log("Meow");
 		}
+		*/
 
 
-
-		if (target != null||ccd) {
+		if (target != null){//||ccd) {
 
 			//Debug.Log(target.gameObject.tag.ToString());
-			if (target.gameObject.tag != null && target.gameObject.tag=="Player"){
+			if (target.gameObject.tag=="Player"){
 				//stopMove();
 				if(state!=STATE_COMBAT){
 					//Debug.Log("Change state");
 					stopMove();
 					state = STATE_COMBAT;
+					if(state == STATE_PROTECT_BOSS)
+						OnDisable();
 					//OnEnable();
 				}
+
+				
 				lookAt (target);
 				StartFiring ();
 
@@ -103,17 +114,42 @@ public class Defender : EnemyBasic {
 
 		} else {
 			StopFiring();
+			if (state == 5&&passedInfo.bossFound)
+				chase(passedInfo.bossPos);
+
 			if (state == STATE_COMBAT){
 				//Debug.Log("no target, should keep alert until reach target");
 				state = STATE_ALERT;
 			}
+
 			if (state == STATE_ALERT){
 				stopMove();
 				//StopFiring();
+				//Debug.Log("no target, alert");
 				chase(newTarget);
 			}
 
 		}
+
+		if (passedInfo.bossFound&&passedInfo.playerFound&&state==STATE_IDLE&&(protect == false)) {
+			//Debug.Log("boss position:");
+			//Debug.Log (passedInfo.bossPos.ToString ());
+			state = STATE_PROTECT_BOSS;
+			//Debug.Log("protect boss");
+			OnEnable();
+			reenable = false;
+			newTarget = passedInfo.bossPos;
+			chase (passedInfo.bossPos);
+			//return;
+		}
+		
+		/*if (passedInfo.playerPos != opoint && (getpos == false)) {
+			getpos = true;
+			state = STATE_COMBAT;
+			chase (passedInfo.playerPos);
+			Debug.Log (passedInfo.playerPos.ToString ());
+			return;
+		}*/
 
 		if (state == STATE_IDLE && timeLeft<= 0&&(enemyHP == maxHP||(enemyHP!=maxHP &&target == null))){
 			//Debug.Log(state.ToString());
