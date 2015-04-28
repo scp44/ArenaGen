@@ -9,7 +9,6 @@ public class BulletBehaviors : MonoBehaviour {
 	public float damage = 1;
 	public WeaponInfo info;
 	public bool isAoE = false;
-	private float count = 0;
 	public GameObject explosion;
 
 	private float timer;

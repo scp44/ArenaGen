@@ -14,13 +14,13 @@ namespace Pathfinding {
 		private Vector3 newTarget;
 		private Vector3 commTarget;
 		// Use this for initialization
-		void Start () {
+		protected override void Start () {
 			state = STATE_IDLE;
 			base.Start();
 		}
 		
 		// Update is called once per frame
-		void Update () {
+		protected override void Update () {
 			base.Update();
 		
 
@@ -32,7 +32,7 @@ namespace Pathfinding {
 				ccd = commCheck();
 				commTarget = this.passedInfo.playerPos;
 			}
-			Vector3 targetPos;
+			//Vector3 targetPos;
 
 			switch (state) {
 			case STATE_IDLE:

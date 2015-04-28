@@ -7,7 +7,6 @@ public class EnemyBulletBehaviors : MonoBehaviour {
 	
 	public float lifeSpan = 10;
 	public float damage = 1;
-	private float count = 0;
 	private float timer;
 	private float timeStart;
 	

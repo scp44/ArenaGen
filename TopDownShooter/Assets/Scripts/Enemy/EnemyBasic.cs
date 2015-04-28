@@ -79,7 +79,7 @@ public class EnemyBasic: MonoBehaviour {
 	public Rigidbody bullet;
 	//private GameObject toReturn = null;
 	private float angle;
-	private int toUse = 0;
+	//private int toUse = 0;
 	private float lastBulletTime = 0;
 
 	public float sleepVelocity = 0.4F;
@@ -137,7 +137,7 @@ public class EnemyBasic: MonoBehaviour {
 	protected Vector3 lastFoundWaypointPosition;
 	protected float lastFoundWaypointTime = -9999;
 
-	private float timer;
+	//private float timer;
 	private float timerStart;
 
 	//The Start() and Update() functions will probably be overriden
@@ -170,7 +170,7 @@ public class EnemyBasic: MonoBehaviour {
 		passedInfo.playerPos = new Vector3 ();
 		passedInfo.lastTimeSeen = -999;
 
-		timer = -1f;
+		//timer = -1f;
 		//OnEnable ();
 	}
 
@@ -182,7 +182,7 @@ public class EnemyBasic: MonoBehaviour {
 		if (armorBonusHP <= 0) {
 			armorBonusHP = 0;
 		}
-		if (timeLeft != null && timeLeft >0){
+		if (timeLeft >0){
 			timeLeft--;
 		}
 		if(timeLeft <= 0 && isWander == true){
@@ -227,7 +227,7 @@ public class EnemyBasic: MonoBehaviour {
 			if ((closestPack.transform.position - transform.position).magnitude < (visionScale) && 
 				Vector3.Angle (closestPack.transform.position - transform.position, forward) <= fov) {
 				toReturn = closestPack;
-				toUse = 1;
+				//toUse = 1;
 			}
 		}
 		Transform playerLocPos = player.transform;
@@ -240,7 +240,7 @@ public class EnemyBasic: MonoBehaviour {
 			this.passedInfo.playerFound = true;
 			this.passedInfo.playerPos = playerLocPos.position;
 			this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
-			toUse = 2;
+			//toUse = 2;
 		}
 		
 		if (toReturn != null) {
@@ -421,7 +421,7 @@ public class EnemyBasic: MonoBehaviour {
 	}
 	
 	public void dropItem(){
-		GameObject medPackClone = (GameObject) Instantiate(MedPack, transform.position, transform.rotation);
+		Instantiate(MedPack, transform.position, transform.rotation);
 	}
 
 	public void activateHealthPack(){
@@ -506,9 +506,9 @@ public class EnemyBasic: MonoBehaviour {
 
 	protected void moveTo(Vector3 tar){
 		Vector3 dir = Vector3.zero;
-		if (tar != null) {
-			dir = tar - transform.position;
-		}
+		//if (tar != null) {
+		dir = tar - transform.position;
+		//}
 		if (dir != Vector3.zero) {
 			rigidbody.velocity = dir * speed;
 		}
@@ -517,8 +517,6 @@ public class EnemyBasic: MonoBehaviour {
 
 	protected void wander(){
 		float rand = Random.Range(-180,180);
-		RaycastHit hit;
-		Collider other;
 
 		var rotation = Quaternion.AngleAxis(rand,Vector3.up);
 		timeLeft = Random.Range(wanderTimeMin, wanderTimeMax);
@@ -612,7 +610,7 @@ public class EnemyBasic: MonoBehaviour {
 	 * \returns The time to wait until calling this function again (based on #repathRate) 
 	 */
 	public float TrySearchPath () {
-		if (Time.time - lastRepath >= repathRate && canSearchAgain && canSearch && target != null) {
+		if (Time.time - lastRepath >= repathRate && canSearchAgain && canSearch) {// && target != null) {
 			SearchPath ();
 			return repathRate;
 		} else {
@@ -748,7 +746,7 @@ public class EnemyBasic: MonoBehaviour {
 		Vector3 relVelocity = tr.InverseTransformDirection (velocity);
 		relVelocity.y = 0;
 		
-		float speed = relVelocity.z;
+		//float speed = relVelocity.z;
 
 		if(targetReached&&state == 1){
 			//Debug.Log("targetreached");

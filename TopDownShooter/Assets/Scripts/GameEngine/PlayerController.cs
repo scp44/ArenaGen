@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour {
 	public int gun2;
 	private int equipped;
 	private WeaponInfo equippedWeapon;
-	private float cdStartTime=0;
+	//private float cdStartTime=0;
 	public Text equippedtxt;
 
 	public Transform gunPrefPos;

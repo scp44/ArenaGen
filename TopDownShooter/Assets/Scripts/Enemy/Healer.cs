@@ -31,9 +31,6 @@ namespace Pathfinding {
 		private const int STATE_IS_FLEEING = 4;
 		private bool ccd = false;
 		private Vector3 commTarget;
-
-		//use to make enemy can follow
-		private bool awake = false;
 		
 		public new void Start () {
 
@@ -44,7 +41,7 @@ namespace Pathfinding {
 			base.Start ();
 		}
 
-		protected virtual void Update () {
+		protected override void Update () {
 			base.Update();
 
 			GameObject weakEnemy = this.commCheck ();
@@ -165,7 +162,7 @@ namespace Pathfinding {
 			return tr.position;
 		}
 
-		public GameObject commCheck(){
+		public new GameObject commCheck(){
 			GameObject[] eUs = GameObject.FindGameObjectsWithTag ("Enemy");
 			GameObject weakest = null;
 			GameObject boss = null;

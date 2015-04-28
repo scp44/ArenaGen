@@ -18,14 +18,14 @@ public class Defender : EnemyBasic {
 	private const int STATE_PROTECT_BOSS = 5;
 
 	private bool ccd = false;
-	private bool wad = false;
+	//private bool wad = false;
 	private Vector3 commTarget;
 
 	private Vector3 newTarget;
 
-	private bool getpos = false;
+	//private bool getpos = false;
 
-	private GameObject p1;
+	//private GameObject p1;
 
 
 	
@@ -40,7 +40,7 @@ public class Defender : EnemyBasic {
 
 		base.Update ();	
 		GameObject target = this.visionCheck ();//wonder if it should return a boolean 
-		int counter = 0;
+		//int counter = 0;
 	 
 		/*
 		if (commCheck() ==true){
@@ -70,7 +70,7 @@ public class Defender : EnemyBasic {
 				StartFiring ();
 
 				newTarget = new Vector3(target.transform.position.x, 0.5f, target.transform.position.z);
-				p1 = target.gameObject;
+				//p1 = target.gameObject;
 
 				chase (newTarget);
 
@@ -153,7 +153,7 @@ public class Defender : EnemyBasic {
 
 		if (state == STATE_IDLE && timeLeft<= 0&&(enemyHP == maxHP||(enemyHP!=maxHP &&target == null))){
 			//Debug.Log(state.ToString());
-			wad = true;
+			//wad = true;
 			//Debug.Log("wander (no target)");
 			//stopMove();
 			wander();
