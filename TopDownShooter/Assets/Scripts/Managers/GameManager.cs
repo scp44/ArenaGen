@@ -189,4 +189,8 @@ public class GameManager : MonoBehaviour {
 	public static Transform getPlayer() {
 		return instance.player;
 	}
+
+	public static Map getMap() {
+		return instance.map;
+	}
 }

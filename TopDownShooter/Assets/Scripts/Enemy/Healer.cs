@@ -39,6 +39,7 @@ namespace Pathfinding {
 
 			state = STATE_IDLE;
 			maxFollow = Mathf.FloorToInt(difficulty / 30);
+			mapScript = GameManager.getMap ();
 			//Call Start in base script (AIPath)
 			base.Start ();
 		}
