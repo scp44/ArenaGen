@@ -116,7 +116,6 @@ public class BossBasic : EnemyBasic {
 		else if (phase == 1 && healthRatio < phase2start && healthRatio > phase3start)
 			phase = 2;
 		else if (phase == 2 && healthRatio < phase3start) {
-			//Phase 3 transition code
 			phase = 3;
 			transitionIntoPhase3();
 		}
@@ -165,7 +164,7 @@ public class BossBasic : EnemyBasic {
 			break;
 		case STATE_COMBAT:
 			/*
-			 * In the combat state the boss fires everything he has at the player
+			 * In the combat state the boss fires at the player
 			 */
 			if (!canSeePlayer && phase != 3)
 				changeState(STATE_ALERT);
@@ -219,7 +218,6 @@ public class BossBasic : EnemyBasic {
 		}
 		//Place the rotating fire properly
 		rotatingFire.transform.position = bossArena.transform.position;
-		//rotatingFire.transform.LookAt (player.transform.position);
 		//The fireball gun is more powerful
 		equippedWeaponRight.bulletSpeed = 0.014f;
 		equippedWeaponRight.bulletCooldown = -0.7f * difficulty + 1.2f;

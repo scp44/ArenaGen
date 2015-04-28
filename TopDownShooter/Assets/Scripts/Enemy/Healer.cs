@@ -5,17 +5,6 @@ using Pathfinding.RVO;
 namespace Pathfinding {
 	[RequireComponent(typeof(Seeker))]
 	public class Healer : EnemyBasic {
-		
-		//public Animation anim;
-
-		/** Minimum velocity for moving */
-		//public float sleepVelocity = 0.4F;
-		
-		/** Speed relative to velocity with which to play animations */
-		//public float animationSpeed = 0.2F;
-		
-		/** Effect which will be instantiated when end of path is reached.
-		 * \see OnTargetReached */
 		public int maxFollow;
 		public int followers;
 		public GameObject endOfPathEffect;
@@ -172,7 +161,6 @@ namespace Pathfinding {
 				Transform npcPos = eUs[i].transform;
 				GameObject npc = eUs[i];
 				EnemyBasic npcScript = npc.GetComponent<EnemyBasic>();
-				//TODO: remove npsScript!=null check. Make sure it is not null.
 				if (npcScript != null && ((Mathf.Pow (difficulty, 0.5f)) * (npcPos.position - transform.position).magnitude) < (commScale)) {
 					//pass information
 					if(this.passedInfo.bossFound){

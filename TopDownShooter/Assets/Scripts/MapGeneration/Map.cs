@@ -29,7 +29,6 @@ public class Map: MonoBehaviour {
 	//Enemy types
 	public Transform[] enemyTypes;
 	public int[] enemyNumbers;
-	//public Transform bossPrefab;
 	public Transform boss;
 	
 	//Define map size
@@ -297,7 +296,6 @@ public class Map: MonoBehaviour {
 			for (int j=-padding; j<mapWidth+padding; j++) {
 				//Skip map cells
 				if (withinMap(new IntVector2(i,j))) {
-					//print ("Skipping this cell");
 					j += mapWidth;
 				}
 				//Otherwise create water cells

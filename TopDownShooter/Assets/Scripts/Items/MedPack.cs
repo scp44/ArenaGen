@@ -36,7 +36,6 @@ public class MedPack : MonoBehaviour {
 				Destroy (this.gameObject);
 			}
 			else{
-				//warning.text = "Your health is already full";
 				GameManager.displayHealthMessage();
 				timerStart = Time.timeSinceLevelLoad;
 				timer = 2;

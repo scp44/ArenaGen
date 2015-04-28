@@ -32,7 +32,6 @@ public class Armor : MonoBehaviour {
 				Destroy (this.gameObject);
 			}
 			else{
-				//warning.text = "Your health is already full";
 				GameManager.displayArmorMessage();
 				timerStart = Time.timeSinceLevelLoad;
 				timer = 2;

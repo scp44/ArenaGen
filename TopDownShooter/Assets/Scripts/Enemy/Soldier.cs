@@ -32,7 +32,6 @@ namespace Pathfinding {
 				ccd = commCheck();
 				commTarget = this.passedInfo.playerPos;
 			}
-			//Vector3 targetPos;
 
 			switch (state) {
 			case STATE_IDLE:

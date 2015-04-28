@@ -49,7 +49,6 @@ public class EnemyBasic: MonoBehaviour {
 	public Transform hands;
 	//information that can be passed between enemies
 	public PassedInfo passedInfo;
-	//comm check true?
 
 	protected bool protect = false;
 
@@ -77,9 +76,7 @@ public class EnemyBasic: MonoBehaviour {
 	protected GameObject player;
 	protected WeaponInfo equippedWeapon;
 	public Rigidbody bullet;
-	//private GameObject toReturn = null;
 	private float angle;
-	//private int toUse = 0;
 	private float lastBulletTime = 0;
 
 	public float sleepVelocity = 0.4F;
@@ -120,8 +117,6 @@ public class EnemyBasic: MonoBehaviour {
 	private float lastRepath = -9999;
 	/** Current path which is followed */
 	protected Path path;
-	/** Cached CharacterController component */
-	//protected CharacterController controller;
 	/** Cached NavmeshController component */
 	protected NavmeshController navController;
 	protected RVOController rvoController;
@@ -137,7 +132,6 @@ public class EnemyBasic: MonoBehaviour {
 	protected Vector3 lastFoundWaypointPosition;
 	protected float lastFoundWaypointTime = -9999;
 
-	//private float timer;
 	private float timerStart;
 
 	//The Start() and Update() functions will probably be overriden
@@ -150,7 +144,6 @@ public class EnemyBasic: MonoBehaviour {
 		movementSpeed = movementSpeed * Mathf.Pow(difficulty, 0.5f);
 		visionScale = 5*difficulty + 10;
 
-		//target = GameObject.FindGameObjectsWithTag ("Player") [0].transform;
 		startHasRun = true;
 		equippedWeapon = WeaponManager.getWeapon (equipped);
 		bullet = WeaponManager.getEnemyBulletPrefab (equipped);
@@ -169,9 +162,6 @@ public class EnemyBasic: MonoBehaviour {
 		passedInfo.bossPos = new Vector3 ();
 		passedInfo.playerPos = new Vector3 ();
 		passedInfo.lastTimeSeen = -999;
-
-		//timer = -1f;
-		//OnEnable ();
 	}
 
 	protected virtual void Update () {
@@ -191,7 +181,6 @@ public class EnemyBasic: MonoBehaviour {
 			timeLeft = 0;
 		}
 
-		//commCheck();
 		passinfo ();
 		hearCheck ();
 		deathCheck ();
@@ -207,7 +196,7 @@ public class EnemyBasic: MonoBehaviour {
 		player = GameObject.FindGameObjectsWithTag ("Player") [0];
 		if (pUs.Length != 0) {
 			closestPack = pUs [0];
-		} //TODO: make a proper function to find the closest pack
+		}
 		Vector3 forward = transform.forward;
 		
 		int i;
@@ -227,7 +216,6 @@ public class EnemyBasic: MonoBehaviour {
 			if ((closestPack.transform.position - transform.position).magnitude < (visionScale) && 
 				Vector3.Angle (closestPack.transform.position - transform.position, forward) <= fov) {
 				toReturn = closestPack;
-				//toUse = 1;
 			}
 		}
 		Transform playerLocPos = player.transform;
@@ -240,13 +228,11 @@ public class EnemyBasic: MonoBehaviour {
 			this.passedInfo.playerFound = true;
 			this.passedInfo.playerPos = playerLocPos.position;
 			this.passedInfo.lastTimeSeen = Time.timeSinceLevelLoad;
-			//toUse = 2;
 		}
 		
 		if (toReturn != null) {
 			RaycastHit hit;
 			Collider other;
-			//Debug.Log (transform.position.y.ToString());
 			Physics.Raycast (transform.position, (toReturn.transform.position - transform.position), out hit, visionScale);
 			other = hit.collider;
 			if(other != null && other.gameObject != null){
@@ -266,7 +252,6 @@ public class EnemyBasic: MonoBehaviour {
 		Transform player = GameManager.getPlayer ();
 		RaycastHit hit;
 		Collider other;
-		//Debug.Log (transform.position.y.ToString());
 		if (Vector3.Distance (transform.position, player.position) < commScale) {
 			Physics.Raycast (transform.position, player.transform.position, out hit, visionScale);
 			other = hit.collider;
@@ -300,11 +285,8 @@ public class EnemyBasic: MonoBehaviour {
 		GameObject bos = GameObject.FindGameObjectWithTag ("Boss");		
 		
 		if (bos != null&&(this.passedInfo.bossFound!=true)&&((bos.transform.position - transform.position).magnitude < (commScale * difficulty))) {
-			//Debug.Log("boss found!");
 			this.passedInfo.bossFound = true;
 			this.passedInfo.bossPos = bos.transform.position;
-			//if (this.passedInfo.playerFound) 
-				//this.transform.GetChild (0).gameObject.renderer.material.SetColor ("_Color", Color.Lerp(Color.black, Color.white, 0.1f));
 		}
 	
 		int i;
@@ -315,7 +297,6 @@ public class EnemyBasic: MonoBehaviour {
 
 			if (npcScript != null && ((npcPos.position - transform.position).magnitude < (commScale * difficulty))) {
 				//pass information
-				//Debug.Log("information should be shared");
 				if (this.passedInfo.bossFound&&(npcScript.passedInfo.bossFound!=true)) {
 					npcScript.passedInfo.bossPos = this.passedInfo.bossPos;
 				}
@@ -337,9 +318,7 @@ public class EnemyBasic: MonoBehaviour {
 			Transform npcPos = eUs[i].transform;
 			GameObject npc = eUs[i];
 			EnemyBasic npcScript = npc.GetComponent<EnemyBasic>();
-			if(npcScript == null)
 				
-				//TODO: remove npsScript!=null check. Make sure it is not null.
 			if (npcScript != null && ((Mathf.Pow(difficulty, 0.5f)) * (npcPos.position - transform.position).magnitude) < (commScale)) {
 				//pass information
 				
@@ -440,7 +419,6 @@ public class EnemyBasic: MonoBehaviour {
 	}
 
 	//Look at the object
-	//TODO: add slight error
 	protected void lookAt(GameObject target) {
 		this.transform.LookAt (target.transform, Vector3.up);
 	}
@@ -451,7 +429,6 @@ public class EnemyBasic: MonoBehaviour {
 
 	//Transfers bullet stats to bullets
 	protected void FireBullet () {
-		//var inFront = new Vector3 (0, 1, 0);
 		if (bulletStartPosition == null) {
 			Debug.LogError("Bullet start position is not specified.");
 		}
@@ -506,9 +483,7 @@ public class EnemyBasic: MonoBehaviour {
 
 	protected void moveTo(Vector3 tar){
 		Vector3 dir = Vector3.zero;
-		//if (tar != null) {
 		dir = tar - transform.position;
-		//}
 		if (dir != Vector3.zero) {
 			rigidbody.velocity = dir * speed;
 		}
@@ -587,8 +562,7 @@ public class EnemyBasic: MonoBehaviour {
 		if (path != null) path.Release (this);
 		reenable = true;
 		path = null;
-		//Debug.Log ("disable pathfinding");
-		
+
 		//Make sure we receive callbacks when paths complete
 		seeker.pathCallback -= OnPathComplete;
 	}
@@ -614,7 +588,6 @@ public class EnemyBasic: MonoBehaviour {
 			SearchPath ();
 			return repathRate;
 		} else {
-			//StartCoroutine (WaitForRepath ());
 			float v = repathRate - (Time.time-lastRepath);
 			return v < 0 ? 0 : v;
 		}
@@ -646,7 +619,6 @@ public class EnemyBasic: MonoBehaviour {
 
 
 		if (EnemyState == 0) {
-			//OnEnable();
 			EnemyState = 1;
 			canMove = true;
 		}
@@ -663,34 +635,25 @@ public class EnemyBasic: MonoBehaviour {
 						if ((transform.position - target).magnitude < 4f) {
 								if (EnemyState == 1) {//keep path finding state
 										OnDisable ();
-										//reenable = true;
 										stopMove ();
 										canMove = false;
-										EnemyState = 2;//halt state
-										//Debug.Log("should hault");
+										EnemyState = 2;//halt state;
 								}
 						} else {
 								if (EnemyState == 2) {
 										canMove = true;
 										EnemyState = 1;
-										//OnEnable ();
-										//Debug.Log("re-chase player");
-			
 								}
 						}
 				}
 
 		if (state == 5){
 			if ((transform.position - target).magnitude < 4f) {
-				//Debug.Log("here?");
 				OnDisable ();
-					//reenable = true;
 				stopMove ();
 				canMove = false;
 				protect = true;
 				state = 0;//halt state
-					//Debug.Log("should hault");
-
 			} 
 		}
 		//Get velocity in world-space
@@ -732,9 +695,7 @@ public class EnemyBasic: MonoBehaviour {
 		}
 		else {
 			if ((transform.position - target).magnitude > 10f){
-				//OnEnable();
 				canMove = true;
-				//Debug.Log("this part is running?");
 			}
 			velocity = Vector3.zero;
 		}
@@ -745,15 +706,11 @@ public class EnemyBasic: MonoBehaviour {
 		//Calculate the velocity relative to this transform's orientation
 		Vector3 relVelocity = tr.InverseTransformDirection (velocity);
 		relVelocity.y = 0;
-		
-		//float speed = relVelocity.z;
 
 		if(targetReached&&state == 1){
-			//Debug.Log("targetreached");
 			state = 0; //STATE_IDLE
 			OnDisable ();
 			stopMove ();
-			//reenable = true;
 		}
 
 	}
@@ -791,7 +748,7 @@ public class EnemyBasic: MonoBehaviour {
 		//Claim the new path
 		p.Claim (this);
 		
-		// Path coßuldn't be calculated of some reason.
+		// Path couldn't be calculated of some reason.
 		// More info in p.errorLog (debug string)
 		if (p.error) {
 			p.Release (this);
@@ -858,8 +815,7 @@ public class EnemyBasic: MonoBehaviour {
 		if (path == null || path.vectorPath == null || path.vectorPath.Count == 0) return Vector3.zero; 
 		
 		List<Vector3> vPath = path.vectorPath;
-		//Vector3 currentPosition = GetFeetPosition();
-		
+
 		if (vPath.Count == 1) {
 			vPath.Insert (0,currentPosition);
 		}

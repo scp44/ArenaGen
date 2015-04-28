@@ -20,7 +20,6 @@ public class BulletBehaviors : MonoBehaviour {
 
 	void Update(){
 		timer = Time.timeSinceLevelLoad - timeStart;
-		//count++;
 		if (timer >= lifeSpan) {
 			if(isAoE){
 				Explode ();

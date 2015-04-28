@@ -41,8 +41,6 @@ public class GameManager : MonoBehaviour {
 		}
 
 		AudioListener.volume = difficulty;
-
-		//print ("difficulty is " + difficulty.ToString());
 	}
 
 	void Start () {
@@ -81,10 +79,8 @@ public class GameManager : MonoBehaviour {
 		else if (boss.phase != 3) {
 			hideBossUI();
 		}
-		//Debug.Log ("Message set " + timerStart.ToString ()+" "+Time.timeSinceLevelLoad.ToString ());
 		if (timer > 0 && Time.timeSinceLevelLoad - timerStart > timer) {
 			GameManager.hideBonus();
-			//Debug.Log ("Message gone");
 			timer = -1f;
 		}
 
@@ -136,26 +132,20 @@ public class GameManager : MonoBehaviour {
 
 
 	public static void displayArmorBonus (float amt) {
-		//instance.armorBonusText.text = "Max Armor increased by " + amt.ToString("F1") + "!";
 		instance.armorBonusText.enabled = true;
 		instance.timerStart = Time.timeSinceLevelLoad;
-		//Debug.Log ("Message set " + timerStart.ToString ()+" "+Time.timeSinceLevelLoad.ToString ());
 		instance.timer = 2;
 	}
 
 	public static void displayHealthBonus (float amt) {
-		//instance.healthBonusText.text = "Max Health increased by " + amt.ToString("F1") + "!";
 		instance.healthBonusText.enabled = true;
 		instance.timerStart = Time.timeSinceLevelLoad;
-		///Debug.Log ("Message set " + timerStart.ToString ()+" "+Time.timeSinceLevelLoad.ToString ());
 		instance.timer = 2;
 	}
 
 	public static void displayDamageBonus(float amt) {
-		//instance.damageBonusText.text = "Damage increased by " + amt.ToString("F1") + "!";
 		instance.damageBonusText.enabled = true;
 		instance.timerStart = Time.timeSinceLevelLoad;
-		//Debug.Log ("Message set " + timerStart.ToString ()+" "+Time.timeSinceLevelLoad.ToString ());
 		instance.timer = 2;
 	}
 

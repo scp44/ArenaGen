@@ -2,7 +2,6 @@
 using System.Collections;
 using UnityEngine.UI;
 
-//[RequireComponent (typeof (CharacterController))]
 public class PlayerController : MonoBehaviour {
 
 	private const float ARMOR_AMOUNT = 5;
@@ -98,7 +97,6 @@ public class PlayerController : MonoBehaviour {
 		var angle = Mathf.Atan2(offset.x, offset.y) * Mathf.Rad2Deg;
 		transform.rotation = Quaternion.Euler (0, angle, 0);
 
-		//Vector3 input = new Vector3 (Input.GetAxisRaw ("Horizontal"), 0, Input.GetAxisRaw ("Vertical"));
 		float moveHorizontal = Input.GetAxis ("Horizontal");
 		float moveVertical = Input.GetAxis ("Vertical");
 		
@@ -151,7 +149,6 @@ public class PlayerController : MonoBehaviour {
 
 	//Transfers bullet stats to bullets
 	void FireBullet () {
-		//var inFront = new Vector3 (0, 1, 0);
 		lastBulletTime = Time.timeSinceLevelLoad;
 		lineRenderer.SetPosition (0, transform.position);
 		lineRenderer.SetPosition (1, transform.position + 4*transform.forward);
@@ -159,7 +156,6 @@ public class PlayerController : MonoBehaviour {
 		if (equippedWeapon.weaponType != 3) {
 			Rigidbody bulletClone = (Rigidbody)Instantiate (bullet, bulletPos.position, transform.rotation);
 			//TODO: figure out why player bullets are 10 times slower
-
 			bulletClone.velocity = 10 * transform.forward * speed * equippedWeapon.bulletSpeed;
 			BulletBehaviors bulletScript = bulletClone.GetComponent<BulletBehaviors> ();
 			bulletScript.lifeSpan = equippedWeapon.bulletLength;
@@ -192,10 +188,6 @@ public class PlayerController : MonoBehaviour {
 				startAngle = Quaternion.AngleAxis (WeaponManager.getAngleBetween(), Vector3.up) * startAngle;
 			}
 		}
-
-
-
-		//bulletClone.GetComponent<MyRocketScript>().DoSomething();
 	}
 	//Gun Swap
 	void SwitchGun(){
